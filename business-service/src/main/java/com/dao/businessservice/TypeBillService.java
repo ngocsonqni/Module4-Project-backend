@@ -1,0 +1,4 @@
+package com.dao.businessservice;
+
+public interface TypeBillService {
+}
