@@ -4,18 +4,18 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "info")
-public class role {
+public class info {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
     @Column(name = "name")
-    String name;
+    private String name;
 
-    public role() {
+    public info() {
     }
 
-    public role(String name) {
+    public info(String name) {
         this.name = name;
     }
 
