@@ -10,6 +10,12 @@
     <groupId>com.codegym</groupId>
     <artifactId>configure</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.codegym</groupId>
+            <artifactId>dao</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
