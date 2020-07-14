@@ -1,12 +1,12 @@
-package com.codegym.service;
-
-import com.codegym.dao.entity.Bill;
-
-import java.util.List;
-
-public interface BillService {
-    List<Bill> findAllByDeleteFlagFalse();
-    Bill findById(Integer id);
-    void save(Bill bill);
-    void remove(Bill bill);
-}
+//package com.codegym.service;
+//
+//import com.codegym.dao.entity.Bill;
+//
+//import java.util.List;
+//
+//public interface BillService {
+//    List<Bill> findAllByDeleteFlagFalse();
+//    Bill findById(Integer id);
+//    void save(Bill bill);
+//    void remove(Bill bill);
+//}
