@@ -1,9 +1,6 @@
 package com.codegym.dao.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,8 +22,21 @@ public class Account {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    @JsonManagedReference
+    @JsonBackReference
     public Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+
+    @OneToMany(mappedBy = "account")
+    @JsonManagedReference
+    public List<Employee> employees;
 
     public Account() {
     }

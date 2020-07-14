@@ -13,4 +13,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     List<Account> findAllByDeleteFlagIsFalse();
 
     Account findAccountByAccountIdAndDeleteFlagIsFalse(int id);
+
+
 }

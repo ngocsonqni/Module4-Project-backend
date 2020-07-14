@@ -1,9 +1,6 @@
 package com.codegym.dao.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,7 +17,7 @@ public class Role {
 
 
     @OneToMany(mappedBy = "role")
-    @JsonBackReference
+    @JsonManagedReference
     public List<Account> accounts;
 
     public Role() {

@@ -24,4 +24,9 @@ public class AccountServiceImpl implements AccountService {
     public Account findAccountById(int id) {
         return accountRepository.findAccountByAccountIdAndDeleteFlagIsFalse(id);
     }
+
+    @Override
+    public void save(Account account) {
+        accountRepository.save(account);
+    }
 }
