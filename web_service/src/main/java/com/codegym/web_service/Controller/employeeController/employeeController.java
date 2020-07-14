@@ -1,5 +1,5 @@
 package com.codegym.web_service.Controller.employeeController;
-
+import org.springframework.web.bind.annotation.RestController;
 import com.codegym.dao.entity.Employee;
 import com.codegym.dao.entity.EmployeeDTO;
 import com.codegym.service.DepartmentService;
