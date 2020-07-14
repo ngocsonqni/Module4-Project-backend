@@ -1,5 +1,5 @@
 package com.codegym.web_service.Controller.employeeController;
-
+import org.springframework.web.bind.annotation.RestController;
 import com.codegym.dao.entity.Employee;
 import com.codegym.dao.entity.EmployeeDTO;
 import com.codegym.dao.entity.Role;
@@ -13,10 +13,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.codegym.dao.entity.Distributor;
+import com.codegym.dao.entity.TypeOfDistributor;
+import com.codegym.service.DistributorService;
+import com.codegym.service.TypeOfDistributorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("http://localhost:8080")
+import java.util.Optional;
+
 @RestController
+@CrossOrigin(origins = "*")
 public class employeeController {
     @Autowired
     EmployeeService employeeService;
