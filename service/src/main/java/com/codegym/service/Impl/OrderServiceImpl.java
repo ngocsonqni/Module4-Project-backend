@@ -16,7 +16,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Override
     public Page<Order> findAllById_user(Integer id, Pageable pageable) {
-        return orderRepository.findAllById_user(id,pageable);
+        return orderRepository.findAllByOrderId(id,pageable);
     }
 
     @Override

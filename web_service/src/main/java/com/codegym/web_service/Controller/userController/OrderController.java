@@ -17,7 +17,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 
-public class orderController {
+public class OrderController {
     @Autowired
     private OrderService orderService;
     @Autowired

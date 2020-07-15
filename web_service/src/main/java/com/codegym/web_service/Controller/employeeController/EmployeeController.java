@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class employeeController {
+class employeeController {
     @Autowired
     EmployeeService employeeService;
     @Autowired
