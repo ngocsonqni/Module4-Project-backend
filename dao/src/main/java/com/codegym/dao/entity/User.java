@@ -112,7 +112,6 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
     public String getImageUrl() {
         return imageUrl;
     }

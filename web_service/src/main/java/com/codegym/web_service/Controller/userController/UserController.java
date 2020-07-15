@@ -53,10 +53,11 @@ public class UserController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    //------------------- Edit a Customer --------------------------------------------------------
 
-    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
+    //-------------------Edit a Customer--------------------------------------------------------
+
+    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<User> updateCustomer(@PathVariable("id") long id, @RequestBody User user) {
         System.out.println("Updating Customer " + id);
         User currentUser = userService.findGetId(id);
 
@@ -66,7 +67,6 @@ public class UserController {
         }
 
         currentUser.setId(user.getId());
-
         userService.save(currentUser);
         return new ResponseEntity<User>(currentUser, HttpStatus.OK);
     }
@@ -79,7 +79,9 @@ public class UserController {
 
         User user = userService.findGetId(id);
         if (user == null) {
+
             System.out.println("Unable to delete Customer with id " + id + " not found");
+
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
         userService.remove(id);
