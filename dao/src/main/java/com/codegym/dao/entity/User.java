@@ -23,7 +23,7 @@ public class User {
     @Column(name = "gender")
     private String gender;
     @Column(name = "image_url")
-    private String image_url;
+    private String imageUrl;
     @Column(name = "delete_flag")
     private boolean deleteFlag;
     @ManyToOne
@@ -112,13 +112,12 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
-    public String getImage_url() {
-        return image_url;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public boolean getDeleteFlag() {
