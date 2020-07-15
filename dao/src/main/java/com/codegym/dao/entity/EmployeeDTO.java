@@ -1,55 +1,36 @@
 package com.codegym.dao.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "employee")
-public class Employee {
-    @Id
-    @Column(name = "id_employee")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmployeeDTO {
     private int id;
-
-    @Column(name = "image")
     private String image;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "gender")
     private String gender;
-
-    @Column(name = "birthday")
     private LocalDateTime birthday;
-
-    @Column(name = "address")
     private String address;
-
-    @Column(name = "phone_number")
     private String phoneNumber;
-
-    @Column(name = "email")
     private String email;
+    private String position;
+    private String department;
+    private String idAccount;
 
+    public EmployeeDTO() {
+    }
 
-    //    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "position_id")
-    private Position position;
-
-    //    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
-
-    @Column(name = "delete_flag")
-    private boolean deleteFlag;
-
-    public Employee() {
+    public EmployeeDTO(int id, String image, String name, String gender, LocalDateTime birthday, String address,
+                       String phoneNumber, String email, String position, String department, String idAccount) {
+        this.id = id;
+        this.image = image;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.position = position;
+        this.department = department;
+        this.idAccount = idAccount;
     }
 
     public int getId() {
@@ -116,40 +97,27 @@ public class Employee {
         this.email = email;
     }
 
-    public Position getPosition() {
+    public String getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(String position) {
         this.position = position;
     }
 
-    public Department getDepartment() {
+    public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(String department) {
         this.department = department;
     }
 
-    public boolean isDeleteFlag() {
-        return deleteFlag;
+    public String getIdAccount() {
+        return idAccount;
     }
 
-    public void setDeleteFlag(boolean deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    @JsonBackReference
-    private Account account;
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setIdAccount(String idAccount) {
+        this.idAccount = idAccount;
     }
 }
