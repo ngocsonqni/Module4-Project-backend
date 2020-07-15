@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(value = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 
 public class orderController {
     @Autowired
