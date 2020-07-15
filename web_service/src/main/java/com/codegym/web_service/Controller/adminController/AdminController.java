@@ -56,7 +56,7 @@ public class AdminController {
     }
 
     //-------------------------- details account --------------------------------
-    @RequestMapping(value = "/account/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
     public ResponseEntity<Account> getAccount(@PathVariable("id") int id) {
         Account account = accountService.findAccountById(id);
         if (account == null) {
@@ -78,7 +78,7 @@ public class AdminController {
     }
 
     //--------------------- update account --------------------------------------------------
-    @RequestMapping(value = "/account/update/{id}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/account/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Account> updateAccount(@PathVariable("id") int id, @RequestBody Account account) {
         Account currentAccount = accountService.findAccountById(id);
         if (currentAccount == null) {

@@ -1,3 +1,4 @@
+
 package com.codegym.dao.entity;
 
 import com.fasterxml.jackson.annotation.*;
@@ -14,11 +15,6 @@ public class Role {
 
     @Column(name = "role_name")
     String role_name;
-
-
-    @OneToMany(mappedBy = "role")
-    @JsonManagedReference
-    public List<Account> accounts;
 
     public Role() {
     }
