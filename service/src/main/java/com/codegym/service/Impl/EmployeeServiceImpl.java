@@ -14,6 +14,7 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
+
     @Override
     public List<Employee> findAll() {
         return employeeRepository.findAllByDeleteFlagIsFalse();
@@ -38,5 +39,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void remove(int id) {
         Employee employee = employeeRepository.findByDeleteFlagIsFalseAndId(id);
         employee.setDeleteFlag(true);
+    }
+
+    @Override
+    public Employee findByAccountId(int accountId) {
+        return employeeRepository.findByAccount_AccountIdAndDeleteFlagIsFalse(accountId);
     }
 }

@@ -12,6 +12,10 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     List<Employee> findAllByDeleteFlagIsFalse();
+
     List<Employee> findAllByDeleteFlagIsTrue();
+
     Employee findByDeleteFlagIsFalseAndId(Integer id);
+
+    Employee findByAccount_AccountIdAndDeleteFlagIsFalse(int accountId);
 }

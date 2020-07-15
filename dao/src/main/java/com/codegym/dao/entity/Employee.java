@@ -1,5 +1,6 @@
 package com.codegym.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -33,14 +34,14 @@ public class Employee {
 
     @Column(name = "email")
     private String email;
-    @Column(name = "account_id")
-    private String idAccount;
-//    @JsonIgnore
+
+
+    //    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
@@ -135,15 +136,20 @@ public class Employee {
         return deleteFlag;
     }
 
-    public String getIdAccount() {
-        return idAccount;
-    }
-
-    public void setIdAccount(String idAccount) {
-        this.idAccount = idAccount;
-    }
-
     public void setDeleteFlag(boolean deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    @JsonBackReference
+    private Account account;
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

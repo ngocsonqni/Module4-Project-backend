@@ -2,12 +2,14 @@ package com.codegym.web_service.Controller.employeeController;
 import org.springframework.web.bind.annotation.RestController;
 import com.codegym.dao.entity.Employee;
 import com.codegym.dao.entity.EmployeeDTO;
+import com.codegym.dao.entity.Role;
 import com.codegym.service.DepartmentService;
 import com.codegym.service.EmployeeService;
 import com.codegym.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,4 +62,5 @@ public class employeeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 }
