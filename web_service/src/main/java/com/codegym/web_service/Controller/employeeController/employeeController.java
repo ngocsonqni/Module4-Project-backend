@@ -53,4 +53,24 @@ public class employeeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @RequestMapping(value = "employee/list/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<Employee> editEmployee(@PathVariable("id") int id, @RequestBody Employee employee) {
+        Employee employee1 = employeeService.findById(id);
+        if(employee1 == null) {
+            return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
+        }
+        employee1.setImage(employee.getImage());
+        employee1.setName(employee.getName());
+        employee1.setGender(employee.getGender());
+        employee1.setBirthday(employee.getBirthday());
+        employee1.setAddress(employee.getAddress());
+        employee1.setPhoneNumber(employee.getPhoneNumber());
+        employee1.setEmail(employee.getEmail());
+        employee1.setPosition(employee.getPosition());
+        employee1.setDepartment(employee.getDepartment());
+        employee1.setIdAccount(employee.getIdAccount());
+        employeeService.save(employee1);
+        return new ResponseEntity<Employee>(employee1, HttpStatus.OK);
+    }
 }
