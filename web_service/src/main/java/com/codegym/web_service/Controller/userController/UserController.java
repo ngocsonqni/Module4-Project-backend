@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @CrossOrigin(value = "*")
 @Controller
-public class userController {
+public class UserController {
     @Autowired
     private UserService userService;
     //-------------------Retrieve All Customers--------------------------------------------------------
@@ -53,4 +53,36 @@ public class userController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
+    //------------------- Edit a Customer --------------------------------------------------------
+
+    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
+        System.out.println("Updating Customer " + id);
+        User currentUser = userService.findGetId(id);
+
+        if (currentUser == null) {
+            System.out.println("Customer with id " + id + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+
+        currentUser.setId(user.getId());
+
+        userService.save(currentUser);
+        return new ResponseEntity<User>(currentUser, HttpStatus.OK);
+    }
+
+    //------------------- Delete a Customer --------------------------------------------------------
+
+    @RequestMapping(value = "/customers/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
+        System.out.println("Fetching & Deleting Customer with id " + id);
+
+        User user = userService.findGetId(id);
+        if (user == null) {
+            System.out.println("Unable to delete Customer with id " + id + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        userService.remove(id);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
 }
