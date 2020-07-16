@@ -1,28 +1,36 @@
 package com.codegym.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "order_user")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="order_id" )
+    @Column(name = "order_id")
     private int orderId;
-    @Column(name ="order_date" )
+    @Column(name = "order_date")
     private LocalDateTime orderDate;
-    @Column(name ="order_status" )
+    @Column(name = "order_status")
     private String orderStatus;
-    @Column(name ="order_address" )
+    @Column(name = "order_address")
     private String orderAddress;
-    @Column(name ="total_money" )
+    @Column(name = "total_money")
     private double totalMoney;
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
+    @OneToMany(mappedBy = "id.orderUser")
+    @JsonManagedReference
+    private List<OrderDetail> orderDetailList;
 
-    public Order() {};
+    public Order() {
+    }
+    ;
 
     public Order(int order_id, LocalDateTime order_date, String order_status, String order_address, double total_money, User id_user) {
         this.orderId = order_id;
@@ -31,6 +39,14 @@ public class Order {
         this.orderAddress = order_address;
         this.totalMoney = total_money;
         this.user = id_user;
+    }
+
+    public List<OrderDetail> getOrderDetailList() {
+        return orderDetailList;
+    }
+
+    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+        this.orderDetailList = orderDetailList;
     }
 
     public int getOrderId() {

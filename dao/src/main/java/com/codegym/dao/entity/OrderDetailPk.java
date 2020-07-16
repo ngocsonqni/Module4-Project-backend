@@ -1,14 +1,19 @@
 package com.codegym.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
 public class OrderDetailPk implements Serializable {
+
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     private Order orderUser;
     @ManyToOne
+
     @JoinColumn(name = "product_id")
     private Product product;
 
