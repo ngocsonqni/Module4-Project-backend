@@ -31,6 +31,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Employee findByAccountName(String accountName) {
+        return employeeRepository.findByAccount_AccountName(accountName);
+    }
+
+    @Override
     public void save(Employee employee) {
         employeeRepository.save(employee);
     }

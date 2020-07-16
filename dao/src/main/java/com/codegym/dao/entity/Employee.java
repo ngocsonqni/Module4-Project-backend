@@ -1,10 +1,9 @@
 package com.codegym.dao.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "employee")
@@ -24,7 +23,7 @@ public class Employee {
     private String gender;
 
     @Column(name = "birthday")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Column(name = "address")
     private String address;
@@ -84,11 +83,11 @@ public class Employee {
         this.gender = gender;
     }
 
-    public LocalDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -142,7 +141,7 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "account_id")
-    @JsonBackReference
+//    @JsonManagedReference
     private Account account;
 
     public Account getAccount() {

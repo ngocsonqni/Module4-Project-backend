@@ -29,4 +29,9 @@ public class AccountServiceImpl implements AccountService {
     public void save(Account account) {
         accountRepository.save(account);
     }
+
+    @Override
+    public Account findAccountByName(String name) {
+        return accountRepository.findAccountByDeleteFlagIsFalseAndAccountName(name);
+    }
 }

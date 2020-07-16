@@ -34,9 +34,9 @@ public class Account {
     }
 
 
-    @OneToMany(mappedBy = "account")
-    @JsonManagedReference
-    public List<Employee> employees;
+//    @OneToMany(mappedBy = "account")
+//    @JsonBackReference
+//    public List<Employee> employees;
 
     public Account() {
     }

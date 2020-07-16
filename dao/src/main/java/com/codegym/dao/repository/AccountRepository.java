@@ -14,5 +14,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     Account findAccountByAccountIdAndDeleteFlagIsFalse(int id);
 
-
+    Account findAccountByDeleteFlagIsFalseAndAccountName(String name);
 }

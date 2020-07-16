@@ -18,4 +18,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Employee findByDeleteFlagIsFalseAndId(Integer id);
 
     Employee findByAccount_AccountIdAndDeleteFlagIsFalse(int accountId);
+
+    Employee findByAccount_AccountName(String accountName);
 }

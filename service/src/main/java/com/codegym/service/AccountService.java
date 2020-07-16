@@ -10,4 +10,6 @@ public interface AccountService {
     Account findAccountById(int id);
 
     void save(Account account);
+
+    Account findAccountByName(String name);
 }
