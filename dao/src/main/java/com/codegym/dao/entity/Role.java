@@ -1,26 +1,31 @@
 package com.codegym.dao.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name="role")
 public class Role {
+//    private static final long serialVersionUID = 1L;
+
     @Id
+    @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int roleId;
+    private int idRole;
 
     @Column(name = "role_name")
-    String roleName;
+    private String roleName;
 
-    public Role() {
+    @OneToMany(mappedBy = "roles")
+    private Set<Account> accounts;
+
+    public int getIdRole() {
+        return idRole;
     }
 
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setIdRole(int idRole) {
+        this.idRole = idRole;
     }
 
     public String getRoleName() {
@@ -29,5 +34,15 @@ public class Role {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setUsers(Set<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public Role() {
     }
 }
