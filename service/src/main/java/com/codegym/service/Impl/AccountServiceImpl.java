@@ -29,4 +29,10 @@ public class AccountServiceImpl implements AccountService {
     public void save(Account account) {
         accountRepository.save(account);
     }
+
+    @Override
+    public Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String search) {
+        Page<Account> accountPage = accountRepository.findAllByAccountNameContainingAndDeleteFlagIsFalse(search, pageable);
+        return accountPage;
+    }
 }
