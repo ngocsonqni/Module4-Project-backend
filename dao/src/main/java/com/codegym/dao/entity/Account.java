@@ -33,7 +33,6 @@ public class Account {
         this.role = role;
     }
 
-
     @OneToMany(mappedBy = "account")
     @JsonManagedReference
     public List<Employee> employees;

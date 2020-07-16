@@ -93,10 +93,6 @@ public class User {
         this.account = account;
     }
 
-    public boolean isDeleteFlag() {
-        return deleteFlag;
-    }
-
 //    public Set<Order> getOrderList() {
 //        return orderList;
 //    }

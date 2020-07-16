@@ -67,7 +67,7 @@ public class AdminController {
     }
 
     //--------------------- delete account --------------------------------------------------
-    @RequestMapping(value = "/account/delete/{id}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/account/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Account> deleteAccount(@PathVariable("id") int id) {
         Account currentAccount = accountService.findAccountById(id);
         if (currentAccount == null) {
