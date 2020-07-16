@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @CrossOrigin(value = "*")
 @Controller
-public class UserController {
+class UserController {
     @Autowired
     private UserService userService;
     //-------------------Retrieve All Customers--------------------------------------------------------
