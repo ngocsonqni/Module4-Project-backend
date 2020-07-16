@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findGetId(Long id) {
+    public User findGetId(int id) {
         return userRepository.findById(id).orElse(null);
     }
 
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void remove(Long id) {
+    public void remove(int id) {
         User currentUser = findGetId(id);
         currentUser.setDeleteFlag(true);
         save(currentUser);

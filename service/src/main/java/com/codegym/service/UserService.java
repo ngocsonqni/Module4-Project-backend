@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService {
     Page<User> findAllUserByDeleteFlagIsFalse(Pageable pageable);
-    User findGetId(Long id);
+    User findGetId(int id);
     void save(User user);
-    void remove(Long id);
+    void remove(int id);
 }
