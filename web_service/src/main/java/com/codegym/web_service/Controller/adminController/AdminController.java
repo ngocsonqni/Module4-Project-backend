@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdminController {
     @Autowired
     private RoleService roleService;
@@ -54,6 +54,16 @@ public class AdminController {
         return new ResponseEntity<Role>(role, HttpStatus.OK);
     }
 
+    //------------------------------- list account -------------------------
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
+    public ResponseEntity<List<Account>> listAllAccountList() {
+        List<Account> accounts = accountService.findAllAccount();
+        if (accounts.isEmpty()) {
+            return new ResponseEntity<List<Account>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Account>>(accounts, HttpStatus.OK);
+    }
+
     //---------------------- list account ---------------------------------
     @RequestMapping(value = "/account", method = RequestMethod.GET, params = {"page", "size", "search"})
     public ResponseEntity<Page<Account>> listAllAccount(@RequestParam("page") int page,
@@ -70,7 +80,7 @@ public class AdminController {
 //        if (check) {
 //            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
 //        }
-        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
+        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
                 , search);
         if (accountPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
