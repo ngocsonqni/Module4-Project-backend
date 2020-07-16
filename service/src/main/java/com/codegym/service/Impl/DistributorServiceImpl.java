@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 public class DistributorServiceImpl implements DistributorService {
-
     @Autowired
     private DistributorRepository distributorRepository;
 

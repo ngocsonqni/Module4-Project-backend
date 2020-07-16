@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 public class TypeOfDistributorServiceImpl implements TypeOfDistributorService {
     @Autowired
     private TypeOfDistributorRepository typeOfDistributorRepository;
-
     @Override
     public TypeOfDistributor findByName(String name) {
         return typeOfDistributorRepository.findByName(name);
     }
-
 }

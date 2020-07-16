@@ -10,6 +10,7 @@ public class Distributor {
     @Column(name = "id_distributor")
     int id;
     String name;
+
     @Column(name = "address")
     String address;
     @Column(name = "email")
@@ -25,10 +26,12 @@ public class Distributor {
     boolean deleted;
     @ManyToOne
             @JoinColumn(name = "type_of_distributor")
+
     TypeOfDistributor typeOfDistributor;
     public Distributor(boolean deleted) {
         this.deleted = deleted;
     }
+
     public boolean isDeleted() {
         return deleted;
     }
@@ -42,6 +45,7 @@ public class Distributor {
         this.address = address;
         this.email = email;
         this.numberPhone = numberPhone;
+
         this.fax = fax;
         this.website = website;
         this.img = img;
@@ -99,6 +103,7 @@ public class Distributor {
     public TypeOfDistributor getTypeOfDistributor() {
         return typeOfDistributor;
     }
+
     public void setTypeOfDistributor(TypeOfDistributor typeOfDistributor) {
         this.typeOfDistributor = typeOfDistributor;
     }
