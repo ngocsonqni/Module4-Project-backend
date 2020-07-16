@@ -1,4 +1,5 @@
 package com.codegym.service.Impl;
 
-public class UserServiceImpl {
+public class UserServiceImpl   {
+
 }
