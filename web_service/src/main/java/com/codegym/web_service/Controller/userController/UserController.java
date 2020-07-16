@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @CrossOrigin(value = "*")
 @Controller
-public class UserController {
+class UserController {
     @Autowired
     private UserService userService;
     //-------------------Retrieve All Customers--------------------------------------------------------
@@ -32,7 +32,7 @@ public class UserController {
     //-------------------Retrieve Single Customer--------------------------------------------------------
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getCustomer(@PathVariable("id") long id) {
+    public ResponseEntity<User> getCustomer(@PathVariable("id") int id) {
         System.out.println("Fetching Customer with id " + id);
         User user = userService.findGetId(id);
         if (user == null) {
@@ -57,7 +57,7 @@ public class UserController {
     //-------------------Edit a Customer--------------------------------------------------------
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<User> updateCustomer(@PathVariable("id") long id, @RequestBody User user) {
+    public ResponseEntity<User> updateCustomer(@PathVariable("id") int id, @RequestBody User user) {
         System.out.println("Updating Customer " + id);
         User currentUser = userService.findGetId(id);
 
@@ -74,7 +74,7 @@ public class UserController {
     //------------------- Delete a Customer --------------------------------------------------------
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
+    public ResponseEntity<User> deleteUser(@PathVariable("id") int id) {
         System.out.println("Fetching & Deleting Customer with id " + id);
 
         User user = userService.findGetId(id);
