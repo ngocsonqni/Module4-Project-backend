@@ -10,10 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
+import com.codegym.service.AccountService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 @Service
 public class AccountServiceImpl implements UserDetailsService {
@@ -35,5 +39,24 @@ public class AccountServiceImpl implements UserDetailsService {
                 account.getAccountPassword(),
                 grantedAuthorities);
     }
+    @Override
+    public List<Account> findAllAccount() {
+        return accountRepository.findAllByDeleteFlagIsFalse();
+    }
 
+    @Override
+    public Account findAccountById(int id) {
+        return accountRepository.findAccountByAccountIdAndDeleteFlagIsFalse(id);
+    }
+
+    @Override
+    public void save(Account account) {
+        accountRepository.save(account);
+    }
+
+    @Override
+    public Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String search) {
+        Page<Account> accountPage = accountRepository.findAllByAccountNameContainingAndDeleteFlagIsFalse(search, pageable);
+        return accountPage;
+    }
 }
