@@ -24,7 +24,10 @@ public class Brand {
     @Column(name = "delete_flag")
     private boolean deleteFlag;
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 5fcf850802259f604d5893956cd1e663f9566198
     public Brand() {
     }
 
@@ -36,7 +39,10 @@ public class Brand {
         this.deleteFlag = false;
     }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 5fcf850802259f604d5893956cd1e663f9566198
     public int getId() {
         return id;
     }
