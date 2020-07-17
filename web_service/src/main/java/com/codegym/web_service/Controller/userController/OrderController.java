@@ -23,24 +23,22 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private OrderDetailService orderDetailService;
-    @RequestMapping(value = "/user-order/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Page<Order>> getUserOder(@PathVariable Integer id,@PageableDefault(size = 5) Pageable pageable) {
-        Page<Order> orders = orderService.findAllById_user(id, pageable);
 
+    @RequestMapping(value = "/user-order/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Page<Order>> getUserOder(@PathVariable Integer id, @PageableDefault(size = 2) Pageable pageable) {
+        Page<Order> orders = orderService.findAllById_user(id, pageable);
         if (orders.getContent().isEmpty()) {
             System.out.println("Order with id " + id + " not found");
-
             return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
         } else
             return new ResponseEntity<>(orders, HttpStatus.OK);
     }
+
     @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
     public ResponseEntity<Order> getOrder(@PathVariable Integer id) {
         Optional<Order> order = orderService.findById(id);
-
         if (!order.isPresent()) {
             System.out.println("Order with id " + id + " not found");
-
             return new ResponseEntity<>(order.get(), HttpStatus.NOT_FOUND);
         } else
             return new ResponseEntity<>(order.get(), HttpStatus.OK);
