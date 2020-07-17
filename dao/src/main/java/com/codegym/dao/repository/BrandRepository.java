@@ -11,4 +11,3 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
     List<Brand> findAllByDeleteFlagFalse();
     Page<Brand> findAllByBrandNameContaining(Pageable pageable, String name);
 }
-

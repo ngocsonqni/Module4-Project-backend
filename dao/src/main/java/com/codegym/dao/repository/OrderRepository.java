@@ -10,5 +10,4 @@ import org.springframework.data.jpa.repository.Query;
 public interface OrderRepository extends JpaRepository<Order,Integer> {
     @Query(value = "select u from Order u where u.user.id=?1")
     Page<Order> findAllByIdUser(Integer id, Pageable pageable);
-
 }

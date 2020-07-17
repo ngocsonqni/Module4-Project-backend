@@ -16,9 +16,7 @@ public class BrandServiceImpl implements BrandService {
     private BrandRepository brandRepository;
 
     @Override
-
     public List<Brand> getAllBrand() {
-
         return brandRepository.findAllByDeleteFlagFalse();
     }
 
@@ -37,5 +35,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Page<Brand> findAllByBrandNameContaining(Pageable pageable, String search) {
         return brandRepository.findAllByBrandNameContaining(pageable, search);
+
     }
+
 }
