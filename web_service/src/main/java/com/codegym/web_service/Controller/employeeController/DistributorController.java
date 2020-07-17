@@ -5,19 +5,21 @@ import com.codegym.dao.entity.TypeOfDistributor;
 import com.codegym.service.DistributorService;
 import com.codegym.service.TypeOfDistributorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
-public class DistributorController {
+import java.util.List;
 
+@RestController
+@CrossOrigin(origins = "*")
+public class DistributorController {
     @Autowired
     private TypeOfDistributorService typeOfDistributorService;
     @Autowired
     private DistributorService distributorService;
-
 
     @GetMapping("/distributor/{id}")
     public ResponseEntity<Distributor> findByID(@PathVariable Integer id) {
@@ -34,10 +36,36 @@ public class DistributorController {
         this.distributorService.save(distributor);
     }
 
-
     @GetMapping("/type_distributor/{name}")
     public TypeOfDistributor findByName(@PathVariable String name) {
         return this.typeOfDistributorService.findByName(name);
     }
 
+    //Show List
+//    @GetMapping("/distributor/list")
+//    public ResponseEntity<List<Distributor>> listDistributors(){
+//        List<Distributor> distributors  = distributorService.findAll();
+//        if (distributors == null){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(distributors, HttpStatus.OK);
+//    }
+    //Create distributor
+    @PostMapping("/distributor/create")
+    public ResponseEntity<Distributor> createDistributor(@RequestBody Distributor distributor) {
+        distributorService.save(distributor);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    //Show list ,paging and sorting
+    @GetMapping(value = "/distributor/list", params = {"page", "size", "search"})
+    public ResponseEntity<Page<Distributor>> getAll(@RequestParam("page") int page,
+                                                    @RequestParam("size") int size,
+                                                    @RequestParam("search") String search) {
+        Page<Distributor> distributorPage = distributorService.pageFindAllSearchName(PageRequest.of(page, size), search);
+        if (distributorPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(distributorPage, HttpStatus.OK);
+    }
 }
