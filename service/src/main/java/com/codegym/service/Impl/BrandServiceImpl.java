@@ -34,7 +34,8 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Page<Brand> findAllByBrandNameContaining(Pageable pageable, String search) {
-        return null;
+        return brandRepository.findAllByBrandNameContaining(pageable, search);
+
     }
 
 }

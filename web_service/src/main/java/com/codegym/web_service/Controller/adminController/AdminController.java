@@ -9,14 +9,16 @@ import com.codegym.service.AccountService;
 import com.codegym.service.EmployeeService;
 import com.codegym.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
@@ -24,9 +26,14 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdminController {
     @Autowired
-    private com.codegym.service.RuleService ruleService;
+    private RoleService roleService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private EmployeeService employeeService;
 
     @Autowired
     private AccessTimesService accessTimesService;
@@ -39,7 +46,18 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(roles, HttpStatus.OK);
+    }
 
+    //--------------------------------- details role ---------------------------
+    @RequestMapping(value = "/role/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Role> getRole(@PathVariable("id") int id) {
+        System.out.println("Fetching Customer with id " + id);
+        Role role = roleService.findRoleById(id);
+        if (role == null) {
+            System.out.println("Customer with id " + id + " not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
     //------------------------------- list account -------------------------
@@ -153,6 +171,6 @@ public class AdminController {
         if (employee == null) {
             return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Rule>(rule1, HttpStatus.OK);
+        return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
 }

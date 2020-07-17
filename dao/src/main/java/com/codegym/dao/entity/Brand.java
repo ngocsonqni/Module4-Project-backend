@@ -34,7 +34,6 @@ public class Brand {
         this.brandWebsite = brandWebsite;
         this.deleteFlag = false;
     }
-
     public int getId() {
         return id;
     }
