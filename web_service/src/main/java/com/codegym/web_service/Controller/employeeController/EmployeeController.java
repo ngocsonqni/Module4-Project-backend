@@ -14,7 +14,6 @@ import com.codegym.service.PositionService;
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
 public class EmployeeController {
-
     @Autowired
     EmployeeService employeeService;
     @Autowired
