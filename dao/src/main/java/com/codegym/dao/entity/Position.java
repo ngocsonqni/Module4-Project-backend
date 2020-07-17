@@ -18,7 +18,13 @@ public class Position {
 //    @OneToMany(fetch = FetchType.LAZY,mappedBy = "position")
 //    private List<Employee> employees;
 
+
     public Position() {
+    }
+
+    public Position(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public int getId() {
