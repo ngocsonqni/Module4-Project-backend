@@ -1,6 +1,8 @@
 package com.codegym.service;
 
 import com.codegym.dao.entity.Account;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -12,4 +14,5 @@ public interface AccountService {
     void save(Account account);
 
     Account findAccountByName(String name);
+
 }

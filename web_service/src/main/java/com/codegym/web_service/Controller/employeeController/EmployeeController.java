@@ -1,23 +1,20 @@
 package com.codegym.web_service.Controller.employeeController;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 import com.codegym.dao.entity.*;
 import com.codegym.service.AccountService;
 import com.codegym.service.DepartmentService;
 import com.codegym.service.EmployeeService;
 import com.codegym.service.PositionService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
-public class employeeController {
+public class EmployeeController {
+
     @Autowired
     EmployeeService employeeService;
     @Autowired
@@ -30,10 +27,13 @@ public class employeeController {
     @RequestMapping(value = "/employee/list", method = RequestMethod.GET)
     public ResponseEntity<List<Employee>> listEmployeeAvailable() {
         List<Employee> employeeList= employeeService.findAll();
-        if(employeeList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
+//        if(employeeList.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } else {
+//        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
+//        }
+        return(employeeList.isEmpty()) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
     @GetMapping("employee/list/{id}")
@@ -51,21 +51,14 @@ public class employeeController {
 //        employeeDTO.setPosition(employee.getPosition().getName());
 //        employeeDTO.setDepartment(employee.getDepartment().getName());
 //        employeeDTO.setIdAccount(employee.getIdAccount());
-        if(employee!=null) {
-            return new ResponseEntity<>(employee, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return employee != null ? new ResponseEntity<Employee>(employee, HttpStatus.OK) : new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+
     }
 
     @GetMapping("employee/list/name/{acountName}")
     public ResponseEntity<?> findEmployeeByAccount(@PathVariable String acountName) {
         Employee employee = employeeService.findByAccountName(acountName);
-        if(employee!=null) {
-            return new ResponseEntity<>(employee, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return employee != null ? new ResponseEntity<Employee>(employee, HttpStatus.OK) : new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "employee/list/{id}", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,26 +92,16 @@ public class employeeController {
     @GetMapping("employee/account/name/{accountName}")
     public ResponseEntity<Account> findAccountByName(@PathVariable String accountName) {
         Account account = accountService.findAccountByName(accountName);
-        if(account!=null) {
-            return new ResponseEntity<>(account, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return account != null ? new ResponseEntity<>(account, HttpStatus.OK) : new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
     }
     @GetMapping("employee/position")
     public ResponseEntity<List<Position>> findAllPosition() {
         List<Position> positionList= positionService.findAll();
-        if(positionList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<Position>>(positionList,HttpStatus.OK);
+        return positionList.isEmpty() ? new ResponseEntity<List<Position>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Position>>(positionList, HttpStatus.OK);
     }
     @GetMapping("employee/department")
     public ResponseEntity<List<Department>> findAllDepartment() {
         List<Department> departmentList = departmentService.findAll();
-        if(departmentList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<Department>>(departmentList,HttpStatus.OK);
+        return departmentList.isEmpty() ? new ResponseEntity<List<Department>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Department>>(departmentList, HttpStatus.OK);
     }
 }

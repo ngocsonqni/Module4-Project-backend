@@ -1,6 +1,7 @@
 package com.codegym.dao.entity;
 
 import com.fasterxml.jackson.annotation.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,7 +23,6 @@ public class Account {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    @JsonBackReference
     public Role role;
 
     public Role getRole() {
@@ -32,7 +32,6 @@ public class Account {
     public void setRole(Role role) {
         this.role = role;
     }
-
 
 //    @OneToMany(mappedBy = "account")
 //    @JsonBackReference

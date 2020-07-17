@@ -1,7 +1,4 @@
 package com.codegym.dao.entity;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -34,13 +31,10 @@ public class Employee {
     @Column(name = "email")
     private String email;
 
-
-    //    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position;
 
-    //    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;

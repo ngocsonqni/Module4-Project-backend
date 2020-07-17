@@ -1,7 +1,6 @@
 package com.codegym.dao.entity;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 public class EmployeeDTO {
     private int id;

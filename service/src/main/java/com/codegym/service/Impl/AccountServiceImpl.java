@@ -33,5 +33,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account findAccountByName(String name) {
         return accountRepository.findAccountByDeleteFlagIsFalseAndAccountName(name);
+
     }
 }

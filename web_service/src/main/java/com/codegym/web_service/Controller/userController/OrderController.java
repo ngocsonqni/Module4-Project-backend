@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(value = "*")
 
-public class orderController {
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+
+public class OrderController {
     @Autowired
     private OrderService orderService;
     @Autowired
     private OrderDetailService orderDetailService;
-
     @RequestMapping(value = "/user-order/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Page<Order>> getUserOder(@PathVariable Integer id,@PageableDefault(size = 2) Pageable pageable) {
+    public ResponseEntity<Page<Order>> getUserOder(@PathVariable Integer id,@PageableDefault(size = 5) Pageable pageable) {
         Page<Order> orders = orderService.findAllById_user(id, pageable);
 
         if (orders.getContent().isEmpty()) {
@@ -33,6 +33,17 @@ public class orderController {
             return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
         } else
             return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Order> getOrder(@PathVariable Integer id) {
+        Optional<Order> order = orderService.findById(id);
+
+        if (!order.isPresent()) {
+            System.out.println("Order with id " + id + " not found");
+
+            return new ResponseEntity<>(order.get(), HttpStatus.NOT_FOUND);
+        } else
+            return new ResponseEntity<>(order.get(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/order-detail/{id}", method = RequestMethod.GET)
@@ -44,13 +55,13 @@ public class orderController {
 
     @RequestMapping(value = "/order-cancel/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Order> cancelOrder(@PathVariable Integer id) {
-        Optional<Order> order = orderService.findById(id);
-        if (!order.isPresent()) {
+        Optional<Order> currentOrder = orderService.findById(id);
+        if (!currentOrder.isPresent()) {
             return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
         } else {
-            order.get().setOrderStatus("Đã hủy");
-            orderService.save(order.get());
-            return new ResponseEntity<Order>(order.get(), HttpStatus.OK);
+            currentOrder.get().setOrderStatus("Đã hủy");
+            orderService.save(currentOrder.get());
+            return new ResponseEntity<Order>(currentOrder.get(), HttpStatus.OK);
         }
 
     }
