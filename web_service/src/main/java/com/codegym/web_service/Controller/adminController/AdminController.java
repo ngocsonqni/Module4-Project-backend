@@ -1,57 +1,55 @@
 package com.codegym.web_service.Controller.adminController;
 
+import com.codegym.dao.entity.AccessTimes;
 import com.codegym.dao.entity.Account;
 import com.codegym.dao.entity.Employee;
 import com.codegym.dao.entity.Role;
+import com.codegym.service.AccessTimesService;
 import com.codegym.service.AccountService;
 import com.codegym.service.EmployeeService;
 import com.codegym.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
 public class AdminController {
     @Autowired
-    private RoleService roleService;
+    private com.codegym.service.RuleService ruleService;
+
     @Autowired
-    private AccountService accountService;
-    @Autowired
-    private EmployeeService employeeService;
+    private AccessTimesService accessTimesService;
 
     //------------------------------- list role -------------------------
     @RequestMapping(value = "/role", method = RequestMethod.GET)
     public ResponseEntity<List<Role>> listAllRole() {
         List<Role> roles = roleService.findAllRole();
         if (roles.isEmpty()) {
-            return new ResponseEntity<List<Role>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<Role>>(roles, HttpStatus.OK);
+        return new ResponseEntity<>(roles, HttpStatus.OK);
+
     }
 
-    //--------------------------------- details role ---------------------------
-    @RequestMapping(value = "/role/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Role> getRole(@PathVariable("id") int id) {
-        System.out.println("Fetching Customer with id " + id);
-        Role role = roleService.findRoleById(id);
-        if (role == null) {
-            System.out.println("Customer with id " + id + " not found");
-            return new ResponseEntity<Role>(HttpStatus.NOT_FOUND);
+    //------------------------------- list account -------------------------
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
+    public ResponseEntity<List<Account>> listAllAccountList() {
+        List<Account> accounts = accountService.findAllAccount();
+        if (accounts.isEmpty()) {
+            return new ResponseEntity<List<Account>>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<Role>(role, HttpStatus.OK);
+        return new ResponseEntity<List<Account>>(accounts, HttpStatus.OK);
     }
 
     //---------------------- list account ---------------------------------
@@ -70,7 +68,30 @@ public class AdminController {
 //        if (check) {
 //            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
 //        }
-        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
+        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending()), search);
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
+        String currentTime = sdf.format(date);
+        boolean check = false;
+        List<AccessTimes> accessTimesList = accessTimesService.findAll();
+        InetAddress localhost = InetAddress.getLocalHost();
+        for (int i = 0; i < accessTimesList.size(); i++) {
+            if (accessTimesList.get(i).getIpUser().equals(localhost.getHostAddress())) {
+                if (!accessTimesList.get(i).getDate().toString().equals(currentTime)) {
+                    check = true;
+                }
+            } else {
+                check = true;
+            }
+        }
+        if (accessTimesList.size() == 0) {
+            check = true;
+        }
+        if (check) {
+            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
+        }
+         accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
+
                 , search);
         if (accountPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -98,7 +119,7 @@ public class AdminController {
     }
 
     //--------------------- delete account --------------------------------------------------
-    @RequestMapping(value = "/account/delete/{id}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/account/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Account> deleteAccount(@PathVariable("id") int id) {
         Account currentAccount = accountService.findAccountById(id);
         if (currentAccount == null) {
@@ -132,8 +153,6 @@ public class AdminController {
         if (employee == null) {
             return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+        return new ResponseEntity<Rule>(rule1, HttpStatus.OK);
     }
-
-
 }

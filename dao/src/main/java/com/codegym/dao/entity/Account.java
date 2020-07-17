@@ -1,23 +1,26 @@
 package com.codegym.dao.entity;
 
-import com.fasterxml.jackson.annotation.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "account")
 public class Account {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
-    int accountId;
+//    private static final long serialVersionUID = 1L;
 
-    @Column(name = "account_name")
-    String accountName;
-    @Column(name = "account_password")
-    String accountPassword;
+    @Id
+    @Column(name = "account_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int accountId;
+
+    @Column(name = "account_name", nullable = false, unique = true)
+    private String accountName;
+
+    @Column(name = "account_password", nullable = false)
+    private String accountPassword;
     @Column(name = "delete_flag")
     boolean deleteFlag;
 
@@ -33,18 +36,18 @@ public class Account {
         this.role = role;
     }
 
-
-    @OneToMany(mappedBy = "account")
-    @JsonManagedReference
-    public List<Employee> employees;
+//    @OneToMany(mappedBy = "account")
+//    @JsonBackReference
+//    public List<Employee> employees;
 
     public Account() {
     }
 
-    public Account(String accountName, String accountPassword, boolean deleteFlag) {
+    public Account(String accountName, String accountPassword, boolean deleteFlag, Role role) {
         this.accountName = accountName;
         this.accountPassword = accountPassword;
         this.deleteFlag = deleteFlag;
+        this.role = role;
     }
 
     public int getAccountId() {
@@ -71,6 +74,7 @@ public class Account {
         this.accountPassword = accountPassword;
     }
 
+
     public boolean getDeleteFlag() {
         return deleteFlag;
     }
@@ -78,4 +82,13 @@ public class Account {
     public void setDeleteFlag(boolean deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
+
