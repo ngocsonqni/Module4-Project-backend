@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "access_times")
-public class AccessTimes {
+public class AccessTimes{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -48,4 +48,5 @@ public class AccessTimes {
     public void setIpUser(String ipUser) {
         this.ipUser = ipUser;
     }
+
 }
