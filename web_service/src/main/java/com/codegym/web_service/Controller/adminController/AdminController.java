@@ -80,8 +80,7 @@ public class AdminController {
 //        if (check) {
 //            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
 //        }
-        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
-                , search);
+        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending()), search);
         if (accountPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
