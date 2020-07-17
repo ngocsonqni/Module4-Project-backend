@@ -1,5 +1,6 @@
 package com.codegym.service.Impl;
 
+import com.codegym.dao.DTO.AccountDTO;
 import com.codegym.dao.entity.Account;
 import com.codegym.dao.entity.Role;
 import com.codegym.dao.repository.AccountRepository;
@@ -10,9 +11,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
+
 import com.codegym.service.AccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +23,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
-public class AccountServiceImpl implements UserDetailsService {
+public class AccountServiceImpl implements UserDetailsService, AccountService {
     @Autowired
     AccountRepository accountRepository;
 
@@ -32,13 +35,24 @@ public class AccountServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Không thể tìm thấy tên đăng nhập: " + accountName);
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        Role role = account.getRoles();
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        Role role = account.getRole();
+        grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         return new org.springframework.security.core.userdetails.User(
                 account.getAccountName(),
                 account.getAccountPassword(),
                 grantedAuthorities);
     }
+
+    @Override
+    public UserDetails loadAccountByAccountName(String accountName) {
+        return null;
+    }
+
+    @Override
+    public List<AccountDTO> findAll() {
+        return null;
+    }
+
     @Override
     public List<Account> findAllAccount() {
         return accountRepository.findAllByDeleteFlagIsFalse();

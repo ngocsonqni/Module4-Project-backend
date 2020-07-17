@@ -1,31 +1,37 @@
 package com.codegym.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name="role")
+@Table(name = "role")
 public class Role {
 //    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idRole;
+    private int roleId;
 
     @Column(name = "role_name")
     private String roleName;
 
-    @OneToMany(mappedBy = "roles")
-    private Set<Account> accounts;
+//    @OneToMany(mappedBy = "role")
+//    @JsonBackReference
+//    private Set<Account> accounts;
 
-    public int getIdRole() {
-        return idRole;
+    public Role() {
     }
 
-    public void setIdRole(int idRole) {
-        this.idRole = idRole;
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     public String getRoleName() {
@@ -35,14 +41,12 @@ public class Role {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
-    public Set<Account> getAccounts() {
-        return accounts;
-    }
 
-    public void setUsers(Set<Account> accounts) {
-        this.accounts = accounts;
-    }
-
-    public Role() {
-    }
+//    public Set<Account> getAccounts() {
+//        return accounts;
+//    }
+//
+//    public void setAccounts(Set<Account> accounts) {
+//        this.accounts = accounts;
+//    }
 }

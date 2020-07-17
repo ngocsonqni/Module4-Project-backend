@@ -15,4 +15,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Account findAccountByAccountIdAndDeleteFlagIsFalse(int id);
 
     Page<Account> findAllByAccountNameContainingAndDeleteFlagIsFalse(String userName, Pageable pageable);
+
+    Account findAllByAccountName(String name);
 }

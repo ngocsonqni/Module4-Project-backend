@@ -1,48 +1,50 @@
 package com.codegym.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name="account")
+@Table(name = "account")
 public class Account {
 //    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "account_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idAccount;
+    private int accountId;
 
     @Column(name = "account_name", nullable = false, unique = true)
     private String accountName;
 
     @Column(name = "account_password", nullable = false)
     private String accountPassword;
-
+    @Column(name = "delete_flag")
+    boolean deleteFlag;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private Role roles;
-
-
-    public Role getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Role roles) {
-        this.roles = roles;
-    }
+//    @JsonManagedReference
+    private Role role;
 
     public Account() {
     }
 
-    public int getIdAccount() {
-        return idAccount;
+    public Account(String accountName, String accountPassword, boolean deleteFlag, Role role) {
+        this.accountName = accountName;
+        this.accountPassword = accountPassword;
+        this.deleteFlag = deleteFlag;
+        this.role = role;
     }
 
-    public void setIdAccount(int idAccount) {
-        this.idAccount = idAccount;
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public String getAccountName() {
@@ -59,6 +61,23 @@ public class Account {
 
     public void setAccountPassword(String accountPassword) {
         this.accountPassword = accountPassword;
+    }
+
+
+    public boolean getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
 

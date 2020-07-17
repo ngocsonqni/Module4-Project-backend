@@ -1,5 +1,6 @@
 package com.codegym.dao.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -18,12 +19,15 @@ public class TypeOfDistributor {
         this.id = id;
         this.name = name;
     }
+
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }

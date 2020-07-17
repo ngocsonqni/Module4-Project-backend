@@ -75,6 +75,18 @@ public class AdminController {
     public ResponseEntity<Page<Account>> listAllAccount(@RequestParam("page") int page,
                                                         @RequestParam("size") int size,
                                                         @RequestParam("search") String search) throws UnknownHostException {
+//        boolean check = false;
+//        List<AccessTimes> accessTimesList = accessTimesService.findAll();
+//        InetAddress localhost = InetAddress.getLocalHost();
+//        for (int i = 0; i < accessTimesList.size(); i++) {
+//            if (accessTimesList.get(i).toString().equals(localhost.getHostAddress().trim())) {
+//                check = true;
+//            }
+//        }
+//        if (check) {
+//            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
+//        }
+        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending()), search);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
         String currentTime = sdf.format(date);
@@ -99,7 +111,6 @@ public class AdminController {
         Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
 
                 , search);
-
         if (accountPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
