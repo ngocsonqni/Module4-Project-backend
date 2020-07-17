@@ -67,6 +67,14 @@ class UserController {
         }
 
         currentUser.setId(user.getId());
+        currentUser.setUserName(user.getUserName());
+        currentUser.setBirthday(user.getBirthday());
+        currentUser.setGender(user.getGender());
+        currentUser.setAddress(user.getAddress());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setPhone(user.getPhone());
+        currentUser.setImageUrl(user.getImageUrl());
+
         userService.save(currentUser);
         return new ResponseEntity<User>(currentUser, HttpStatus.OK);
     }
