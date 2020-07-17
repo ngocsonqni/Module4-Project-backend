@@ -20,6 +20,17 @@ public class Brand {
     @Column(name = "delete_flag")
     private boolean deleteFlag;
 
+    public Brand() {
+    }
+
+    public Brand(String brandLogo, String brandName, String brandAddress, String brandWebsite) {
+        this.brandLogo = brandLogo;
+        this.brandName = brandName;
+        this.brandAddress = brandAddress;
+        this.brandWebsite = brandWebsite;
+        this.deleteFlag = false;
+    }
+
     public int getId() {
         return id;
     }
