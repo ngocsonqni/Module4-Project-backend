@@ -9,7 +9,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
-    private Long id;
+    private int id;
     @Column(name = "user_name")
     private String userName;
     @Column(name = "birthday")
@@ -37,11 +37,11 @@ public class User {
     public User() {
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -91,10 +91,6 @@ public class User {
 
     public void setAccount(Account account) {
         this.account = account;
-    }
-
-    public boolean isDeleteFlag() {
-        return deleteFlag;
     }
 
 //    public Set<Order> getOrderList() {
