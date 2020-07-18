@@ -33,9 +33,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Page<Brand> findAllByBrandNameContaining(Pageable pageable, String search) {
-        return brandRepository.findAllByBrandNameContaining(pageable, search);
-
+    public Page<Brand> findAllByBrandNameContainingAndDeleteFlagFalse(Pageable pageable, String search) {
+        return brandRepository.findAllByBrandNameContainingAndDeleteFlagFalse(pageable, search);
     }
 
 }
