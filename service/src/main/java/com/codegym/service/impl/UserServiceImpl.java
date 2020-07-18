@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.entity.User;
 import com.codegym.dao.repository.UserRepository;
