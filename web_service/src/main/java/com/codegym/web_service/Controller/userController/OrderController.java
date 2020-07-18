@@ -25,7 +25,7 @@ public class OrderController {
     private OrderDetailService orderDetailService;
 
     @RequestMapping(value = "/user-order/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Page<Order>> getUserOder(@PathVariable Integer id, @PageableDefault(size = 2) Pageable pageable) {
+    public ResponseEntity<Page<Order>> getUserOder(@PathVariable Integer id, Pageable pageable) {
         Page<Order> orders = orderService.findAllById_user(id, pageable);
         if (orders.getContent().isEmpty()) {
             System.out.println("Order with id " + id + " not found");
