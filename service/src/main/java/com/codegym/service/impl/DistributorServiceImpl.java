@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.entity.Distributor;
 import com.codegym.dao.repository.DistributorRepository;
