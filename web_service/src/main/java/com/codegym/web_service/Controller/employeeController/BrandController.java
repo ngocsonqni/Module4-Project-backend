@@ -31,7 +31,7 @@ public class BrandController {
                                                     @RequestParam("size") int size,
                                                     @RequestParam("search") String search
     ) {
-        Page<Brand> brandPage = brandService.findAllByBrandNameContaining(PageRequest.of(page, size), search);
+        Page<Brand> brandPage = brandService.findAllByBrandNameContainingAndDeleteFlagFalse(PageRequest.of(page, size), search);
         if (brandPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
