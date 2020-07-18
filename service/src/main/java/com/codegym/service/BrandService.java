@@ -9,7 +9,6 @@ import java.util.List;
 public interface BrandService {
     List<Brand> getAllBrand();
     boolean createBrand(Brand brand);
-
-    Page<Brand> findAllByBrandNameContaining(Pageable pageable, String search);
+    Page<Brand> findAllByBrandNameContainingAndDeleteFlagFalse(Pageable pageable, String search);
 
 }
