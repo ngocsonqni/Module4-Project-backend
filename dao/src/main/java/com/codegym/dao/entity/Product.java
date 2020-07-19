@@ -20,7 +20,7 @@ public class Product {
     private Double price;
 
     @Column(name="expiry_date")
-    private String expiryDate;
+    private Date expiryDate;
 
     @Column(name="quantity")
     private Integer quantity;
@@ -72,11 +72,11 @@ public class Product {
         this.price = price;
     }
 
-    public String getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 
