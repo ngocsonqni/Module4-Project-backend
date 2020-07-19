@@ -108,7 +108,7 @@ public class AdminController {
         if (check) {
             accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
         }
-        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
+        accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
 
                 , search);
         if (accountPage.isEmpty()) {

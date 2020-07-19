@@ -10,21 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 5fcf850802259f604d5893956cd1e663f9566198
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
     private BrandRepository brandRepository;
 
     @Override
-<<<<<<< HEAD
     public List<Brand> getAllBrand() {
-=======
-    public List<Brand> getAllBrand( ) {
->>>>>>> 5fcf850802259f604d5893956cd1e663f9566198
         return brandRepository.findAllByDeleteFlagFalse();
     }
 
@@ -41,12 +33,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-<<<<<<< HEAD
-    public Page<Brand> findAllByNameContaining(Pageable pageable, String search) {
-        return brandRepository.findAllByBrandNameContaining(pageable, search);
-=======
     public Page<Brand> findAllByBrandNameContaining(Pageable pageable, String search) {
         return brandRepository.findAllByBrandNameContaining(pageable,search);
->>>>>>> 5fcf850802259f604d5893956cd1e663f9566198
     }
 }

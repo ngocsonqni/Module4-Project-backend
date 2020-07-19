@@ -1,6 +1,7 @@
 package com.codegym.service.Impl;
 
 import com.codegym.dao.entity.AccessTimes;
+import com.codegym.dao.repository.AccessTimesRepository;
 import com.codegym.service.AccessTimesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
