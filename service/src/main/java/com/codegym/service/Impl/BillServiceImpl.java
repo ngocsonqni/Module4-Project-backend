@@ -1,6 +1,7 @@
 package com.codegym.service.Impl;
 
 import com.codegym.dao.entity.Bill;
+import com.codegym.dao.entity.Brand;
 import com.codegym.dao.repository.BillRepository;
 import com.codegym.dao.repository.WareHouseRepository;
 import com.codegym.service.BillService;
@@ -31,6 +32,18 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public void remove(Bill bill) {
-        bill.setDeletaFlag(true);
+        bill.setDeleteFlag(true);
+    }
+
+    @Override
+    public boolean createBill(Bill bill) {
+        List<Bill> billList = billRepository.findAllByDeleteFlagFalse();
+        for (Bill bill1 : billList) {
+            if (bill.getBillName().equals(bill1.getBillName())) {
+                return false;
+            }
+        }
+        billRepository.save(bill);
+        return true;
     }
 }
