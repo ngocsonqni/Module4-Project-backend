@@ -1,26 +1,33 @@
 package com.codegym.web_service.Controller.adminController;
 
+import com.codegym.dao.entity.AccessTimes;
 import com.codegym.dao.entity.Account;
 import com.codegym.dao.entity.Employee;
 import com.codegym.dao.entity.Role;
+import com.codegym.service.AccessTimesService;
 import com.codegym.service.AccountService;
 import com.codegym.service.EmployeeService;
 import com.codegym.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -33,15 +40,17 @@ public class AdminController {
     private EmployeeService employeeService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AccessTimesService accessTimesService;
 
     //------------------------------- list role -------------------------
     @RequestMapping(value = "/role", method = RequestMethod.GET)
     public ResponseEntity<List<Role>> listAllRole() {
         List<Role> roles = roleService.findAllRole();
         if (roles.isEmpty()) {
-            return new ResponseEntity<List<Role>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<Role>>(roles, HttpStatus.OK);
+        return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
     //--------------------------------- details role ---------------------------
@@ -51,9 +60,9 @@ public class AdminController {
         Role role = roleService.findRoleById(id);
         if (role == null) {
             System.out.println("Customer with id " + id + " not found");
-            return new ResponseEntity<Role>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Role>(role, HttpStatus.OK);
+        return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
     //------------------------------- list account -------------------------
@@ -82,8 +91,32 @@ public class AdminController {
 //        if (check) {
 //            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
 //        }
-        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending()), search);
-        if (accountPage.isEmpty()) {
+        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
+                , search);
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
+        String currentTime = sdf.format(date);
+        boolean check = false;
+        List<AccessTimes> accessTimesList = accessTimesService.findAll();
+        InetAddress localhost = InetAddress.getLocalHost();
+//        for (int i = 0; i < accessTimesList.size(); i++) {
+//            if (accessTimesList.get(i).getIpUser().equals(localhost.getHostAddress().trim())) {
+//                if (!accessTimesList.get(i).getDate().toString().equals(currentTime)) {
+//                    check = true;
+//                }
+//            } else {
+//                check = true;
+//            }
+//        }
+        if (accessTimesList.size() == 0) {
+            check = true;
+        }
+        if (check) {
+            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
+        }
+        accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
+                , search);
+        if (accountPage == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(accountPage, HttpStatus.OK);
@@ -145,6 +178,4 @@ public class AdminController {
         }
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
-
-
 }

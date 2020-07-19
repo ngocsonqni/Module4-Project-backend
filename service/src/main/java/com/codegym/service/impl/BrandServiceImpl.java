@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.entity.Brand;
 import com.codegym.dao.repository.BrandRepository;
@@ -10,14 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
     private BrandRepository brandRepository;
 
     @Override
-    public List<Brand> getAllBrand( ) {
+    public List<Brand> getAllBrand() {
         return brandRepository.findAllByDeleteFlagFalse();
     }
 
@@ -34,7 +33,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Page<Brand> findAllByBrandNameContaining(Pageable pageable, String search) {
-        return brandRepository.findAllByBrandNameContaining(pageable,search);
+    public Page<Brand> findAllByBrandNameContainingAndDeleteFlagFalse(Pageable pageable, String search) {
+        return brandRepository.findAllByBrandNameContainingAndDeleteFlagFalse(pageable, search);
     }
+
 }

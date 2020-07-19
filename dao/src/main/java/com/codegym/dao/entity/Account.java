@@ -26,8 +26,19 @@ public class Account {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-//    @JsonManagedReference
-    private Role role;
+    public Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+//    @OneToMany(mappedBy = "account")
+//    @JsonBackReference
+//    public List<Employee> employees;
 
     public Account() {
     }
@@ -72,12 +83,5 @@ public class Account {
         this.deleteFlag = deleteFlag;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }
 

@@ -1,13 +1,13 @@
 package com.codegym.dao.entity;
+import java.time.LocalDate;
 
-import java.time.LocalDateTime;
 
 public class EmployeeDTO {
     private int id;
     private String image;
     private String name;
     private String gender;
-    private LocalDateTime birthday;
+    private LocalDate birthday;
     private String address;
     private String phoneNumber;
     private String email;
@@ -18,7 +18,7 @@ public class EmployeeDTO {
     public EmployeeDTO() {
     }
 
-    public EmployeeDTO(int id, String image, String name, String gender, LocalDateTime birthday, String address,
+    public EmployeeDTO(int id, String image, String name, String gender, LocalDate birthday, String address,
                        String phoneNumber, String email, String position, String department, String idAccount) {
         this.id = id;
         this.image = image;
@@ -65,11 +65,11 @@ public class EmployeeDTO {
         this.gender = gender;
     }
 
-    public LocalDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
