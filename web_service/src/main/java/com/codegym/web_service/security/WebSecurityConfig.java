@@ -57,11 +57,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll().and().
                 authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')").and().
 //                authorizeRequests().antMatchers("/admin").access("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')").and().
-                authorizeRequests().antMatchers("/member").access("hasRole('ROLE_MEMBER')").and().
+        authorizeRequests().antMatchers("/member").access("hasRole('ROLE_MEMBER')").and().
                 authorizeRequests().antMatchers("/warehouse").access("hasRole('ROLE_WAREHOUSE')").and().
                 authorizeRequests().antMatchers("/partner").access("hasRole('ROLE_PARTNER')").
 //                and().authorizeRequests().antMatchers("/user").access("hasRole('ROLE_USER')").
-                anyRequest().authenticated()
+        anyRequest().authenticated()
                 .and().cors();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

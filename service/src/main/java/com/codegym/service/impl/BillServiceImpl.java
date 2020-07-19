@@ -1,9 +1,8 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.entity.Bill;
 import com.codegym.dao.entity.Brand;
 import com.codegym.dao.repository.BillRepository;
-import com.codegym.dao.repository.WareHouseRepository;
 import com.codegym.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

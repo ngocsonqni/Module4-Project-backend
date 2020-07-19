@@ -95,4 +95,16 @@ class UserController {
         userService.remove(id);
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
+    //-------------------Retrieve Single Customer--------------------------------------------------------
+
+    @RequestMapping(value = "/customer-account/{accountName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getCustomerByAccount(@PathVariable("accountName") String accountName) {
+        System.out.println("Fetching Customer with accountName " + accountName);
+        User user = userService.findUserByAccountName(accountName);
+        if (user == null) {
+            System.out.println("Customer with accountName " + accountName + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
 }
