@@ -37,4 +37,19 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.findAllByBrandNameContainingAndDeleteFlagFalse(pageable, search);
     }
 
+    @Override
+    public Brand findById(Integer id) {
+        return brandRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void save(Brand brand) {
+        brandRepository.save(brand);
+    }
+
+    @Override
+    public void delete(Brand brand) {
+        brand.setDeleteFlag(true);
+    }
+
 }
