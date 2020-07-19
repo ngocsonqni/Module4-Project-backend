@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.entity.Brand;
 import com.codegym.dao.repository.BrandRepository;
@@ -33,7 +33,23 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Page<Brand> findAllByBrandNameContaining(Pageable pageable, String search) {
-        return brandRepository.findAllByBrandNameContaining(pageable,search);
+    public Page<Brand> findAllByBrandNameContainingAndDeleteFlagFalse(Pageable pageable, String search) {
+        return brandRepository.findAllByBrandNameContainingAndDeleteFlagFalse(pageable, search);
     }
+
+    @Override
+    public Brand findById(Integer id) {
+        return brandRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void save(Brand brand) {
+        brandRepository.save(brand);
+    }
+
+    @Override
+    public void delete(Brand brand) {
+        brand.setDeleteFlag(true);
+    }
+
 }
