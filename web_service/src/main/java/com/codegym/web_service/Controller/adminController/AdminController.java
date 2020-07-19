@@ -14,12 +14,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -31,6 +31,8 @@ public class AdminController {
     private AccountService accountService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //------------------------------- list role -------------------------
     @RequestMapping(value = "/role", method = RequestMethod.GET)
@@ -127,7 +129,7 @@ public class AdminController {
         }
         currentAccount.setAccountId(account.getAccountId());
         currentAccount.setAccountName(account.getAccountName());
-        currentAccount.setAccountPassword(account.getAccountPassword());
+        currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
         currentAccount.setRole(account.getRole());
         currentAccount.setDeleteFlag(account.getDeleteFlag());
         accountService.save(currentAccount);
