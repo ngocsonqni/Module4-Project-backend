@@ -149,12 +149,19 @@ public class BillController {
 
     //-------------------Create a Bill--------------------------------------------------------
 
-    @PostMapping("/bills/create-bill")
-    public ResponseEntity<Bill> createBill(@RequestBody Bill bill) {
+//    @PostMapping("/bills/create-bill")
+//    public ResponseEntity<Bill> createBill(@RequestBody Bill bill) {
+//        billService.save(bill);
+////        HttpHeaders headers = new HttpHeaders();
+////        headers.setLocation(ucBuilder.path("/bill/{id}").buildAndExpand(bill.getId()).toUri());
+//        return new ResponseEntity<Bill>(HttpStatus.OK);
+//    }
+    @RequestMapping(value = "/bills/create-bill", method = RequestMethod.POST)
+    public ResponseEntity<Void> createBill(@RequestBody Bill bill, UriComponentsBuilder uriComponentsBuilder) {
         billService.save(bill);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setLocation(ucBuilder.path("/bill/{id}").buildAndExpand(bill.getId()).toUri());
-        return new ResponseEntity<Bill>(HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(uriComponentsBuilder.buildAndExpand(bill.getId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     //-------------------Retrieve Single Bill--------------------------------------------------------

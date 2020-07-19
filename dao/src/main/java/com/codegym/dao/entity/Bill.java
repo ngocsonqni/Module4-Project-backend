@@ -8,7 +8,7 @@ import java.sql.Date;
 @Table(name = "bill")
 public class Bill {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id_bill")
     private Integer id;
 
@@ -30,31 +30,31 @@ public class Bill {
     @Column(name = "payment_status")
     private String paymentStatus;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_type_bill")
     private TypeBill idTypeBill;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_storage_location")
     private StorageLocation idStorageLocation;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_ware_house")
     private WareHouse idWareHouse;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_transportation")
     private Transportation idTransportation;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_pay")
     private Pay idPay;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_distributor")
     private Distributor idDistributor;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_employee")
     private Employee idEmployee;
 
