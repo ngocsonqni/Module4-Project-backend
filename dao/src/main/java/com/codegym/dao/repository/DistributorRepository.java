@@ -10,9 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface DistributorRepository extends JpaRepository<Distributor,Integer> {
+public interface DistributorRepository extends JpaRepository<Distributor, Integer> {
 
-    Page<Distributor> findAllByNameContainingAndDeleted(Pageable pageable,String name, boolean deleted);
+    Page<Distributor> findAllByNameContainingAndDeleted(Pageable pageable, String name, boolean deleted);
+
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("update Distributor u set u.deleted = ?1 where u.id = ?2")
