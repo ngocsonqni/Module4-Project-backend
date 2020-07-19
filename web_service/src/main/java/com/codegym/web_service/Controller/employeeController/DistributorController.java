@@ -20,6 +20,7 @@ public class DistributorController {
     private TypeOfDistributorService typeOfDistributorService;
     @Autowired
     private DistributorService distributorService;
+
     @GetMapping("/distributor/{id}")
     public ResponseEntity<Distributor> findByID(@PathVariable Integer id) {
         System.out.println(id);
@@ -29,14 +30,17 @@ public class DistributorController {
         }
         return new ResponseEntity<Distributor>(distributor, HttpStatus.OK);
     }
+
     @PostMapping("/distributor")
     public void save(@RequestBody Distributor distributor) {
         this.distributorService.save(distributor);
     }
+
     @GetMapping("/type_distributor/{name}")
     public TypeOfDistributor findByName(@PathVariable String name) {
         return this.typeOfDistributorService.findByName(name);
     }
+
     //Show List
 //    @GetMapping("/distributor/list")
 //    public ResponseEntity<List<Distributor>> listDistributors(){
@@ -48,19 +52,20 @@ public class DistributorController {
 //    }
     //Create distributor
     @PostMapping("/distributor/create")
-    public ResponseEntity<Distributor> createDistributor(@RequestBody Distributor distributor){
+    public ResponseEntity<Distributor> createDistributor(@RequestBody Distributor distributor) {
         distributorService.save(distributor);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
     //Show list ,paging and sorting
     @GetMapping(value = "/distributor/list", params = {"page", "size", "search"})
     public ResponseEntity<Page<Distributor>> getAll(@RequestParam("page") int page,
                                                     @RequestParam("size") int size,
-                                                    @RequestParam("search") String search){
-        Page<Distributor> distributorPage = distributorService.pageFindAllSearchName(PageRequest.of(page,size),search);
-        if (distributorPage.isEmpty()){
+                                                    @RequestParam("search") String search) {
+        Page<Distributor> distributorPage = distributorService.pageFindAllSearchName(PageRequest.of(page, size), search);
+        if (distributorPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(distributorPage,HttpStatus.OK);
+        return new ResponseEntity<>(distributorPage, HttpStatus.OK);
     }
 }

@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.entity.User;
 import com.codegym.dao.repository.UserRepository;
@@ -21,6 +21,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findGetId(int id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public User findUserByAccountName(String accountName) {
+        return userRepository.findByAccount_AccountName(accountName);
     }
 
     @Override

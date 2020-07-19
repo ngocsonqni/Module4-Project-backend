@@ -30,7 +30,6 @@ public class Order {
 
     public Order() {
     }
-    ;
 
     public Order(int order_id, LocalDateTime order_date, String order_status, String order_address, double total_money, User id_user) {
         this.orderId = order_id;

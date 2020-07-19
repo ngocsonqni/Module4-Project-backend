@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.entity.TypeBill;
 import com.codegym.dao.repository.TypeBillRepository;
