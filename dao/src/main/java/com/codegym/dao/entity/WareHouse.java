@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "ware_house")
 public class WareHouse {
     @javax.persistence.Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id_ware_house")
     private Integer id;
     @Column(name = "name_ware_house")
