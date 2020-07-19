@@ -67,7 +67,7 @@ public class EmployeeController {
         if(employee1 == null) {
             return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
         }
-//        employee1.setImage(employee.getImage());
+        employee1.setImage(employeeDTO.getImage());
         employee1.setName(employeeDTO.getName());
         employee1.setGender(employeeDTO.getGender());
         employee1.setBirthday(employeeDTO.getBirthday());
