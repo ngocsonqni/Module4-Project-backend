@@ -80,43 +80,36 @@ public class AdminController {
     public ResponseEntity<Page<Account>> listAllAccount(@RequestParam("page") int page,
                                                         @RequestParam("size") int size,
                                                         @RequestParam("search") String search) throws UnknownHostException {
-//        boolean check = false;
-//        List<AccessTimes> accessTimesList = accessTimesService.findAll();
-//        InetAddress localhost = InetAddress.getLocalHost();
-//        for (int i = 0; i < accessTimesList.size(); i++) {
-//            if (accessTimesList.get(i).toString().equals(localhost.getHostAddress().trim())) {
-//                check = true;
-//            }
-//        }
-//        if (check) {
-//            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
-//        }
-        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
-                , search);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
         String currentTime = sdf.format(date);
         boolean check = false;
         List<AccessTimes> accessTimesList = accessTimesService.findAll();
+        int sizeAccessTimesList = accessTimesList.size();
         InetAddress localhost = InetAddress.getLocalHost();
-//        for (int i = 0; i < accessTimesList.size(); i++) {
-//            if (accessTimesList.get(i).getIpUser().equals(localhost.getHostAddress().trim())) {
-//                if (!accessTimesList.get(i).getDate().toString().equals(currentTime)) {
-//                    check = true;
-//                }
-//            } else {
-//                check = true;
-//            }
-//        }
-        if (accessTimesList.size() == 0) {
+        for (int i = 0; i < sizeAccessTimesList; i++) {
+            if (accessTimesList.get(i).getDate().toString().equals(currentTime)) {
+                if (!accessTimesList.get(i).getIpUser().equals(localhost.getHostAddress())) {
+                    check = true;
+                    break;
+                }
+            } else {
+                if (!accessTimesList.get(sizeAccessTimesList - 1).getDate().toString().equals(currentTime)) {
+                    check = true;
+                    break;
+                }
+            }
+        }
+        if (sizeAccessTimesList == 0) {
             check = true;
         }
         if (check) {
             accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
         }
-        accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
+        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
                 , search);
-        if (accountPage == null) {
+
+        if (accountPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(accountPage, HttpStatus.OK);
