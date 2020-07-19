@@ -44,6 +44,7 @@ public class ProductController {
             return new ResponseEntity<Page<Product>>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<Page<Product>>(products, HttpStatus.OK);
+
     }
 
     //    @RequestMapping(value = "/product/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
