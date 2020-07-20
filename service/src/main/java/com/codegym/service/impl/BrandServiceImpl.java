@@ -50,4 +50,8 @@ public class BrandServiceImpl implements BrandService {
         brand.setDeleteFlag(true);
     }
 
+    @Override
+    public List<Brand> findAll() {
+        return brandRepository.findAll();
+    }
 }
