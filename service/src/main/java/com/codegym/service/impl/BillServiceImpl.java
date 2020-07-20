@@ -1,6 +1,7 @@
 package com.codegym.service.impl;
 
 import com.codegym.dao.entity.Bill;
+import com.codegym.dao.entity.Brand;
 import com.codegym.dao.repository.BillRepository;
 import com.codegym.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,18 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public void remove(Bill bill) {
-        bill.setDeletaFlag(true);
+        bill.setDeleteFlag(true);
+    }
+
+    @Override
+    public boolean createBill(Bill bill) {
+        List<Bill> billList = billRepository.findAllByDeleteFlagFalse();
+        for (Bill bill1 : billList) {
+            if (bill.getBillName().equals(bill1.getBillName())) {
+                return false;
+            }
+        }
+        billRepository.save(bill);
+        return true;
     }
 }

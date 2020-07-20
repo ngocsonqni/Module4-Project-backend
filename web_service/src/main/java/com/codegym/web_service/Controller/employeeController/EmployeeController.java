@@ -6,7 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
 import com.codegym.dao.entity.*;
 import com.codegym.service.AccountService;
 import com.codegym.service.DepartmentService;
@@ -30,20 +32,20 @@ public class EmployeeController {
     //return list of employee
     @RequestMapping(value = "/employee/list", method = RequestMethod.GET)
     public ResponseEntity<List<Employee>> listEmployeeAvailable() {
-        List<Employee> employeeList= employeeService.findAll();
+        List<Employee> employeeList = employeeService.findAll();
 //        if(employeeList.isEmpty()) {
 //            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 //        } else {
 //        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
 //        }
-        return(employeeList.isEmpty()) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+        return (employeeList.isEmpty()) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
     //return an employee using id
     @GetMapping("employee/list/{id}")
     public ResponseEntity<?> findAvailableEmployee(@PathVariable int id) {
-        Employee employee=employeeService.findById(id);
+        Employee employee = employeeService.findById(id);
 //        EmployeeDTO employeeDTO = new EmployeeDTO();
 //        employeeDTO.setId(employee.getId());
 //        employeeDTO.setImage(employee.getImage());
@@ -71,7 +73,7 @@ public class EmployeeController {
     @RequestMapping(value = "employee/list/{id}", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> editEmployee(@PathVariable("id") int id, @RequestBody EmployeeDTO employeeDTO) {
         Employee employee1 = employeeService.findById(id);
-        if(employee1 == null) {
+        if (employee1 == null) {
             return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
         }
         employee1.setImage(employeeDTO.getImage());
@@ -91,7 +93,7 @@ public class EmployeeController {
     @RequestMapping(value = "employee/account/name/{accountName}", method = RequestMethod.PATCH)
     public ResponseEntity<Account> editPassWordAccount(@PathVariable("accountName") String accountName, @RequestBody Account account) {
         Account account1 = accountService.findAccountByName(accountName);
-        if(account1 == null) {
+        if (account1 == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         account1.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
@@ -109,7 +111,7 @@ public class EmployeeController {
     //return the list of position
     @GetMapping("employee/position")
     public ResponseEntity<List<Position>> findAllPosition() {
-        List<Position> positionList= positionService.findAll();
+        List<Position> positionList = positionService.findAll();
         return positionList.isEmpty() ? new ResponseEntity<List<Position>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Position>>(positionList, HttpStatus.OK);
     }
 

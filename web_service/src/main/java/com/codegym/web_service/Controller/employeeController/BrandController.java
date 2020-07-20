@@ -47,5 +47,42 @@ public class BrandController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //-------------------Retrieve Single Brand--------------------------------------------------------
+    @GetMapping("/brand/{id}")
+    public ResponseEntity<Brand> getBrand(@PathVariable Integer id) {
+        Brand brand = brandService.findById(id);
+        if (brand == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(brand, HttpStatus.OK);
+    }
+
+    //-------------------Update a Brand--------------------------------------------------------
+    @PutMapping("brand/{id}")
+    public ResponseEntity<Brand> updateBrand(@PathVariable Integer id, @RequestBody Brand brand) {
+        Brand currentBrand = brandService.findById(id);
+        if (currentBrand == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        currentBrand.setBrandLogo(brand.getBrandLogo());
+        currentBrand.setBrandName(brand.getBrandName());
+        currentBrand.setBrandAddress(brand.getBrandAddress());
+        currentBrand.setBrandWebsite(brand.getBrandWebsite());
+        brandService.save(currentBrand);
+        return new ResponseEntity<>(currentBrand, HttpStatus.OK);
+    }
+
+    //-------------------Delete a Brand--------------------------------------------------------
+    @PatchMapping("brand/delete/{id}")
+    public ResponseEntity<Brand> deleteBrand(@PathVariable Integer id) {
+        Brand currentBrand = brandService.findById(id);
+        if (currentBrand == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        brandService.delete(currentBrand);
+        brandService.save(currentBrand);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
 
