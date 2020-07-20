@@ -11,7 +11,6 @@ import com.codegym.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,9 +24,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -56,10 +53,8 @@ public class AdminController {
     //--------------------------------- details role ---------------------------
     @RequestMapping(value = "/role/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Role> getRole(@PathVariable("id") int id) {
-        System.out.println("Fetching Customer with id " + id);
         Role role = roleService.findRoleById(id);
         if (role == null) {
-            System.out.println("Customer with id " + id + " not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(role, HttpStatus.OK);
@@ -153,12 +148,15 @@ public class AdminController {
         if (currentAccount == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
-        currentAccount.setAccountId(account.getAccountId());
-        currentAccount.setAccountName(account.getAccountName());
-        currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
-        currentAccount.setRole(account.getRole());
-        currentAccount.setDeleteFlag(account.getDeleteFlag());
-        accountService.save(currentAccount);
+        try {
+            currentAccount.setAccountId(account.getAccountId());
+            currentAccount.setAccountName(account.getAccountName());
+            currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+            currentAccount.setRole(account.getRole());
+            currentAccount.setDeleteFlag(account.getDeleteFlag());
+            accountService.save(currentAccount);
+        } catch (Exception e) {
+        }
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
 
