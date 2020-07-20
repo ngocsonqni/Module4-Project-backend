@@ -25,7 +25,7 @@ public class Distributor {
     String img;
     boolean deleted;
     @ManyToOne(targetEntity = TypeOfDistributor.class)
-    @JoinColumn(name = "type_of_distributor")
+    @JoinColumn(name = "type_of_distributor_id")
     TypeOfDistributor typeOfDistributor;
 
     public Distributor(boolean deleted) {

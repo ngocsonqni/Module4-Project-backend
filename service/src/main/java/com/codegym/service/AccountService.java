@@ -13,7 +13,6 @@ import java.util.List;
 public interface AccountService {
     UserDetails loadAccountByAccountName(String accountName);
 
-    //    UserDetails loadUserByUsername(String accountName);
     List<AccountDTO> findAll();
 
     List<Account> findAllAccount();
