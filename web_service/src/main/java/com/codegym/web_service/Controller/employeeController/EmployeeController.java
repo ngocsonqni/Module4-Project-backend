@@ -1,4 +1,5 @@
 package com.codegym.web_service.Controller.employeeController;
+import com.codegym.dao.DTO.AccountDTOEmployee;
 import com.codegym.dao.DTO.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -89,10 +90,13 @@ public class EmployeeController {
 
     //edit account of employee using their account name
     @RequestMapping(value = "employee/account/name/{accountName}", method = RequestMethod.PATCH)
-    public ResponseEntity<Account> editPassWordAccount(@PathVariable("accountName") String accountName, @RequestBody Account account) {
+    public ResponseEntity<Account> editPassWordAccount(@PathVariable("accountName") String accountName, @RequestBody AccountDTOEmployee account) {
         Account account1 = accountService.findAccountByName(accountName);
         if(account1 == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+        }
+        if(!passwordEncoder.matches(account.getOldPassword(), account1.getAccountPassword())) {
+            return new ResponseEntity<Account>(account1, HttpStatus.NOT_FOUND);
         }
         account1.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
         accountService.save(account1);
