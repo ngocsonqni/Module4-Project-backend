@@ -76,6 +76,6 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
     @Override
     public Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String search) {
-        return null;
+        return accountRepository.findAllByAccountNameContainingAndDeleteFlagIsFalse(search, pageable);
     }
 }

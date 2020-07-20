@@ -23,7 +23,6 @@ public class Brand {
     private String brandWebsite;
     @Column(name = "delete_flag")
     private boolean deleteFlag;
-
     public Brand() {
     }
 
