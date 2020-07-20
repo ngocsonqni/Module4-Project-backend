@@ -55,7 +55,7 @@ public class Product {
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_at")
-    private Date dateCreate;
+    private Date createdAt;
 
     public Integer getProductId() {
         return productId;
@@ -105,6 +105,22 @@ public class Product {
         this.deleteFlag = deleteFlag;
     }
 
+    public Integer getAmountSold() {
+        return amountSold;
+    }
+
+    public void setAmountSold(Integer amountSold) {
+        this.amountSold = amountSold;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -137,28 +153,12 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public Integer getAmountSold() {
-        return amountSold;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setAmountSold(Integer amountSold) {
-        this.amountSold = amountSold;
-    }
-
-    public Double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Double discount) {
-        this.discount = discount;
-    }
-
-    public Date getDateCreate() {
-        return dateCreate;
-    }
-
-    public void setDateCreate(Date dateCreate) {
-        this.dateCreate = dateCreate;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
 
