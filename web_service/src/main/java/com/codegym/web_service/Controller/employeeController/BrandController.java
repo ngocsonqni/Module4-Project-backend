@@ -61,8 +61,8 @@ public class BrandController {
     }
 
     //-------------------Update a Brand--------------------------------------------------------
-    @PutMapping("brand/{id}")
-    public ResponseEntity<Brand> updateBrand(@PathVariable Integer id, @RequestBody Brand brand) {
+    @PutMapping("/brand/update/{id}")
+    public ResponseEntity<Brand> updateBrand(@PathVariable("id") Integer id, @RequestBody Brand brand) {
         Brand currentBrand = brandService.findById(id);
         if (currentBrand == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -76,7 +76,7 @@ public class BrandController {
     }
 
     //-------------------Delete a Brand--------------------------------------------------------
-    @PatchMapping("brand/delete/{id}")
+    @PatchMapping("/brand/delete/{id}")
     public ResponseEntity<Brand> deleteBrand(@PathVariable Integer id) {
         Brand currentBrand = brandService.findById(id);
         if (currentBrand == null) {
