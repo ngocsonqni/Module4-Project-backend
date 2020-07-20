@@ -3,6 +3,7 @@ package com.codegym.dao.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -17,10 +18,12 @@ public class Account {
     private int accountId;
 
     @Column(name = "account_name", nullable = false, unique = true)
+    @NotBlank(message = "Tên không được để trống")
     private String accountName;
-
+    @NotBlank(message = "Tên không được để trống")
     @Column(name = "account_password", nullable = false)
     private String accountPassword;
+
     @Column(name = "delete_flag")
     boolean deleteFlag;
 

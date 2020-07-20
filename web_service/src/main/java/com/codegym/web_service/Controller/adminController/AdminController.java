@@ -8,6 +8,7 @@ import com.codegym.service.AccessTimesService;
 import com.codegym.service.AccountService;
 import com.codegym.service.EmployeeService;
 import com.codegym.service.RoleService;
+import com.codegym.web_service.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -26,8 +28,14 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
+@RequestMapping("")
 public class AdminController {
+    @Autowired(required = false)
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -108,7 +116,7 @@ public class AdminController {
         if (check) {
             accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
         }
-        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
+        accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
 
                 , search);
         if (accountPage.isEmpty()) {
