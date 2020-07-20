@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.entity.Order;
 import com.codegym.dao.repository.OrderRepository;
@@ -29,4 +29,5 @@ public class OrderServiceImpl implements OrderService {
     public void save(Order order) {
 orderRepository.save(order);
     }
+//    haiz
 }

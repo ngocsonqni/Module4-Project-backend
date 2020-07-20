@@ -68,4 +68,14 @@ public class DistributorController {
         }
         return new ResponseEntity<>(distributorPage, HttpStatus.OK);
     }
+
+
+    @PostMapping("/distributor/deleteAll")
+    public ResponseEntity<String> deleteALl(@RequestBody int[] deleteIdList) {
+        System.out.println(deleteIdList.length);
+        for (int item : deleteIdList) {
+            this.distributorService.deleteById(item);
+        }
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
 }

@@ -1,4 +1,4 @@
-package com.codegym.dao.entity;
+package com.codegym.dao.DTO;
 import java.time.LocalDate;
 
 

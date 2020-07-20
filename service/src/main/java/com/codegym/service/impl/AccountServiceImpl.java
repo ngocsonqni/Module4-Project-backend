@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.DTO.AccountDTO;
 import com.codegym.dao.entity.Account;
@@ -76,6 +76,6 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
     @Override
     public Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String search) {
-        return null;
+        return accountRepository.findAllByAccountNameContainingAndDeleteFlagIsFalse(search, pageable);
     }
 }

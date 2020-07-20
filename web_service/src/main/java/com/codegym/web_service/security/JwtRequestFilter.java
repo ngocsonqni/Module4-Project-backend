@@ -1,6 +1,6 @@
 package com.codegym.web_service.security;
 
-import com.codegym.service.Impl.AccountServiceImpl;
+import com.codegym.service.impl.AccountServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -12,14 +12,18 @@ import java.util.List;
 
 public interface AccountService {
     UserDetails loadAccountByAccountName(String accountName);
-//    UserDetails loadUserByUsername(String accountName);
+
+    //    UserDetails loadUserByUsername(String accountName);
     List<AccountDTO> findAll();
+
     List<Account> findAllAccount();
 
     Account findAccountById(int id);
 
     void save(Account account);
+
     Account findAccountByName(String name);
+
     Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String search);
 
 }
