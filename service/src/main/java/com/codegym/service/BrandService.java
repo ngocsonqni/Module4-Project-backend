@@ -10,5 +10,7 @@ public interface BrandService {
     List<Brand> getAllBrand();
     boolean createBrand(Brand brand);
     Page<Brand> findAllByBrandNameContainingAndDeleteFlagFalse(Pageable pageable, String search);
-
+    Brand findById(Integer id);
+    void save(Brand brand);
+    void delete(Brand brand);
 }

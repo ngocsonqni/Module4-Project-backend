@@ -19,6 +19,7 @@ public class DistributorServiceImpl implements DistributorService {
     public Distributor findById(int id) {
         return distributorRepository.findById(id).orElse(null);
     }
+
     @Override
     public void save(Distributor distributor) {
         distributorRepository.save(distributor);
@@ -31,7 +32,20 @@ public class DistributorServiceImpl implements DistributorService {
 
     @Override
     public Page<Distributor> pageFindAllSearchName(Pageable pageable, String search) {
-        Page<Distributor> distributorPage = distributorRepository.findAllByNameContaining(pageable, search);
+        Page<Distributor> distributorPage = distributorRepository.findAllByNameContainingAndDeleted(pageable, search, false);
         return distributorPage;
+    }
+
+
+//Add-----------------------------------------------------------------------------------
+
+    @Override
+    public List<Distributor> findAllByDeleted(boolean isNotDeleted) {
+        return this.distributorRepository.findAllByDeleted(isNotDeleted);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        this.distributorRepository.delete(true, id);
     }
 }

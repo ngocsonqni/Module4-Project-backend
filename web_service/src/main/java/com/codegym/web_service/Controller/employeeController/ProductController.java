@@ -28,34 +28,28 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/listProducts/{pageNo}/{pageSize}")
-    public ResponseEntity<List<Product>> listProducts(@PathVariable int pageNo, @PathVariable int pageSize) {
-        List<Product> products = productService.findAllByDeleteFlagFalsePaging(pageNo, pageSize);
-        if (products.isEmpty()) {
-            return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
-    }
-
+    /**
+     * @return get all product
+     */
     @GetMapping("/listProducts")
     public ResponseEntity<Page<Product>> listProducts(Pageable pageable) {
         Page<Product> products = productService.findAllByDeleteFlagFalsePaging(pageable);
-        if (products.isEmpty()) {
-            return new ResponseEntity<Page<Product>>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<Page<Product>>(products, HttpStatus.OK);
+        return products.isEmpty() ? new ResponseEntity<Page<Product>>(HttpStatus.NO_CONTENT) : new ResponseEntity<Page<Product>>(products, HttpStatus.OK);
+
     }
 
-    //    @RequestMapping(value = "/product/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * @return get product by id
+     */
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Integer id) {
         Product product = productService.findById(id);
-        if (product == null) {
-            return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Product>(product, HttpStatus.OK);
+        return product == null ? new ResponseEntity<Product>(HttpStatus.NOT_FOUND) : new ResponseEntity<Product>(product, HttpStatus.OK);
     }
 
+    /**
+     * create new product
+     */
     @PostMapping("/create_product")
     public ResponseEntity<Void> createProduct(@RequestBody Product product, UriComponentsBuilder ucBuilder) {
         productService.save(product);
@@ -64,6 +58,9 @@ public class ProductController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
+    /**
+     * update product by id
+     */
     @RequestMapping(value = "/update_product/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Product> updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
         Product currentProduct = productService.findById(id);
@@ -82,6 +79,9 @@ public class ProductController {
         return new ResponseEntity<Product>(currentProduct, HttpStatus.OK);
     }
 
+    /**
+     * delete product by id
+     */
     @RequestMapping(value = "/delete_product/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Product> deleteProduct(@PathVariable("id") Integer id) {
         Product product = productService.findById(id);
@@ -90,20 +90,23 @@ public class ProductController {
         return new ResponseEntity<Product>(HttpStatus.OK);
     }
 
+    /**
+     *
+     * @return get all category
+     */
     @GetMapping("/listCategory")
     public ResponseEntity<List<Category>> listAllCategory() {
         List<Category> categories = categoryService.findAll();
-        if (categories.isEmpty()) {
-            return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
+        return categories.isEmpty() ? new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
     }
+
+    /**
+     *
+     * @return get all category
+     */
     @GetMapping("/listUnit")
     public ResponseEntity<List<Unit>> listAllUnit() {
         List<Unit> units = unitService.findAll();
-        if (units.isEmpty()) {
-            return new ResponseEntity<List<Unit>>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<Unit>>(units, HttpStatus.OK);
+        return units.isEmpty() ? new ResponseEntity<List<Unit>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Unit>>(units, HttpStatus.OK);
     }
 }

@@ -15,4 +15,11 @@ public interface DistributorService {
     List<Distributor> findAll();
 
     Page<Distributor> pageFindAllSearchName (Pageable pageable, String search);
+
+
+
+
+//Add-----------------------------------------------------------------------
+    List<Distributor> findAllByDeleted(boolean isNotDeleted);
+    void deleteById(int id);
 }

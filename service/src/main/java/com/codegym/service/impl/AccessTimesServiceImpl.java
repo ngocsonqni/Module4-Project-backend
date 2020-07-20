@@ -17,6 +17,7 @@ public class AccessTimesServiceImpl implements AccessTimesService {
     public List<AccessTimes> findAll() {
         return accessTimesRepository.findAll();
     }
+
     @Override
     public void add(AccessTimes accessTimes) {
         accessTimesRepository.save(accessTimes);
