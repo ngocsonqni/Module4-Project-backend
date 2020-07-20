@@ -1,6 +1,5 @@
 package com.codegym.dao.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -23,8 +22,7 @@ public class Order {
     @Column(name = "total_money")
     private double totalMoney;
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
-    @JsonIgnore
+    @JoinColumn(name = "id_user")
     private User user;
     @OneToMany(mappedBy = "id.orderUser")
     @JsonManagedReference
