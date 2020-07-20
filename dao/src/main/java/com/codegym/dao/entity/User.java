@@ -2,8 +2,6 @@ package com.codegym.dao.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -32,9 +30,8 @@ public class User {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Order> listOrder = new HashSet<>();
-
+//    @OneToMany(mappedBy = "user")
+//    private Set<Order> orderList;
 
 
     public User() {
