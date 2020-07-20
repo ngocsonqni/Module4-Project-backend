@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/warehouse-management")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -21,31 +22,27 @@ public class BrandController {
     @GetMapping("/brand")
     public ResponseEntity<List<Brand>> listBrands() {
         List<Brand> brands = brandService.getAllBrand();
-        if (brands == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(brands, HttpStatus.OK);
+        return brands == null ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(brands, HttpStatus.OK);
     }
+
     @GetMapping(value = "/brand", params = {"page", "size", "search"})
     public ResponseEntity<Page<Brand>> getAllCourse(@RequestParam("page") int page,
                                                     @RequestParam("size") int size,
                                                     @RequestParam("search") String search
     ) {
-        Page<Brand> brandPage = brandService.findAllByBrandNameContainingAndDeleteFlagFalse(PageRequest.of(page, size), search);
-        if (brandPage.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(brandPage, HttpStatus.OK);
+        Page<Brand> brandPage = brandService.findAllByBrandNameContainingAndDeleteFlagFalse(
+                PageRequest.of(page, size), search);
+        return brandPage.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(brandPage, HttpStatus.OK);
+
     }
+
     //-------------------Create a Brand--------------------------------------------------------
     @PostMapping("/brand/create")
     public ResponseEntity<?> createBrand(@RequestBody Brand brand) {
-        if(brandService.createBrand(brand)){
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return brandService.createBrand(brand) ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     //-------------------Retrieve Single Brand--------------------------------------------------------
