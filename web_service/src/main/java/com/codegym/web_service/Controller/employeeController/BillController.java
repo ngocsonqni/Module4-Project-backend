@@ -141,6 +141,7 @@ public class BillController {
         currentBill.setId(bill.getId());
         currentBill.setBillName(bill.getBillName());
         currentBill.setCreateDate(bill.getCreateDate());
+        currentBill.setEditLatestDate(bill.getEditLatestDate());
         currentBill.setBillStatus(bill.getBillStatus());
         currentBill.setProcessingStatus(bill.getProcessingStatus());
         currentBill.setShippingStatus(bill.getShippingStatus());
