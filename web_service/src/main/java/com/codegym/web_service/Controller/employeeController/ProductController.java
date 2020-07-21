@@ -28,18 +28,13 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
-<<<<<<< HEAD
     @GetMapping("/listProducts/{pageNo}/{pageSize}")
     public ResponseEntity<List<Product>> listProducts(@PathVariable int pageNo, @PathVariable int pageSize) {
         List<Product> products = productService.findAllByDeleteFlagFalsePaging(pageNo, pageSize);
         return products.isEmpty() ? new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Product>>(products, HttpStatus.OK);
     }
 
-=======
-    /**
-     * @return get all product
-     */
->>>>>>> dbeda5d88859b2e2ae976d70a3b85f75853ae518
+
     @GetMapping("/listProducts")
     public ResponseEntity<Page<Product>> listProducts(Pageable pageable) {
         Page<Product> products = productService.findAllByDeleteFlagFalsePaging(pageable);
@@ -47,22 +42,15 @@ public class ProductController {
 
     }
 
-    /**
-     * @return get product by id
-     */
+
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Integer id) {
         Product product = productService.findById(id);
-<<<<<<< HEAD
-        return product == null ? new ResponseEntity<Product>(product,HttpStatus.NOT_FOUND) : new ResponseEntity<Product>(product, HttpStatus.OK);
-=======
+
         return product == null ? new ResponseEntity<Product>(HttpStatus.NOT_FOUND) : new ResponseEntity<Product>(product, HttpStatus.OK);
->>>>>>> dbeda5d88859b2e2ae976d70a3b85f75853ae518
+
     }
 
-    /**
-     * create new product
-     */
     @PostMapping("/create_product")
     public ResponseEntity<Void> createProduct(@RequestBody Product product, UriComponentsBuilder ucBuilder) {
         productService.save(product);
