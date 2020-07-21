@@ -117,7 +117,6 @@ public class GuestProductController {
         }
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
-
     @GetMapping("/product-list-by-brand-id/{brandId}")
     public ResponseEntity<List<Product>> findAllProductByIdBrandList(@PathVariable(name = "brandId") ArrayList<Integer> brandIdList) {
         productList = productService.findAllProductByBrandIdList(brandIdList);

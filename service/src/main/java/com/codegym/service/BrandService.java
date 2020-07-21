@@ -8,6 +8,7 @@ import com.codegym.dao.entity.Brand;
 public interface BrandService {
     List<Brand> getAllBrand();
     boolean createBrand(Brand brand);
+//    Page<Brand> findAllByBrandNameContaining(Pageable pageable, String search);
     Page<Brand> findAllByBrandNameContainingAndDeleteFlagFalse(Pageable pageable, String search);
     Brand findById(Integer id);
     void save(Brand brand);

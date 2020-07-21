@@ -17,7 +17,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findAllByDeleteFlagFalse(Pageable pageable);
 
     List<Product> findAllByCategory_CategoryId(Integer categoryId);
-
     @Query(nativeQuery = true, value = "SELECT * " +
             "FROM product inner join brand " +
             "on product.brand_id = brand.brand_id " +

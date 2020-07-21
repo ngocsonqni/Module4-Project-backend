@@ -19,27 +19,28 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("")
 class AccountController {
     @Autowired(required = false)
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
     @Autowired
-    JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwtTokenUtil;
     @Autowired(required = false)
-    AccountServiceImpl accountServiceImpl;
+    private AccountServiceImpl accountServiceImpl;
 
     private AccountDTO accountDTO;
 
-    @GetMapping("/admin")
-    public ResponseEntity<?> helloAdmin() {
-        accountDTO = new AccountDTO("admin", "Hello");
-        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
-    }
 
-    @GetMapping("/member")
-    public ResponseEntity<?> helloMember() {
-        accountDTO = new AccountDTO("member", "Hello");
-        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
-    }
+//    @GetMapping("/admin")
+//    public ResponseEntity<?> helloAdmin() {
+//        accountDTO = new AccountDTO("admin", "Hello");
+//        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/member")
+//    public ResponseEntity<?> helloMember() {
+//        accountDTO = new AccountDTO("member", "Hello");
+//        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
+//    }
 
-    @PostMapping("/login")
+    @PostMapping("/")
     public ResponseEntity<?> login(@RequestBody AccountDTO accountDTO) {
         System.out.println(accountDTO.getAccountPassword());
         Authentication authentication = authenticationManager.authenticate(
@@ -49,4 +50,5 @@ class AccountController {
         String jwtToken = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(jwtToken, userDetails.getUsername(), userDetails.getAuthorities()));
     }
+
 }
