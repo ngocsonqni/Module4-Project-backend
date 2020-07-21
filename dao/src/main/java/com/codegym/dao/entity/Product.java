@@ -32,6 +32,12 @@ public class Product {
     @Column(name = "delete_flag")
     private Boolean deleteFlag;
 
+    @Column(name = "amount_sold")
+    private Integer amountSold;
+
+    @Column(name = "discount")
+    private Double discount;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
@@ -51,13 +57,7 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_at")
     private Date createdAt;
-
-    @Column(name = "amount_sold")
-    private Integer amountSold;
-
-    @Column(name = "discount")
-    private Double discount;
-
+    
     public Integer getProductId() {
         return productId;
     }
@@ -106,6 +106,22 @@ public class Product {
         this.deleteFlag = deleteFlag;
     }
 
+    public Integer getAmountSold() {
+        return amountSold;
+    }
+
+    public void setAmountSold(Integer amountSold) {
+        this.amountSold = amountSold;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -145,20 +161,5 @@ public class Product {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-
-    public Integer getAmountSold() {
-        return amountSold;
-    }
-
-    public void setAmountSold(Integer amountSold) {
-        this.amountSold = amountSold;
-    }
-
-    public Double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Double discount) {
-        this.discount = discount;
-    }
 }
+
