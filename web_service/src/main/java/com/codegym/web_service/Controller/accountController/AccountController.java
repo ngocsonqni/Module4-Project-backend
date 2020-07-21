@@ -2,7 +2,8 @@ package com.codegym.web_service.Controller.accountController;
 
 import com.codegym.dao.DTO.JwtResponse;
 import com.codegym.dao.DTO.AccountDTO;
-import com.codegym.service.Impl.AccountServiceImpl;
+
+import com.codegym.service.impl.AccountServiceImpl;
 import com.codegym.web_service.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,22 +19,24 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("")
 class AccountController {
     @Autowired(required = false)
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
     @Autowired
-    JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwtTokenUtil;
     @Autowired(required = false)
-    AccountServiceImpl accountServiceImpl;
+    private AccountServiceImpl accountServiceImpl;
 
     private AccountDTO accountDTO;
+
+
 //    @GetMapping("/admin")
-//    public ResponseEntity<?> admin() {
-//        accountDTO=new AccountDTO("admin","Hello");
+//    public ResponseEntity<?> helloAdmin() {
+//        accountDTO = new AccountDTO("admin", "Hello");
 //        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
 //    }
 //
 //    @GetMapping("/member")
 //    public ResponseEntity<?> helloMember() {
-//        accountDTO=new AccountDTO("member","Hello");
+//        accountDTO = new AccountDTO("member", "Hello");
 //        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
 //    }
 
@@ -47,4 +50,5 @@ class AccountController {
         String jwtToken = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(jwtToken, userDetails.getUsername(), userDetails.getAuthorities()));
     }
+
 }

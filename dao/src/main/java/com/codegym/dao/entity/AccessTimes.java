@@ -5,11 +5,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "access_times")
-public class AccessTimes{
+public class AccessTimes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private int id;
 
     @Column(name = "date")
     private Date date;

@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -33,16 +35,17 @@ import java.util.List;
 @RequestMapping("")
 public class AdminController {
     @Autowired(required = false)
-    private AuthenticationManager authenticationManager;
+    AuthenticationManager authenticationManager;
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    JwtTokenUtil jwtTokenUtil;
     @Autowired
     private RoleService roleService;
     @Autowired
     private AccountService accountService;
     @Autowired
     private EmployeeService employeeService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private AccessTimesService accessTimesService;
 
@@ -59,10 +62,8 @@ public class AdminController {
     //--------------------------------- details role ---------------------------
     @RequestMapping(value = "/role/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Role> getRole(@PathVariable("id") int id) {
-        System.out.println("Fetching Customer with id " + id);
         Role role = roleService.findRoleById(id);
         if (role == null) {
-            System.out.println("Customer with id " + id + " not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(role, HttpStatus.OK);
@@ -83,42 +84,36 @@ public class AdminController {
     public ResponseEntity<Page<Account>> listAllAccount(@RequestParam("page") int page,
                                                         @RequestParam("size") int size,
                                                         @RequestParam("search") String search) throws UnknownHostException {
-//        boolean check = false;
-//        List<AccessTimes> accessTimesList = accessTimesService.findAll();
-//        InetAddress localhost = InetAddress.getLocalHost();
-//        for (int i = 0; i < accessTimesList.size(); i++) {
-//            if (accessTimesList.get(i).toString().equals(localhost.getHostAddress().trim())) {
-//                check = true;
-//            }
-//        }
-//        if (check) {
-//            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
-//        }
-        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending()), search);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
         String currentTime = sdf.format(date);
         boolean check = false;
         List<AccessTimes> accessTimesList = accessTimesService.findAll();
+        int sizeAccessTimesList = accessTimesList.size();
         InetAddress localhost = InetAddress.getLocalHost();
-        for (int i = 0; i < accessTimesList.size(); i++) {
-            if (accessTimesList.get(i).getIpUser().equals(localhost.getHostAddress())) {
-                if (!accessTimesList.get(i).getDate().toString().equals(currentTime)) {
+        for (int i = 0; i < sizeAccessTimesList; i++) {
+            if (accessTimesList.get(i).getDate().toString().equals(currentTime)) {
+                if (!accessTimesList.get(i).getIpUser().equals(localhost.getHostAddress())) {
                     check = true;
+                    break;
                 }
             } else {
-                check = true;
+                if (!accessTimesList.get(sizeAccessTimesList - 1).getDate().toString().equals(currentTime)) {
+                    check = true;
+                    break;
+                }
             }
         }
-        if (accessTimesList.size() == 0) {
+        if (sizeAccessTimesList == 0) {
             check = true;
         }
         if (check) {
             accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
         }
-        accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").descending())
 
+        Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
                 , search);
+
         if (accountPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -128,10 +123,17 @@ public class AdminController {
     //--------------------- create account --------------------------------------------------
     @RequestMapping(value = "/account/create", method = RequestMethod.POST)
     public ResponseEntity<Void> createAccount(@RequestBody Account account, UriComponentsBuilder uriComponentsBuilder) {
-        accountService.save(account);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(uriComponentsBuilder.path("account?page=0&size=5&search=").buildAndExpand(account.getAccountId()).toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        Account account1 = accountService.findAccountByName(account.getAccountName());
+        List<Role> roles = roleService.findAllRole();
+        if (account1 != null) {
+            throw new UsernameNotFoundException("Tên đăng nhập đã tồn tại");
+        } else {
+            account.setAccountPassword((passwordEncoder.encode(account.getAccountPassword())));
+            accountService.save(account);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(uriComponentsBuilder.path("account?page=0&size=5&search=").buildAndExpand(account.getAccountId()).toUri());
+            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        }
     }
 
     //-------------------------- details account --------------------------------
@@ -163,12 +165,15 @@ public class AdminController {
         if (currentAccount == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
-        currentAccount.setAccountId(account.getAccountId());
-        currentAccount.setAccountName(account.getAccountName());
-        currentAccount.setAccountPassword(account.getAccountPassword());
-        currentAccount.setRole(account.getRole());
-        currentAccount.setDeleteFlag(account.getDeleteFlag());
-        accountService.save(currentAccount);
+        try {
+            currentAccount.setAccountId(account.getAccountId());
+            currentAccount.setAccountName(account.getAccountName());
+            currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+            currentAccount.setRole(account.getRole());
+            currentAccount.setDeleteFlag(account.getDeleteFlag());
+            accountService.save(currentAccount);
+        } catch (Exception e) {
+        }
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
 
@@ -181,4 +186,5 @@ public class AdminController {
         }
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
+
 }

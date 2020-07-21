@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.entity.AccessTimes;
 import com.codegym.dao.repository.AccessTimesRepository;
@@ -17,6 +17,7 @@ public class AccessTimesServiceImpl implements AccessTimesService {
     public List<AccessTimes> findAll() {
         return accessTimesRepository.findAll();
     }
+
     @Override
     public void add(AccessTimes accessTimes) {
         accessTimesRepository.save(accessTimes);

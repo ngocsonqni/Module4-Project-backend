@@ -12,8 +12,8 @@ public class OrderDetailPk implements Serializable {
     @JoinColumn(name = "order_id")
     @JsonBackReference
     private Order orderUser;
-    @ManyToOne
 
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 

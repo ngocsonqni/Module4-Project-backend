@@ -11,6 +11,7 @@ public class OrderDetail {
 
     @EmbeddedId
     private OrderDetailPk id;
+
     @Column(name = "order_quantity")
     private int orderQuantity;
 

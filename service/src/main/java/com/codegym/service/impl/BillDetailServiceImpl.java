@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 public class BillDetailServiceImpl {
 }

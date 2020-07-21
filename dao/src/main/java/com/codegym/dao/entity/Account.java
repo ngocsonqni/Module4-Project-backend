@@ -1,11 +1,10 @@
 package com.codegym.dao.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "account")
@@ -16,21 +15,34 @@ public class Account {
     @Column(name = "account_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accountId;
-
+    @NotNull
+    @Size(max = 255, min = 1)
+//    @Pattern(regexp = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,}$")
     @Column(name = "account_name", nullable = false, unique = true)
     @NotBlank(message = "Tên không được để trống")
     private String accountName;
+
     @NotBlank(message = "Tên không được để trống")
+//    @NotNull
+//    @Size(max = 255, min = 1)
     @Column(name = "account_password", nullable = false)
     private String accountPassword;
 
     @Column(name = "delete_flag")
     boolean deleteFlag;
 
+//    @NotNull
     @ManyToOne
     @JoinColumn(name = "role_id")
-//    @JsonManagedReference
-    private Role role;
+    public Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public Account() {
     }
@@ -75,12 +87,5 @@ public class Account {
         this.deleteFlag = deleteFlag;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }
 

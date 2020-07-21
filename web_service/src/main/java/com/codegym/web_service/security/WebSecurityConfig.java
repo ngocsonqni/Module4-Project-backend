@@ -1,7 +1,6 @@
 package com.codegym.web_service.security;
 
-import com.codegym.service.Impl.AccountServiceImpl;
-import com.codegym.service.Impl.UserServiceImpl;
+import com.codegym.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/","/listProducts","/brand","/product","/account/create","/customers/").permitAll().and().
 //                authorizeRequests().antMatchers("/admin").permitAll().and().
-                authorizeRequests().antMatchers("/admin","/customers","/warehouse","/partner","/account").access("hasRole('ROLE_ADMIN')").and().
+                authorizeRequests().antMatchers("/admin","/api/admin/*").access("hasRole('ROLE_ADMIN')").and().
 //                authorizeRequests().antMatchers("/admin").access("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')").and().
                 authorizeRequests().antMatchers("/customers").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')").and().
                 authorizeRequests().antMatchers("/warehouse").access("hasAnyRole('ROLE_WAREHOUSE','ROLE_ADMIN')").and().
@@ -65,6 +64,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                and().authorizeRequests().antMatchers("/user").access("hasRole('ROLE_USER')").
                 anyRequest().authenticated()
                 .and().cors();
+
+//                .and().
+//                authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')").and().
+////                authorizeRequests().antMatchers("/admin").access("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')").and().
+//        authorizeRequests().antMatchers("/member").access("hasRole('ROLE_MEMBER')").and().
+//                authorizeRequests().antMatchers("/warehouse").access("hasRole('ROLE_WAREHOUSE')").and().
+//                authorizeRequests().antMatchers("/partner").access("hasRole('ROLE_PARTNER')").
+////                and().authorizeRequests().antMatchers("/user").access("hasRole('ROLE_USER')").
+//        anyRequest().authenticated()
+//                .and().cors()
+        ;
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

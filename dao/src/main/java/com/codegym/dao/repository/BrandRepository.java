@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface BrandRepository extends JpaRepository<Brand, Integer> {
     List<Brand> findAllByDeleteFlagFalse();
-    Page<Brand> findAllByBrandNameContaining(Pageable pageable, String name);
+    Page<Brand> findAllByBrandNameContainingAndDeleteFlagFalse(Pageable pageable, String search);
 }
-

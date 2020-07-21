@@ -1,4 +1,4 @@
-package com.codegym.service.Impl;
+package com.codegym.service.impl;
 
 import com.codegym.dao.DTO.AccountDTO;
 import com.codegym.dao.entity.Account;
@@ -66,6 +66,12 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     @Override
     public void save(Account account) {
         accountRepository.save(account);
+    }
+
+    @Override
+    public Account findAccountByName(String name) {
+        return accountRepository.findAccountByDeleteFlagIsFalseAndAccountName(name);
+
     }
 
     @Override
