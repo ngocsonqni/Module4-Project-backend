@@ -16,4 +16,6 @@ public interface ProductService {
     List<Product> findAll();
 
     List<Product> findAllProductByCategoryId(Integer categoryId);
+
+    List<Product> findAllProductByBrandIdList(List<Integer> brandIdList);
 }

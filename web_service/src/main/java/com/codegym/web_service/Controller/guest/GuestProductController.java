@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -115,5 +116,15 @@ public class GuestProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @GetMapping("/product-list-by-brand-id/{brandId}")
+    public ResponseEntity<List<Product>> findAllProductByIdBrandList(@PathVariable(name = "brandId") ArrayList<Integer> brandIdList) {
+        productList = productService.findAllProductByBrandIdList(brandIdList);
+        if (productList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(productList, HttpStatus.OK);
+        }
     }
 }
