@@ -28,12 +28,18 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
+<<<<<<< HEAD
     @GetMapping("/listProducts/{pageNo}/{pageSize}")
     public ResponseEntity<List<Product>> listProducts(@PathVariable int pageNo, @PathVariable int pageSize) {
         List<Product> products = productService.findAllByDeleteFlagFalsePaging(pageNo, pageSize);
         return products.isEmpty() ? new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Product>>(products, HttpStatus.OK);
     }
 
+=======
+    /**
+     * @return get all product
+     */
+>>>>>>> dbeda5d88859b2e2ae976d70a3b85f75853ae518
     @GetMapping("/listProducts")
     public ResponseEntity<Page<Product>> listProducts(Pageable pageable) {
         Page<Product> products = productService.findAllByDeleteFlagFalsePaging(pageable);
@@ -41,13 +47,22 @@ public class ProductController {
 
     }
 
-    //    @RequestMapping(value = "/product/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * @return get product by id
+     */
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Integer id) {
         Product product = productService.findById(id);
+<<<<<<< HEAD
         return product == null ? new ResponseEntity<Product>(product,HttpStatus.NOT_FOUND) : new ResponseEntity<Product>(product, HttpStatus.OK);
+=======
+        return product == null ? new ResponseEntity<Product>(HttpStatus.NOT_FOUND) : new ResponseEntity<Product>(product, HttpStatus.OK);
+>>>>>>> dbeda5d88859b2e2ae976d70a3b85f75853ae518
     }
 
+    /**
+     * create new product
+     */
     @PostMapping("/create_product")
     public ResponseEntity<Void> createProduct(@RequestBody Product product, UriComponentsBuilder ucBuilder) {
         productService.save(product);
@@ -56,6 +71,9 @@ public class ProductController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
+    /**
+     * update product by id
+     */
     @RequestMapping(value = "/update_product/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Product> updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
         Product currentProduct = productService.findById(id);
@@ -74,6 +92,9 @@ public class ProductController {
         return new ResponseEntity<Product>(currentProduct, HttpStatus.OK);
     }
 
+    /**
+     * delete product by id
+     */
     @RequestMapping(value = "/delete_product/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Product> deleteProduct(@PathVariable("id") Integer id) {
         Product product = productService.findById(id);
@@ -82,11 +103,20 @@ public class ProductController {
         return new ResponseEntity<Product>(HttpStatus.OK);
     }
 
+    /**
+     *
+     * @return get all category
+     */
     @GetMapping("/listCategory")
     public ResponseEntity<List<Category>> listAllCategory() {
         List<Category> categories = categoryService.findAll();
         return categories.isEmpty() ? new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
     }
+
+    /**
+     *
+     * @return get all category
+     */
     @GetMapping("/listUnit")
     public ResponseEntity<List<Unit>> listAllUnit() {
         List<Unit> units = unitService.findAll();

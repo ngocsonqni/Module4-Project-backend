@@ -20,7 +20,6 @@ public class ProductServiceImpl implements ProductService {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         Page<Product> pagedResult = productRepository.findAllByDeleteFlagFalse(paging);
         return pagedResult.toList();
-//        return productRepository.findAllByDeleteFlagFalse();
     }
 
     @Override
@@ -42,5 +41,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void remove(Product product) {
         product.setDeleteFlag(true);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> findAllProductByCategoryId(Integer categoryId) {
+        return productRepository.findAllByCategory_CategoryId(categoryId);
     }
 }
