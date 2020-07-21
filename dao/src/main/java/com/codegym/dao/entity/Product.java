@@ -4,7 +4,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 
-
+/**
+ * @author huylm
+ * mapping product table in mysql database
+ */
 @Entity
 @Table(name = "product")
 public class Product {
@@ -22,18 +25,24 @@ public class Product {
     @Column(name="expiry_date")
     private Date expiryDate;
 
-    @Column(name="quantity")
+    @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name="delete_flag")
+    @Column(name = "delete_flag")
     private Boolean deleteFlag;
 
+    @Column(name = "amount_sold")
+    private Integer amountSold;
+
+    @Column(name = "discount")
+    private Double discount;
+
     @ManyToOne
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name="unit_id")
+    @JoinColumn(name = "unit_id")
     private Unit unit;
 
     @ManyToOne
@@ -96,6 +105,22 @@ public class Product {
         this.deleteFlag = deleteFlag;
     }
 
+    public Integer getAmountSold() {
+        return amountSold;
+    }
+
+    public void setAmountSold(Integer amountSold) {
+        this.amountSold = amountSold;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -136,3 +161,4 @@ public class Product {
         this.createdAt = createdAt;
     }
 }
+
