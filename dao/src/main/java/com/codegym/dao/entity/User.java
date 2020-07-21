@@ -29,12 +29,10 @@ public class User {
     private String imageUrl;
     @Column(name = "delete_flag")
     private boolean deleteFlag;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
-
-//    @OneToMany(mappedBy = "user")
-//    private Set<Order> orderList;
 
 
     public User() {
@@ -111,6 +109,7 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
     public String getImageUrl() {
         return imageUrl;
     }

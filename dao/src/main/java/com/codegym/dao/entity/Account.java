@@ -30,6 +30,8 @@ public class Account {
 
     @Column(name = "delete_flag")
     boolean deleteFlag;
+    @Column(name = "reason")
+    String reason;
 
 //    @NotNull
     @ManyToOne
@@ -47,10 +49,11 @@ public class Account {
     public Account() {
     }
 
-    public Account(String accountName, String accountPassword, boolean deleteFlag, Role role) {
+    public Account(String accountName, String accountPassword, boolean deleteFlag, String reason, Role role) {
         this.accountName = accountName;
         this.accountPassword = accountPassword;
         this.deleteFlag = deleteFlag;
+        this.reason = reason;
         this.role = role;
     }
 
@@ -87,5 +90,16 @@ public class Account {
         this.deleteFlag = deleteFlag;
     }
 
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 }
 

@@ -25,4 +25,6 @@ public interface AccountService {
 
     Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String search);
 
+    Page<Account> pageFindALLSearchRoleOfCourseOfAdmin(Pageable pageable, String search);
+
 }
