@@ -30,8 +30,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Integer id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findByProductIdAndDeleteFlagFalse(id);
     }
+
 
     @Override
     public void save(Product product) {
