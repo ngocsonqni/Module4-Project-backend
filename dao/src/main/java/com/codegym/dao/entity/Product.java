@@ -57,7 +57,7 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_at")
     private Date createdAt;
-    
+
     public Integer getProductId() {
         return productId;
     }
