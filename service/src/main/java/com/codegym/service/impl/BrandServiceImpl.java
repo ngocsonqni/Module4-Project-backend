@@ -37,7 +37,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand findById(Integer id) {
-        return brandRepository.findBrandByIdAndAndDeleteFlagIsFalse(id);
+        return brandRepository.findBrandByIdAndDeleteFlagIsFalse(id);
     }
 
     @Override

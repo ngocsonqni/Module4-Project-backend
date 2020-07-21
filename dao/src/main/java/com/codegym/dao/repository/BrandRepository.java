@@ -7,6 +7,6 @@ import java.util.List;
 import com.codegym.dao.entity.Brand;
 public interface BrandRepository extends JpaRepository<Brand, Integer> {
     List<Brand> findAllByDeleteFlagFalse();
-    Brand findBrandByIdAndAndDeleteFlagIsFalse(Integer id);
+    Brand findBrandByIdAndDeleteFlagIsFalse(Integer id);
     Page<Brand> findAllByBrandNameContainingAndDeleteFlagFalse(Pageable pageable, String search);
 }
