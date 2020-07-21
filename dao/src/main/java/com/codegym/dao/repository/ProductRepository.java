@@ -11,12 +11,14 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    /**
-     * @return all data from Product with delete_flag is false
-     */
+
     Page<Product> findAllByDeleteFlagFalse(Pageable pageable);
 
+   Product findByProductIdAndDeleteFlagFalse(Integer id);
+
+
     List<Product> findAllByCategory_CategoryId(Integer categoryId);
+
     @Query(nativeQuery = true, value = "SELECT * " +
             "FROM product inner join brand " +
             "on product.brand_id = brand.brand_id " +
