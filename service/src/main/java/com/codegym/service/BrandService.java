@@ -1,10 +1,9 @@
 package com.codegym.service;
 
-import com.codegym.dao.entity.Brand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import java.util.List;
+import com.codegym.dao.entity.Brand;
 
 public interface BrandService {
     List<Brand> getAllBrand();
