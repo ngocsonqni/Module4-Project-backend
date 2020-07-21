@@ -1,20 +1,25 @@
 package com.codegym.web_service.Controller.employeeController;
 import com.codegym.dao.DTO.AccountDTOEmployee;
-import com.codegym.dao.DTO.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.codegym.dao.entity.*;
 import com.codegym.service.AccountService;
 import com.codegym.service.DepartmentService;
 import com.codegym.service.EmployeeService;
 import com.codegym.service.PositionService;
+
+import javax.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
@@ -72,7 +77,7 @@ public class EmployeeController {
 
     //edit an employee using id
     @RequestMapping(value = "employee/list/{id}", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Employee> editEmployee(@PathVariable("id") int id, @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<Employee> editEmployee(@Valid @PathVariable("id") int id, @RequestBody Employee employeeDTO) {
         Employee employee1 = employeeService.findById(id);
         if (employee1 == null) {
             return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
@@ -84,15 +89,17 @@ public class EmployeeController {
         employee1.setAddress(employeeDTO.getAddress());
         employee1.setPhoneNumber(employeeDTO.getPhoneNumber());
         employee1.setEmail(employeeDTO.getEmail());
-        employee1.setPosition(positionService.findByPositionName(employeeDTO.getPosition()));
-        employee1.setDepartment(departmentService.findByNameDepartment(employeeDTO.getDepartment()));
+        employee1.setPosition(employeeDTO.getPosition());
+        employee1.setDepartment(employeeDTO.getDepartment());
+//        employee1.setPosition(positionService.findByPositionName(employeeDTO.getPosition()));
+//        employee1.setDepartment(departmentService.findByNameDepartment(employeeDTO.getDepartment()));
         employeeService.save(employee1);
         return new ResponseEntity<Employee>(employee1, HttpStatus.OK);
     }
 
     //edit account of employee using their account name
     @RequestMapping(value = "employee/account/name/{accountName}", method = RequestMethod.PATCH)
-    public ResponseEntity<Account> editPassWordAccount(@PathVariable("accountName") String accountName, @RequestBody AccountDTOEmployee account) {
+    public ResponseEntity<Account> editPassWordAccount(@Valid @PathVariable("accountName") String accountName, @RequestBody AccountDTOEmployee account) {
         Account account1 = accountService.findAccountByName(accountName);
         if (account1 == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
@@ -124,5 +131,18 @@ public class EmployeeController {
     public ResponseEntity<List<Department>> findAllDepartment() {
         List<Department> departmentList = departmentService.findAll();
         return departmentList.isEmpty() ? new ResponseEntity<List<Department>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Department>>(departmentList, HttpStatus.OK);
+    }
+    //handle error
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }
