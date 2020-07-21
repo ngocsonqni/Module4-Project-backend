@@ -1,13 +1,7 @@
 package com.codegym.web_service.Controller.adminController;
 
-import com.codegym.dao.entity.AccessTimes;
-import com.codegym.dao.entity.Account;
-import com.codegym.dao.entity.Employee;
-import com.codegym.dao.entity.Role;
-import com.codegym.service.AccessTimesService;
-import com.codegym.service.AccountService;
-import com.codegym.service.EmployeeService;
-import com.codegym.service.RoleService;
+import com.codegym.dao.entity.*;
+import com.codegym.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -27,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@Controller
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdminController {
     @Autowired
@@ -35,6 +31,8 @@ public class AdminController {
     private AccountService accountService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -110,6 +108,19 @@ public class AdminController {
         return new ResponseEntity<>(accountPage, HttpStatus.OK);
     }
 
+    //---------------------- list account with role ---------------------------------
+    @RequestMapping(value = "/accountrole", method = RequestMethod.GET, params = {"page", "size", "search"})
+    public ResponseEntity<Page<Account>> listAllAccountWithRole(@RequestParam("page") int page,
+                                                                @RequestParam("size") int size,
+                                                                @RequestParam("search") String search) throws UnknownHostException {
+        Page<Account> accountPage = accountService.pageFindALLSearchRoleOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
+                , search);
+        if (accountPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(accountPage, HttpStatus.OK);
+    }
+
     //--------------------- create account --------------------------------------------------
     @RequestMapping(value = "/account/create", method = RequestMethod.POST)
     public ResponseEntity<Void> createAccount(@RequestBody Account account, UriComponentsBuilder uriComponentsBuilder) {
@@ -131,12 +142,13 @@ public class AdminController {
 
     //--------------------- delete account --------------------------------------------------
     @RequestMapping(value = "/account/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Account> deleteAccount(@PathVariable("id") int id) {
+    public ResponseEntity<Account> deleteAccount(@PathVariable("id") int id, @RequestBody Account account) {
         Account currentAccount = accountService.findAccountById(id);
         if (currentAccount == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         currentAccount.setDeleteFlag(true);
+        currentAccount.setReason(account.getReason());
         accountService.save(currentAccount);
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
@@ -168,5 +180,16 @@ public class AdminController {
             return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+    }
+
+    //--------------------------------- details User ---------------------------
+    @RequestMapping(value = "/account/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getInfoAccountUser(@PathVariable("id") int id) {
+        User user = userService.findUserByAccountId(id);
+        System.out.println(user);
+        if (user == null) {
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 }
