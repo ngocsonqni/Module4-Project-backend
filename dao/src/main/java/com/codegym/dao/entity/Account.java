@@ -1,6 +1,7 @@
 package com.codegym.dao.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -16,18 +17,23 @@ public class Account {
     private int accountId;
     @NotNull
     @Size(max = 255, min = 1)
-    @Pattern(regexp = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,}$")
+//    @Pattern(regexp = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,}$")
     @Column(name = "account_name", nullable = false, unique = true)
+    @NotBlank(message = "Tên không được để trống")
     private String accountName;
-    @NotNull
-    @Size(max = 255, min = 1)
+
+    @NotBlank(message = "Tên không được để trống")
+//    @NotNull
+//    @Size(max = 255, min = 1)
     @Column(name = "account_password", nullable = false)
     private String accountPassword;
-    @NotNull
+
     @Column(name = "delete_flag")
     boolean deleteFlag;
+    @Column(name = "reason")
+    String reason;
 
-    @NotNull
+//    @NotNull
     @ManyToOne
     @JoinColumn(name = "role_id")
     public Role role;
@@ -43,10 +49,11 @@ public class Account {
     public Account() {
     }
 
-    public Account(String accountName, String accountPassword, boolean deleteFlag, Role role) {
+    public Account(String accountName, String accountPassword, boolean deleteFlag, String reason, Role role) {
         this.accountName = accountName;
         this.accountPassword = accountPassword;
         this.deleteFlag = deleteFlag;
+        this.reason = reason;
         this.role = role;
     }
 
@@ -83,5 +90,16 @@ public class Account {
         this.deleteFlag = deleteFlag;
     }
 
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 }
 

@@ -76,7 +76,7 @@ public class BrandController {
     }
 
     //-------------------Delete a Brand--------------------------------------------------------
-    @PatchMapping("brand/delete/{id}")
+    @PatchMapping("/brand/delete/{id}")
     public ResponseEntity<Brand> deleteBrand(@PathVariable Integer id) {
         Brand currentBrand = brandService.findById(id);
         if (currentBrand == null) {
@@ -84,6 +84,17 @@ public class BrandController {
         }
         brandService.delete(currentBrand);
         brandService.save(currentBrand);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    //-------------------Delete Many Brand--------------------------------------------------------
+    @DeleteMapping("/brand/{id}")
+    public ResponseEntity<Brand> deleteManyBrand(@PathVariable Integer id) {
+        Brand brand = brandService.findById(id);
+        if (brand == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        brandService.delete(brand);
+        brandService.save(brand);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

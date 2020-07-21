@@ -1,8 +1,9 @@
 package com.codegym.dao.entity;
 
-import javax.persistence.*;
-import java.time.LocalDate;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 @Entity
 @Table(name = "user")
 public class User {
@@ -17,8 +18,10 @@ public class User {
     @Column(name = "address")
     private String address;
     @Column(name = "email")
+    @NotBlank(message = " emailkhông được để trống")
     private String email;
     @Column(name = "phone")
+    @NotBlank(message = " phonekhông được để trống")
     private String phone;
     @Column(name = "gender")
     private String gender;
@@ -26,12 +29,10 @@ public class User {
     private String imageUrl;
     @Column(name = "delete_flag")
     private boolean deleteFlag;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
-
-//    @OneToMany(mappedBy = "user")
-//    private Set<Order> orderList;
 
 
     public User() {
@@ -108,6 +109,7 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
     public String getImageUrl() {
         return imageUrl;
     }

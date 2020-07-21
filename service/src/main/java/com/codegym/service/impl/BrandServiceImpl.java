@@ -1,15 +1,13 @@
 package com.codegym.service.impl;
-
-import com.codegym.dao.entity.Brand;
-import com.codegym.dao.repository.BrandRepository;
-import com.codegym.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import com.codegym.dao.entity.Brand;
+import com.codegym.dao.repository.BrandRepository;
+import com.codegym.service.BrandService;
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
@@ -39,7 +37,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand findById(Integer id) {
-        return brandRepository.findById(id).orElse(null);
+        return brandRepository.findBrandByIdAndDeleteFlagIsFalse(id);
     }
 
     @Override
