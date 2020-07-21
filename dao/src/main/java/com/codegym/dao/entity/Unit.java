@@ -1,7 +1,10 @@
 package com.codegym.dao.entity;
 
 import javax.persistence.*;
-
+/**
+ * @author huylm
+ * mapping unit table in mysql database
+ */
 @Entity
 @Table(name="unit")
 public class Unit {

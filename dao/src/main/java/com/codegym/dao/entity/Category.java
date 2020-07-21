@@ -1,7 +1,10 @@
 package com.codegym.dao.entity;
 
 import javax.persistence.*;
-
+/**
+ * @author huylm
+ * mapping category table in mysql database
+ */
 @Entity
 @Table(name="category")
 public class Category {
