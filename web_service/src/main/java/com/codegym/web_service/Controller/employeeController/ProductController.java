@@ -1,12 +1,6 @@
 package com.codegym.web_service.Controller.employeeController;
 
-import com.codegym.dao.DTO.ProductProjection;
-import com.codegym.dao.entity.Category;
-import com.codegym.dao.entity.Product;
-import com.codegym.dao.entity.Unit;
-import com.codegym.service.CategoryService;
 import com.codegym.service.ProductService;
-import com.codegym.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import com.codegym.dao.entity.Category;
+import com.codegym.dao.entity.Product;
+import com.codegym.dao.entity.Unit;
+import com.codegym.service.CategoryService;
+
+import com.codegym.service.UnitService;
 
 import java.util.List;
 
@@ -29,8 +29,6 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
-    private ProductProjection brandNameDTO;
-
     /**
      * @return get all product
      */
@@ -41,18 +39,14 @@ public class ProductController {
 
     }
 
-    /**
-     * @return get product by id
-     */
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Integer id) {
         Product product = productService.findById(id);
+
         return product == null ? new ResponseEntity<Product>(HttpStatus.NOT_FOUND) : new ResponseEntity<Product>(product, HttpStatus.OK);
+
     }
 
-    /**
-     * create new product
-     */
     @PostMapping("/create_product")
     public ResponseEntity<Void> createProduct(@RequestBody Product product, UriComponentsBuilder ucBuilder) {
         productService.save(product);

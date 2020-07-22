@@ -7,9 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/warehouse-management")
@@ -40,7 +45,7 @@ public class BrandController {
 
     //-------------------Create a Brand--------------------------------------------------------
     @PostMapping("/brand/create")
-    public ResponseEntity<?> createBrand(@RequestBody Brand brand) {
+    public ResponseEntity<?> createBrand(@Valid @RequestBody Brand brand) {
         return brandService.createBrand(brand) ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -56,8 +61,8 @@ public class BrandController {
     }
 
     //-------------------Update a Brand--------------------------------------------------------
-    @PutMapping("brand/{id}")
-    public ResponseEntity<Brand> updateBrand(@PathVariable Integer id, @RequestBody Brand brand) {
+    @PutMapping("/brand/update/{id}")
+    public ResponseEntity<Brand> updateBrand(@PathVariable("id") Integer id, @RequestBody Brand brand) {
         Brand currentBrand = brandService.findById(id);
         if (currentBrand == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -71,7 +76,7 @@ public class BrandController {
     }
 
     //-------------------Delete a Brand--------------------------------------------------------
-    @PatchMapping("brand/delete/{id}")
+    @PatchMapping("/brand/delete/{id}")
     public ResponseEntity<Brand> deleteBrand(@PathVariable Integer id) {
         Brand currentBrand = brandService.findById(id);
         if (currentBrand == null) {
@@ -80,6 +85,30 @@ public class BrandController {
         brandService.delete(currentBrand);
         brandService.save(currentBrand);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    //-------------------Delete Many Brand--------------------------------------------------------
+    @DeleteMapping("/brand/{id}")
+    public ResponseEntity<Brand> deleteManyBrand(@PathVariable Integer id) {
+        Brand brand = brandService.findById(id);
+        if (brand == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        brandService.delete(brand);
+        brandService.save(brand);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }
 

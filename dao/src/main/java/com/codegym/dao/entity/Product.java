@@ -1,5 +1,6 @@
 package com.codegym.dao.entity;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,50 +13,50 @@ import java.util.Date;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="product_id")
+    @Column(name = "product_id")
     private Integer productId;
 
-    @Column(name="product_name")
+    @Column(name = "product_name")
     private String productName;
 
-    @Column(name="price")
+    @Column(name = "price")
     private Double price;
 
-    @Column(name="expiry_date")
+    @Column(name = "expiry_date")
     private Date expiryDate;
 
-    @Column(name="quantity")
+    @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name="delete_flag")
+    @Column(name = "delete_flag")
     private Boolean deleteFlag;
 
+    @Column(name = "amount_sold")
+    private Integer amountSold;
+
+    @Column(name = "discount")
+    private Double discount;
+
     @ManyToOne
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name="unit_id")
+    @JoinColumn(name = "unit_id")
     private Unit unit;
 
     @ManyToOne
-    @JoinColumn(name="brand_id")
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @Column(name="image_url")
+    @Column(name = "image_url")
     private String imageUrl;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_at")
     private Date createdAt;
-
-    @Column(name="amount_sold")
-    private Integer amountSold;
-
-    @Column(name="discount")
-    private Double discount;
-
+    
     public Integer getProductId() {
         return productId;
     }
@@ -104,6 +105,22 @@ public class Product {
         this.deleteFlag = deleteFlag;
     }
 
+    public Integer getAmountSold() {
+        return amountSold;
+    }
+
+    public void setAmountSold(Integer amountSold) {
+        this.amountSold = amountSold;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -143,20 +160,5 @@ public class Product {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-
-    public Integer getAmountSold() {
-        return amountSold;
-    }
-
-    public void setAmountSold(Integer amountSold) {
-        this.amountSold = amountSold;
-    }
-
-    public Double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Double discount) {
-        this.discount = discount;
-    }
 }
+

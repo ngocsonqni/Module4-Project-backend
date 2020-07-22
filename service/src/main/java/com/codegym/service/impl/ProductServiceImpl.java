@@ -16,7 +16,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findByCategory_CategoryIdAndDeleteFlagIsFalse(Integer categoryId) {
-      //  return productRepository.findByCategory_CategoryIdAndDeleteFlagIsFalse(categoryId);
         return productRepository.findDistinctByCategory_CategoryIdAndDeleteFlagIsFalseOrderByBrand(categoryId);
     }
 
@@ -37,8 +36,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Integer id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findByProductIdAndDeleteFlagFalse(id);
     }
+
 
     @Override
     public void save(Product product) {
@@ -48,5 +48,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void remove(Product product) {
         product.setDeleteFlag(true);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> findAllProductByCategoryId(Integer categoryId) {
+        return productRepository.findAllByCategory_CategoryId(categoryId);
+    }
+
+    @Override
+    public List<Product> findAllProductByBrandIdList(List<Integer> brandIdList) {
+        return productRepository.productFindByListBrand(brandIdList);
     }
 }

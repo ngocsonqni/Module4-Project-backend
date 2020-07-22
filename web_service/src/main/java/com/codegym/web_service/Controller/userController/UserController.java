@@ -1,7 +1,9 @@
 package com.codegym.web_service.Controller.userController;
 
+
 import com.codegym.dao.entity.User;
 import com.codegym.service.UserService;
+import com.codegym.web_service.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,13 +11,20 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@CrossOrigin(value = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
+//@CrossOrigin(value = "*")
 @Controller
 class UserController {
+    @Autowired(required = false)
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     @Autowired
     private UserService userService;
     //-------------------Retrieve All Customers--------------------------------------------------------
