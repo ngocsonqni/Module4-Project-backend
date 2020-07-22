@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
         currentUser.setDeleteFlag(true);
         save(currentUser);
     }
+
+    @Override
+    public User findUserByAccountId(int accountId) {
+        return userRepository.findAllByDeleteFlagIsFalseAndAccount_AccountId(accountId);
+    }
 }

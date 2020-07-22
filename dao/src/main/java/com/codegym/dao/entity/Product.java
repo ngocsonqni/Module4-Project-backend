@@ -1,6 +1,6 @@
 package com.codegym.dao.entity;
-
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -13,16 +13,16 @@ import java.util.Date;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="product_id")
+    @Column(name = "product_id")
     private Integer productId;
 
-    @Column(name="product_name")
+    @Column(name = "product_name")
     private String productName;
 
-    @Column(name="price")
+    @Column(name = "price")
     private Double price;
 
-    @Column(name="expiry_date")
+    @Column(name = "expiry_date")
     private Date expiryDate;
 
     @Column(name = "quantity")
@@ -46,17 +46,17 @@ public class Product {
     private Unit unit;
 
     @ManyToOne
-    @JoinColumn(name="brand_id")
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @Column(name="image_url")
+    @Column(name = "image_url")
     private String imageUrl;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_at")
     private Date createdAt;
-
+    
     public Integer getProductId() {
         return productId;
     }

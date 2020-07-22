@@ -1,11 +1,6 @@
 package com.codegym.web_service.Controller.employeeController;
 
-import com.codegym.dao.entity.Category;
-import com.codegym.dao.entity.Product;
-import com.codegym.dao.entity.Unit;
-import com.codegym.service.CategoryService;
 import com.codegym.service.ProductService;
-import com.codegym.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import com.codegym.dao.entity.Category;
+import com.codegym.dao.entity.Product;
+import com.codegym.dao.entity.Unit;
+import com.codegym.service.CategoryService;
+
+import com.codegym.service.UnitService;
 
 import java.util.List;
 
@@ -38,18 +39,14 @@ public class ProductController {
 
     }
 
-    /**
-     * @return get product by id
-     */
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Integer id) {
         Product product = productService.findById(id);
+
         return product == null ? new ResponseEntity<Product>(HttpStatus.NOT_FOUND) : new ResponseEntity<Product>(product, HttpStatus.OK);
+
     }
 
-    /**
-     * create new product
-     */
     @PostMapping("/create_product")
     public ResponseEntity<Void> createProduct(@RequestBody Product product, UriComponentsBuilder ucBuilder) {
         productService.save(product);
@@ -108,5 +105,35 @@ public class ProductController {
     public ResponseEntity<List<Unit>> listAllUnit() {
         List<Unit> units = unitService.findAll();
         return units.isEmpty() ? new ResponseEntity<List<Unit>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Unit>>(units, HttpStatus.OK);
+    }
+
+    /**
+     *
+     * @return get all brand by category order by brandName
+     */
+    @GetMapping("/listBrandByCategory/{id}")
+    public ResponseEntity<List<Product>> listBrandByCategory(@PathVariable Integer id) {
+        List<Product> brandNameList = productService.findByCategory_CategoryIdAndDeleteFlagIsFalse(id);
+        return brandNameList == null ? new ResponseEntity<List<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<List<Product>>(brandNameList, HttpStatus.OK);
+    }
+
+    /**
+     *
+     * @return get all product by category and brand include pageable
+     */
+    @GetMapping("/listProductByCategoryAndBrand/{categoryId}/{brandId}")
+    public ResponseEntity<Page<Product>> listBrandByCategory(@PathVariable Integer categoryId, @PathVariable Integer brandId, Pageable pageable) {
+        Page<Product> productsFilter = productService.findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(categoryId, brandId, pageable);
+        return productsFilter == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(productsFilter, HttpStatus.OK);
+    }
+
+    /**
+     *
+     * @return get all product by category include pageable
+     */
+    @GetMapping("/listProductByCategory/{categoryId}")
+    public ResponseEntity<Page<Product>> listBrandByCategory(@PathVariable Integer categoryId, Pageable pageable) {
+        Page<Product> productsFilterByCategory = productService.findAllByCategory_CategoryIdAndDeleteFlagIsFalse(categoryId, pageable);
+        return productsFilterByCategory == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(productsFilterByCategory, HttpStatus.OK);
     }
 }
