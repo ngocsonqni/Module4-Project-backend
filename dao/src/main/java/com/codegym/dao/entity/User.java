@@ -4,7 +4,7 @@ package com.codegym.dao.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
+import java.sql.Date;
 @Entity
 @Table(name = "user")
 public class User {
@@ -18,7 +18,7 @@ public class User {
                         message = "Tên khách khàng không được chứa kí tự đặc biệt!")
     private String userName;
     @Column(name = "birthday")
-    private LocalDate birthday;
+    private Date birthday;
     @Column(name = "address")
     @NotBlank(message = "Địa chỉ không được để trống!")
     private String address;
@@ -61,11 +61,11 @@ public class User {
         this.userName = userName;
     }
 
-    public LocalDate getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

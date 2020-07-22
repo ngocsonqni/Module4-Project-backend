@@ -165,7 +165,7 @@ public class AdminController {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         currentAccount.setDeleteFlag(true);
-        currentAccount.setReason(account.getReason());
+//        currentAccount.setReason(account.getReason());
         accountService.save(currentAccount);
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
