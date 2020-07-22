@@ -87,6 +87,18 @@ public class BrandController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //-------------------Delete Many Brand--------------------------------------------------------
+    @DeleteMapping("brand/{id}")
+    public ResponseEntity<Brand> deleteManyBrand(@PathVariable Integer id) {
+        Brand currentBrand = brandService.findById(id);
+        if (currentBrand == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        brandService.delete(currentBrand);
+        brandService.save(currentBrand);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
