@@ -54,11 +54,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/","/listProducts","/brand","/product","/account/create","/customers/").permitAll().and().
+                .antMatchers("**","/listProducts","/brand","/product","/account/create","/customers/").permitAll().and().
 //                authorizeRequests().antMatchers("/admin").permitAll().and().
                 authorizeRequests().antMatchers("/admin","/api/admin/*").access("hasRole('ROLE_ADMIN')").and().
 //                authorizeRequests().antMatchers("/admin").access("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')").and().
-                authorizeRequests().antMatchers("/customers").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')").and().
+                authorizeRequests().antMatchers("/customers//0","/user-manage/*","/user-order/*").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')").and().
                 authorizeRequests().antMatchers("/warehouse").access("hasAnyRole('ROLE_WAREHOUSE','ROLE_ADMIN')").and().
                 authorizeRequests().antMatchers("/partner").access("hasAnyRole('ROLE_PARTNER','ROLE_ADMIN')").
 //                and().authorizeRequests().antMatchers("/user").access("hasRole('ROLE_USER')").
