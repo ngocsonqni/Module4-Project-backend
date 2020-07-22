@@ -21,6 +21,18 @@ public class Order {
     private String orderAddress;
     @Column(name = "total_money")
     private double totalMoney;
+    @Column(name = "ordered_success")
+    private LocalDateTime orderedSuccess;
+    @Column(name = "received")
+    private LocalDateTime received;
+    @Column(name = "taking_orders")
+    private LocalDateTime takingOrders;
+    @Column(name = "hand_over_shipping")
+    private LocalDateTime handOverShipping;
+    @Column(name = "transporting")
+    private LocalDateTime transporting;
+    @Column(name = "successful_delivery")
+    private LocalDateTime successfulDelivery;
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
@@ -31,13 +43,68 @@ public class Order {
     public Order() {
     }
 
-    public Order(int order_id, LocalDateTime order_date, String order_status, String order_address, double total_money, User id_user) {
-        this.orderId = order_id;
-        this.orderDate = order_date;
-        this.orderStatus = order_status;
-        this.orderAddress = order_address;
-        this.totalMoney = total_money;
-        this.user = id_user;
+    public Order(int orderId, LocalDateTime orderDate, String orderStatus, String orderAddress, double totalMoney, LocalDateTime orderedSuccess, LocalDateTime received, LocalDateTime takingOrders, LocalDateTime handOverShipping, LocalDateTime transporting, LocalDateTime successfulDelivery, User user, List<OrderDetail> orderDetailList) {
+        this.orderId = orderId;
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+        this.orderAddress = orderAddress;
+        this.totalMoney = totalMoney;
+        this.orderedSuccess = orderedSuccess;
+        this.received = received;
+        this.takingOrders = takingOrders;
+        this.handOverShipping = handOverShipping;
+        this.transporting = transporting;
+        this.successfulDelivery = successfulDelivery;
+        this.user = user;
+        this.orderDetailList = orderDetailList;
+    }
+
+    public LocalDateTime getOrderedSuccess() {
+        return orderedSuccess;
+    }
+
+    public void setOrderedSuccess(LocalDateTime orderedSuccess) {
+        this.orderedSuccess = orderedSuccess;
+    }
+
+    public LocalDateTime getReceived() {
+        return received;
+    }
+
+    public void setReceived(LocalDateTime received) {
+        this.received = received;
+    }
+
+    public LocalDateTime getTakingOrders() {
+        return takingOrders;
+    }
+
+    public void setTakingOrders(LocalDateTime takingOrders) {
+        this.takingOrders = takingOrders;
+    }
+
+    public LocalDateTime getHandOverShipping() {
+        return handOverShipping;
+    }
+
+    public void setHandOverShipping(LocalDateTime handOverShipping) {
+        this.handOverShipping = handOverShipping;
+    }
+
+    public LocalDateTime getTransporting() {
+        return transporting;
+    }
+
+    public void setTransporting(LocalDateTime transporting) {
+        this.transporting = transporting;
+    }
+
+    public LocalDateTime getSuccessfulDelivery() {
+        return successfulDelivery;
+    }
+
+    public void setSuccessfulDelivery(LocalDateTime successfulDelivery) {
+        this.successfulDelivery = successfulDelivery;
     }
 
     public List<OrderDetail> getOrderDetailList() {

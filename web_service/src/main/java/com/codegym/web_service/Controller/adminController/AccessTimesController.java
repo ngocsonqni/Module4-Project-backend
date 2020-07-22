@@ -40,4 +40,39 @@ public class AccessTimesController {
         return new ResponseEntity<>(accessTimesDTOList, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/access-times-month", method = RequestMethod.GET)
+    public ResponseEntity<List<AccessTimesDTO>> getCountMonth() {
+        List<AccessTimesDTO> accessTimesDTOList = accessTimesRepository.countAccessTimesMonth();
+        int sizeAccessTimesDTOList = accessTimesDTOList.size();
+        for (int i = 0; i < sizeAccessTimesDTOList; i++) {
+            if (sizeAccessTimesDTOList > 12) {
+                accessTimesDTOList.remove(0);
+                sizeAccessTimesDTOList--;
+            } else {
+                break;
+            }
+        }
+        if (accessTimesDTOList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(accessTimesDTOList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/access-times-year", method = RequestMethod.GET)
+    public ResponseEntity<List<AccessTimesDTO>> getCountYear() {
+        List<AccessTimesDTO> accessTimesDTOList = accessTimesRepository.countAccessTimesYear();
+        int sizeAccessTimesDTOList = accessTimesDTOList.size();
+        for (int i = 0; i < sizeAccessTimesDTOList; i++) {
+            if (sizeAccessTimesDTOList > 12) {
+                accessTimesDTOList.remove(0);
+                sizeAccessTimesDTOList--;
+            } else {
+                break;
+            }
+        }
+        if (accessTimesDTOList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(accessTimesDTOList, HttpStatus.OK);
+    }
 }
