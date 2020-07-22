@@ -161,13 +161,24 @@ public class AdminController {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         try {
+            String patternAccountName = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,}$";
+            String patternAccountPassword = "^[a-zA-Z0-9\\$\\.\\/]{1,}$";
             currentAccount.setAccountId(account.getAccountId());
-            currentAccount.setAccountName(account.getAccountName());
-            currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+            if (account.getAccountName().matches(patternAccountName)) {
+                currentAccount.setAccountName(account.getAccountName());
+            } else {
+                return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+            }
+            if (account.getAccountPassword().matches(patternAccountPassword)) {
+                currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+            } else {
+                return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+            }
             currentAccount.setRole(account.getRole());
             currentAccount.setDeleteFlag(account.getDeleteFlag());
             accountService.save(currentAccount);
         } catch (Exception e) {
+            return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
