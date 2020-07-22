@@ -5,7 +5,6 @@ import com.codegym.dao.repository.ProductRepository;
 import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +15,23 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public List<Product> findAllByDeleteFlagFalsePaging(int pageNo, int pageSize) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<Product> pagedResult = productRepository.findAllByDeleteFlagFalse(paging);
-        return pagedResult.toList();
+    public List<Product> findByCategory_CategoryIdAndDeleteFlagIsFalse(Integer categoryId) {
+        return productRepository.findDistinctByCategory_CategoryIdAndDeleteFlagIsFalseOrderByBrand(categoryId);
     }
 
     @Override
     public Page<Product> findAllByDeleteFlagFalsePaging(Pageable pageable) {
         return productRepository.findAllByDeleteFlagFalse(pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, Pageable pageable) {
+        return  productRepository.findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(categoryId, brandId, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByCategory_CategoryIdAndDeleteFlagIsFalse(Integer categoryId, Pageable pageable) {
+        return productRepository.findAllByCategory_CategoryIdAndDeleteFlagIsFalse(categoryId, pageable);
     }
 
     @Override
