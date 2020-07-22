@@ -1,6 +1,6 @@
 package com.codegym.web_service.security;
 
-import com.codegym.service.Impl.AccountServiceImpl;
+import com.codegym.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
