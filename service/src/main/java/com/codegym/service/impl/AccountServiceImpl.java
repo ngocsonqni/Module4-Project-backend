@@ -1,4 +1,4 @@
-package com.codegym.service.impl;
+package com.codegym.service.Impl;
 
 import com.codegym.dao.DTO.AccountDTO;
 import com.codegym.dao.entity.Account;

@@ -1,4 +1,4 @@
-package com.codegym.service.impl;
+package com.codegym.service.Impl;
 
 import com.codegym.dao.entity.AccessTimes;
 import com.codegym.dao.repository.AccessTimesRepository;

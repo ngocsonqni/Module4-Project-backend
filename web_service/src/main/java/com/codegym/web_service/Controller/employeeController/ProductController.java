@@ -1,5 +1,6 @@
 package com.codegym.web_service.Controller.employeeController;
 
+import com.codegym.dao.DTO.ProductProjection;
 import com.codegym.dao.entity.Category;
 import com.codegym.dao.entity.Product;
 import com.codegym.dao.entity.Unit;
@@ -27,6 +28,8 @@ public class ProductController {
     private UnitService unitService;
     @Autowired
     private CategoryService categoryService;
+
+    private ProductProjection brandNameDTO;
 
     /**
      * @return get all product
@@ -108,5 +111,35 @@ public class ProductController {
     public ResponseEntity<List<Unit>> listAllUnit() {
         List<Unit> units = unitService.findAll();
         return units.isEmpty() ? new ResponseEntity<List<Unit>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Unit>>(units, HttpStatus.OK);
+    }
+
+    /**
+     *
+     * @return get all brand by category order by brandName
+     */
+    @GetMapping("/listBrandByCategory/{id}")
+    public ResponseEntity<List<Product>> listBrandByCategory(@PathVariable Integer id) {
+        List<Product> brandNameList = productService.findByCategory_CategoryIdAndDeleteFlagIsFalse(id);
+        return brandNameList == null ? new ResponseEntity<List<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<List<Product>>(brandNameList, HttpStatus.OK);
+    }
+
+    /**
+     *
+     * @return get all product by category and brand include pageable
+     */
+    @GetMapping("/listProductByCategoryAndBrand/{categoryId}/{brandId}")
+    public ResponseEntity<Page<Product>> listBrandByCategory(@PathVariable Integer categoryId, @PathVariable Integer brandId, Pageable pageable) {
+        Page<Product> productsFilter = productService.findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(categoryId, brandId, pageable);
+        return productsFilter == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(productsFilter, HttpStatus.OK);
+    }
+
+    /**
+     *
+     * @return get all product by category include pageable
+     */
+    @GetMapping("/listProductByCategory/{categoryId}")
+    public ResponseEntity<Page<Product>> listBrandByCategory(@PathVariable Integer categoryId, Pageable pageable) {
+        Page<Product> productsFilterByCategory = productService.findAllByCategory_CategoryIdAndDeleteFlagIsFalse(categoryId, pageable);
+        return productsFilterByCategory == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(productsFilterByCategory, HttpStatus.OK);
     }
 }
