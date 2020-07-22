@@ -28,9 +28,13 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
-    /**
-     * @return get all product
-     */
+    @GetMapping("/listProducts/{pageNo}/{pageSize}")
+    public ResponseEntity<List<Product>> listProducts(@PathVariable int pageNo, @PathVariable int pageSize) {
+        List<Product> products = productService.findAllByDeleteFlagFalsePaging(pageNo, pageSize);
+        return products.isEmpty() ? new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+    }
+
+
     @GetMapping("/listProducts")
     public ResponseEntity<Page<Product>> listProducts(Pageable pageable) {
         Page<Product> products = productService.findAllByDeleteFlagFalsePaging(pageable);
@@ -38,18 +42,15 @@ public class ProductController {
 
     }
 
-    /**
-     * @return get product by id
-     */
+
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Integer id) {
         Product product = productService.findById(id);
+
         return product == null ? new ResponseEntity<Product>(HttpStatus.NOT_FOUND) : new ResponseEntity<Product>(product, HttpStatus.OK);
+
     }
 
-    /**
-     * create new product
-     */
     @PostMapping("/create_product")
     public ResponseEntity<Void> createProduct(@RequestBody Product product, UriComponentsBuilder ucBuilder) {
         productService.save(product);

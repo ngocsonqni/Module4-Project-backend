@@ -18,6 +18,9 @@ public class Bill {
     @Column(name = "create_date")
     private Date createDate;
 
+    @Column(name = "edit_latest_date")
+    private Date editLatestDate;
+
     @Column(name = "bill_status")
     private String billStatus;
 
@@ -30,31 +33,31 @@ public class Bill {
     @Column(name = "payment_status")
     private String paymentStatus;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "id_type_bill")
     private TypeBill idTypeBill;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "id_storage_location")
     private StorageLocation idStorageLocation;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "id_ware_house")
     private WareHouse idWareHouse;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "id_transportation")
     private Transportation idTransportation;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "id_pay")
     private Pay idPay;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "id_distributor")
     private Distributor idDistributor;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "id_employee")
     private Employee idEmployee;
 
@@ -62,6 +65,14 @@ public class Bill {
     private Boolean deleteFlag;
 
     public Bill() {
+    }
+
+    public Date getEditLatestDate() {
+        return editLatestDate;
+    }
+
+    public void setEditLatestDate(Date editLatestDate) {
+        this.editLatestDate = editLatestDate;
     }
 
     public Integer getId() {
