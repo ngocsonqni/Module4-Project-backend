@@ -86,17 +86,6 @@ public class BrandController {
         brandService.save(currentBrand);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    //-------------------Delete Many Brand--------------------------------------------------------
-    @DeleteMapping("/brand/{id}")
-    public ResponseEntity<Brand> deleteManyBrand(@PathVariable Integer id) {
-        Brand brand = brandService.findById(id);
-        if (brand == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        brandService.delete(brand);
-        brandService.save(brand);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
     //-------------------Delete Many Brand--------------------------------------------------------
     @DeleteMapping("brand/{id}")
