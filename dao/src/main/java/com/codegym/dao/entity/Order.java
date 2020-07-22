@@ -27,7 +27,7 @@ public class Order {
     private LocalDateTime received;
     @Column(name = "taking_orders")
     private LocalDateTime takingOrders;
-    @Column(name = "hand_over_shipping")
+    @Column(name ="hand_over_shipping")
     private LocalDateTime handOverShipping;
     @Column(name = "transporting")
     private LocalDateTime transporting;
