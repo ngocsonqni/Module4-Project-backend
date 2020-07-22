@@ -13,8 +13,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
 //@CrossOrigin(value = "*")
@@ -63,7 +69,7 @@ class UserController {
     //-------------------Edit a Customer--------------------------------------------------------
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<User> updateCustomer(@PathVariable("id") int id, @RequestBody User user) {
+    public ResponseEntity<User> updateCustomer(@Valid @PathVariable("id") int id, @RequestBody User user) {
         User currentUser = userService.findGetId(id);
 
         if (currentUser == null) {
@@ -101,5 +107,17 @@ class UserController {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

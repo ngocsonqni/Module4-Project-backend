@@ -49,7 +49,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(String accountName, String accountPassword, boolean deleteFlag, String reason, Role role) {
+    public Account(String accountName, String accountPassword, boolean deleteFlag, Role role) {
         this.accountName = accountName;
         this.accountPassword = accountPassword;
         this.deleteFlag = deleteFlag;
@@ -93,7 +93,7 @@ public class Account {
     public boolean isDeleteFlag() {
         return deleteFlag;
     }
-//
+
 //    public String getReason() {
 //        return reason;
 //    }
