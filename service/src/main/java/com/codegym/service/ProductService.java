@@ -12,4 +12,10 @@ public interface ProductService {
     Product findById(Integer id);
     void save(Product product);
     void remove(Product product);
+
+    List<Product> findAll();
+
+    List<Product> findAllProductByCategoryId(Integer categoryId);
+  
+    List<Product> findAllProductByBrandIdList(List<Integer> brandIdList);
 }

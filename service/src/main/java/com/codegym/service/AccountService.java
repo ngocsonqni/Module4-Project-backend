@@ -13,7 +13,6 @@ import java.util.List;
 public interface AccountService {
     UserDetails loadAccountByAccountName(String accountName);
 
-    //    UserDetails loadUserByUsername(String accountName);
     List<AccountDTO> findAll();
 
     List<Account> findAllAccount();
@@ -25,5 +24,7 @@ public interface AccountService {
     Account findAccountByName(String name);
 
     Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String search);
+
+    Page<Account> pageFindALLSearchRoleOfCourseOfAdmin(Pageable pageable, String search);
 
 }

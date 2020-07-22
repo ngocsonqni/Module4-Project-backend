@@ -35,106 +35,70 @@ public class BillController {
     @RequestMapping(value = "/storageLocations/", method = RequestMethod.GET)
     public ResponseEntity<List<StorageLocation>> listAllStorageLocations() {
         List<StorageLocation> storageLocations = storageLocationService.findAll();
-        if (storageLocations.isEmpty()) {
-            return new ResponseEntity<List<StorageLocation>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<StorageLocation>>(storageLocations, HttpStatus.OK);
+        return storageLocations.isEmpty() ? new ResponseEntity<List<StorageLocation>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<StorageLocation>>(storageLocations, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
     //-------------------Find Single StorageLocation--------------------------------------------------------
 
     @RequestMapping(value = "/storageLocations/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StorageLocation> getStorageLocation(@PathVariable("id") Integer id) {
-        System.out.println("Fetching StorageLocation with id " + id);
         StorageLocation storageLocation = storageLocationService.findById(id);
-        if (storageLocation == null) {
-            System.out.println("StorageLocation with id " + id + " not found");
-            return new ResponseEntity<StorageLocation>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<StorageLocation>(storageLocation, HttpStatus.OK);
+        return storageLocation == null ? new ResponseEntity<StorageLocation>(HttpStatus.NOT_FOUND) : new ResponseEntity<StorageLocation>(storageLocation, HttpStatus.OK);
     }
     //-------------------Find All Transportations--------------------------------------------------------
 
     @RequestMapping(value = "/transportations/", method = RequestMethod.GET)
     public ResponseEntity<List<Transportation>> listAllTransportations() {
         List<Transportation> transportation = transportationService.findAll();
-        if (transportation.isEmpty()) {
-            return new ResponseEntity<List<Transportation>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<Transportation>>(transportation, HttpStatus.OK);
+        return transportation.isEmpty() ? new ResponseEntity<List<Transportation>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Transportation>>(transportation, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
     //-------------------Find Single Transportation--------------------------------------------------------
 
     @RequestMapping(value = "/transportations/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Transportation> getTransportation(@PathVariable("id") Integer id) {
-        System.out.println("Fetching Transportation with id " + id);
         Transportation transportation = transportationService.findById(id);
-        if (transportation == null) {
-            System.out.println("Transportation with id " + id + " not found");
-            return new ResponseEntity<Transportation>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Transportation>(transportation, HttpStatus.OK);
+        return transportation == null ? new ResponseEntity<Transportation>(HttpStatus.NOT_FOUND) : new ResponseEntity<Transportation>(transportation, HttpStatus.OK);
     }
     //-------------------Find All TypeBills--------------------------------------------------------
 
     @RequestMapping(value = "/typeBills/", method = RequestMethod.GET)
     public ResponseEntity<List<TypeBill>> listAllTypeBills() {
         List<TypeBill> typeBills = typeBillService.findAll();
-        if (typeBills.isEmpty()) {
-            return new ResponseEntity<List<TypeBill>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<TypeBill>>(typeBills, HttpStatus.OK);
+        return typeBills.isEmpty() ? new ResponseEntity<List<TypeBill>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<TypeBill>>(typeBills, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
     //-------------------Find Single TypeBill--------------------------------------------------------
 
     @RequestMapping(value = "/typeBills/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TypeBill> getTypeBill(@PathVariable("id") Integer id) {
-        System.out.println("Fetching TypeBill with id " + id);
         TypeBill typeBill = typeBillService.findById(id);
-        if (typeBill == null) {
-            System.out.println("TypeBill with id " + id + " not found");
-            return new ResponseEntity<TypeBill>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<TypeBill>(typeBill, HttpStatus.OK);
+        return typeBill == null ? new ResponseEntity<TypeBill>(HttpStatus.NOT_FOUND) : new ResponseEntity<TypeBill>(typeBill, HttpStatus.OK);
     }
     //-------------------Find All wareHouses--------------------------------------------------------
 
     @RequestMapping(value = "/wareHouses/", method = RequestMethod.GET)
     public ResponseEntity<List<WareHouse>> listAllWareHouses() {
         List<WareHouse> wareHouses = wareHouseService.findAll();
-        if (wareHouses.isEmpty()) {
-            return new ResponseEntity<List<WareHouse>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<WareHouse>>(wareHouses, HttpStatus.OK);
+        return wareHouses.isEmpty() ? new ResponseEntity<List<WareHouse>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<WareHouse>>(wareHouses, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
     //-------------------Find Single TypeBill--------------------------------------------------------
 
     @RequestMapping(value = "/wareHouses/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WareHouse> getWareHouse(@PathVariable("id") Integer id) {
         WareHouse wareHouse = wareHouseService.findById(id);
-        if (wareHouse == null) {
-            return new ResponseEntity<WareHouse>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<WareHouse>(wareHouse, HttpStatus.OK);
+        return wareHouse == null ? new ResponseEntity<WareHouse>(HttpStatus.NOT_FOUND) : new ResponseEntity<WareHouse>(wareHouse, HttpStatus.OK);
     }
     //-------------------Find All Pays--------------------------------------------------------
 
     @RequestMapping(value = "/pays/", method = RequestMethod.GET)
     public ResponseEntity<List<Pay>> listAllPays() {
         List<Pay> pays = payService.findAll();
-        if (pays.isEmpty()) {
-            return new ResponseEntity<List<Pay>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<Pay>>(pays, HttpStatus.OK);
+        return pays.isEmpty() ? new ResponseEntity<List<Pay>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Pay>>(pays, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
     //-------------------Find Single Pay--------------------------------------------------------
 
     @RequestMapping(value = "/pays/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Pay> getPay(@PathVariable("id") Integer id) {
         Pay pay = payService.findById(id);
-        if (pay == null) {
-            return new ResponseEntity<Pay>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Pay>(pay, HttpStatus.OK);
+        return pay == null ? new ResponseEntity<Pay>(HttpStatus.NOT_FOUND) : new ResponseEntity<Pay>(pay, HttpStatus.OK);
     }
 
 
@@ -143,21 +107,11 @@ public class BillController {
     @RequestMapping(value = "/bills", method = RequestMethod.GET)
     public ResponseEntity<List<Bill>> listAllBills() {
         List<Bill> bills = billService.findAllByDeleteFlagFalse();
-        if (bills.isEmpty()) {
-            return new ResponseEntity<List<Bill>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<Bill>>(bills, HttpStatus.OK);
+        return bills.isEmpty() ? new ResponseEntity<List<Bill>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Bill>>(bills, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
 
     //-------------------Create a Bill--------------------------------------------------------
 
-    //    @PostMapping("/bills/create-bill")
-//    public ResponseEntity<Bill> createBill(@RequestBody Bill bill) {
-//        billService.save(bill);
-////        HttpHeaders headers = new HttpHeaders();
-////        headers.setLocation(ucBuilder.path("/bill/{id}").buildAndExpand(bill.getId()).toUri());
-//        return new ResponseEntity<Bill>(HttpStatus.OK);
-//    }
     @RequestMapping(value = "/bills/create-bill", method = RequestMethod.POST)
     public ResponseEntity<Void> createBill(@RequestBody Bill bill, UriComponentsBuilder uriComponentsBuilder) {
         billService.save(bill);
@@ -171,10 +125,7 @@ public class BillController {
     @RequestMapping(value = "/bills/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Bill> getBill(@PathVariable("id") Integer id) {
         Bill bill = billService.findById(id);
-        if (bill == null) {
-            return new ResponseEntity<Bill>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Bill>(bill, HttpStatus.OK);
+        return bill == null ? new ResponseEntity<Bill>(HttpStatus.NOT_FOUND) : new ResponseEntity<Bill>(bill, HttpStatus.OK);
     }
 
 
@@ -190,6 +141,7 @@ public class BillController {
         currentBill.setId(bill.getId());
         currentBill.setBillName(bill.getBillName());
         currentBill.setCreateDate(bill.getCreateDate());
+        currentBill.setEditLatestDate(bill.getEditLatestDate());
         currentBill.setBillStatus(bill.getBillStatus());
         currentBill.setProcessingStatus(bill.getProcessingStatus());
         currentBill.setShippingStatus(bill.getShippingStatus());
@@ -222,9 +174,6 @@ public class BillController {
     @RequestMapping(value = "/dist/list", method = RequestMethod.GET)
     public ResponseEntity<List<Distributor>> listAllDistributor() {
         List<Distributor> distributors = distributorService.findAll();
-        if (distributors.isEmpty()) {
-            return new ResponseEntity<List<Distributor>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<Distributor>>(distributors, HttpStatus.OK);
+        return distributors.isEmpty() ? new ResponseEntity<List<Distributor>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Distributor>>(distributors, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
 }
