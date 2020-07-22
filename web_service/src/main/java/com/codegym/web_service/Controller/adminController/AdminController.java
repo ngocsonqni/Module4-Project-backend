@@ -1,9 +1,9 @@
 package com.codegym.web_service.Controller.adminController;
 
-import com.codegym.dao.entity.*;
-import com.codegym.service.*;
-import com.codegym.web_service.security.JwtTokenUtil;
+import java.net.UnknownHostException;
+import java.util.List;
 
+import com.codegym.web_service.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,15 +15,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import com.codegym.dao.entity.Account;
+import com.codegym.dao.entity.Employee;
+import com.codegym.dao.entity.Role;
+import com.codegym.dao.entity.User;
+import com.codegym.service.AccountService;
+import com.codegym.service.EmployeeService;
+import com.codegym.service.RoleService;
+import com.codegym.service.UserService;
 
 @RestController
 //@CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -44,8 +46,6 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AccessTimesService accessTimesService;
 
     //------------------------------- list role -------------------------
     @RequestMapping(value = "/role", method = RequestMethod.GET)
@@ -78,39 +78,13 @@ public class AdminController {
     }
 
     //---------------------- list account ---------------------------------
-    @RequestMapping(value = "/account", method = RequestMethod.GET, params = {"page", "size", "search"})
+    @RequestMapping(value = "/account", method = RequestMethod.GET, params = {"page", "size", "search", "role"})
     public ResponseEntity<Page<Account>> listAllAccount(@RequestParam("page") int page,
                                                         @RequestParam("size") int size,
-                                                        @RequestParam("search") String search) throws UnknownHostException {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
-        String currentTime = sdf.format(date);
-        boolean check = false;
-        List<AccessTimes> accessTimesList = accessTimesService.findAll();
-        int sizeAccessTimesList = accessTimesList.size();
-        InetAddress localhost = InetAddress.getLocalHost();
-        for (int i = 0; i < sizeAccessTimesList; i++) {
-            if (accessTimesList.get(i).getDate().toString().equals(currentTime)) {
-                if (!accessTimesList.get(i).getIpUser().equals(localhost.getHostAddress())) {
-                    check = true;
-                    break;
-                }
-            } else {
-                if (!accessTimesList.get(sizeAccessTimesList - 1).getDate().toString().equals(currentTime)) {
-                    check = true;
-                    break;
-                }
-            }
-        }
-        if (sizeAccessTimesList == 0) {
-            check = true;
-        }
-        if (check) {
-            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
-        }
-
+                                                        @RequestParam("search") String search,
+                                                        @RequestParam("role") String nameRole) {
         Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
-                , search);
+                , nameRole, search);
 
         if (accountPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -165,7 +139,7 @@ public class AdminController {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         currentAccount.setDeleteFlag(true);
-        currentAccount.setReason(account.getReason());
+//        currentAccount.setReason(account.getReason());
         accountService.save(currentAccount);
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }

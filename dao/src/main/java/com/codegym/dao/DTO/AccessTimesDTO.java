@@ -3,6 +3,6 @@ package com.codegym.dao.DTO;
 import java.util.Date;
 
 public interface AccessTimesDTO {
-     Date getDates();
+     String getDates();
      Integer getCounts();
 }
