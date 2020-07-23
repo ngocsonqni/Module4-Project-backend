@@ -2,6 +2,7 @@ package com.codegym.web_service.Controller.adminController;
 
 import com.codegym.dao.entity.*;
 import com.codegym.service.*;
+import com.codegym.web_service.email.SendEmail;
 import com.codegym.web_service.security.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,8 @@ public class AdminController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AccessTimesService accessTimesService;
+    @Autowired
+    private SendEmail sendEmail;
 
     //------------------------------- list role -------------------------
     @RequestMapping(value = "/role", method = RequestMethod.GET)
@@ -172,7 +175,7 @@ public class AdminController {
 
     //--------------------- update account --------------------------------------------------
     @RequestMapping(value = "/account/update/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Account> updateAccount(@PathVariable("id") int id, @RequestBody Account account) {
+    public ResponseEntity<Account> updateAccount(@PathVariable("id") int id, @RequestBody Account account) throws MessagingException {
         Account currentAccount = accountService.findAccountById(id);
         if (currentAccount == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
@@ -194,8 +197,15 @@ public class AdminController {
             currentAccount.setRole(account.getRole());
             currentAccount.setDeleteFlag(account.getDeleteFlag());
             accountService.save(currentAccount);
+
+
         } catch (Exception e) {
             return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (account.getAccountName().contains("_")) {
+            sendEmail.sendEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
+        } else {
+            sendEmail.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
         }
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
