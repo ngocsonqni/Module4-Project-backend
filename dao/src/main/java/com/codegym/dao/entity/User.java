@@ -3,7 +3,9 @@ package com.codegym.dao.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
+import javax.validation.constraints.Pattern;
+import java.sql.Date;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -12,16 +14,23 @@ public class User {
     @Column(name = "id_user")
     private int id;
     @Column(name = "user_name")
+    @NotBlank(message = "Tên khách hàng không được để trống!")
+    @Pattern(regexp = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế][a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế ]*",
+            message = "Tên khách khàng không được chứa kí tự đặc biệt!")
     private String userName;
     @Column(name = "birthday")
-    private LocalDate birthday;
+    private Date birthday;
     @Column(name = "address")
+    @NotBlank(message = "Địa chỉ không được để trống!")
     private String address;
     @Column(name = "email")
-    @NotBlank(message = " emailkhông được để trống")
+    @NotBlank(message = " Email không được để trống!")
+
+    @Pattern(regexp = "[A-Za-z0-9]+(\\.?[A-Za-z0-9])*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)", message = "Số điện thoại không đúng định dạng (090xxxxxxx or 091xxxxxxx or (84)+90xxxxxxx or (84)+91xxxxxxx, x là số")
     private String email;
     @Column(name = "phone")
-    @NotBlank(message = " phonekhông được để trống")
+    @NotBlank(message = " Số điện thoại không được để trống!")
+    @Pattern(regexp = "(090|091|\\(84\\)\\+90|\\(84\\)\\+91)[0-9]{7}", message = "Email không đúng định dạng (ví dụ: son.94@gmail.com)")
     private String phone;
     @Column(name = "gender")
     private String gender;
@@ -54,11 +63,11 @@ public class User {
         this.userName = userName;
     }
 
-    public LocalDate getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

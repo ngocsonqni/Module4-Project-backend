@@ -5,6 +5,8 @@ import com.codegym.dao.entity.Brand;
 import com.codegym.dao.repository.BillRepository;
 import com.codegym.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,11 @@ import java.util.List;
 public class BillServiceImpl implements BillService {
     @Autowired
     private BillRepository billRepository;
+
+    @Override
+    public Page<Bill> findAllByDeleteFlagFalsePaging(Pageable pageable) {
+        return billRepository.findAllByDeleteFlagFalse(pageable);
+    }
 
     @Override
     public List<Bill> findAllByDeleteFlagFalse() {

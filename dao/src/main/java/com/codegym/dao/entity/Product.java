@@ -1,5 +1,4 @@
 package com.codegym.dao.entity;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;

@@ -1,9 +1,11 @@
 package com.codegym.web_service.Controller.adminController;
 
-import com.codegym.dao.entity.*;
 import com.codegym.service.*;
-import com.codegym.web_service.email.SendEmail;
+import com.codegym.web_service.AsyncService.AsyncService;
 import com.codegym.web_service.security.JwtTokenUtil;
+
+import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,14 +22,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+
+import com.codegym.dao.entity.Account;
+import com.codegym.dao.entity.Employee;
+import com.codegym.dao.entity.Role;
+import com.codegym.dao.entity.User;
+import com.codegym.service.AccountService;
+import com.codegym.service.EmployeeService;
+import com.codegym.service.RoleService;
+import com.codegym.service.UserService;
 
 @RestController
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
 @RequestMapping("")
 public class AdminController {
@@ -48,7 +53,7 @@ public class AdminController {
     @Autowired
     private AccessTimesService accessTimesService;
     @Autowired
-    private SendEmail sendEmail;
+    private AsyncService asyncDeleteAccount;
 
     //------------------------------- list role -------------------------
     @RequestMapping(value = "/role", method = RequestMethod.GET)
@@ -81,53 +86,14 @@ public class AdminController {
     }
 
     //---------------------- list account ---------------------------------
-    @RequestMapping(value = "/account", method = RequestMethod.GET, params = {"page", "size", "search"})
+    @RequestMapping(value = "/account", method = RequestMethod.GET, params = {"page", "size", "search", "role"})
     public ResponseEntity<Page<Account>> listAllAccount(@RequestParam("page") int page,
                                                         @RequestParam("size") int size,
-                                                        @RequestParam("search") String search) throws UnknownHostException {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
-        String currentTime = sdf.format(date);
-        boolean check = false;
-        List<AccessTimes> accessTimesList = accessTimesService.findAll();
-        int sizeAccessTimesList = accessTimesList.size();
-        InetAddress localhost = InetAddress.getLocalHost();
-        for (int i = 0; i < sizeAccessTimesList; i++) {
-            if (accessTimesList.get(i).getDate().toString().equals(currentTime)) {
-                if (!accessTimesList.get(i).getIpUser().equals(localhost.getHostAddress())) {
-                    check = true;
-                    break;
-                }
-            } else {
-                if (!accessTimesList.get(sizeAccessTimesList - 1).getDate().toString().equals(currentTime)) {
-                    check = true;
-                    break;
-                }
-            }
-        }
-        if (sizeAccessTimesList == 0) {
-            check = true;
-        }
-        if (check) {
-            accessTimesService.add(new AccessTimes(new Date(), localhost.getHostAddress().trim()));
-        }
-
+                                                        @RequestParam("search") String search,
+                                                        @RequestParam("role") String nameRole) {
         Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
-                , search);
+                , nameRole, search);
 
-        if (accountPage.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(accountPage, HttpStatus.OK);
-    }
-
-    //---------------------- list account with role ---------------------------------
-    @RequestMapping(value = "/accountrole", method = RequestMethod.GET, params = {"page", "size", "search"})
-    public ResponseEntity<Page<Account>> listAllAccountWithRole(@RequestParam("page") int page,
-                                                                @RequestParam("size") int size,
-                                                                @RequestParam("search") String search) throws UnknownHostException {
-        Page<Account> accountPage = accountService.pageFindALLSearchRoleOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
-                , search);
         if (accountPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -162,7 +128,7 @@ public class AdminController {
 
     //--------------------- delete account --------------------------------------------------
     @RequestMapping(value = "/account/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Account> deleteAccount(@PathVariable("id") int id, @RequestBody Account account) {
+    public ResponseEntity<Account> deleteAccount(@PathVariable("id") int id, @RequestBody Account account) throws MessagingException {
         Account currentAccount = accountService.findAccountById(id);
         if (currentAccount == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
@@ -170,6 +136,12 @@ public class AdminController {
         currentAccount.setDeleteFlag(true);
         currentAccount.setReason(account.getReason());
         accountService.save(currentAccount);
+        if (account.getAccountName().contains("_")) {
+            asyncDeleteAccount.sendDeleteEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
+        } else {
+            asyncDeleteAccount.sendDeleteEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
+        }
+        asyncDeleteAccount.deleteAccount(currentAccount);
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
 
@@ -197,15 +169,13 @@ public class AdminController {
             currentAccount.setRole(account.getRole());
             currentAccount.setDeleteFlag(account.getDeleteFlag());
             accountService.save(currentAccount);
-
-
         } catch (Exception e) {
             return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
         }
         if (account.getAccountName().contains("_")) {
-            sendEmail.sendEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
+            asyncDeleteAccount.sendEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
         } else {
-            sendEmail.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
+            asyncDeleteAccount.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
         }
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
