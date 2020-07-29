@@ -1,5 +1,4 @@
 package com.codegym.dao.entity;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -57,7 +56,7 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_at")
     private Date createdAt;
-    
+
     public Integer getProductId() {
         return productId;
     }

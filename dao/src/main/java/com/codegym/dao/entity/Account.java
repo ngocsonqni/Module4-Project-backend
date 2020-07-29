@@ -3,7 +3,6 @@ package com.codegym.dao.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -33,7 +32,7 @@ public class Account {
     @Column(name = "reason")
     String reason;
 
-//    @NotNull
+    //    @NotNull
     @ManyToOne
     @JoinColumn(name = "role_id")
     public Role role;
@@ -49,7 +48,8 @@ public class Account {
     public Account() {
     }
 
-    public Account(String accountName, String accountPassword, boolean deleteFlag, String reason, Role role) {
+    public Account(String accountName, String accountPassword, boolean deleteFlag, String reason,
+                   Role role) {
         this.accountName = accountName;
         this.accountPassword = accountPassword;
         this.deleteFlag = deleteFlag;
