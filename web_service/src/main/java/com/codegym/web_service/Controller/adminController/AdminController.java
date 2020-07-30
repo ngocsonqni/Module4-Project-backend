@@ -136,7 +136,7 @@ public class AdminController {
         currentAccount.setDeleteFlag(true);
         currentAccount.setReason(account.getReason());
         accountService.save(currentAccount);
-        if (account.getAccountName().contains("_")) {
+        if (account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE")) {
             asyncDeleteAccount.sendDeleteEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
         } else {
             asyncDeleteAccount.sendDeleteEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
@@ -172,7 +172,7 @@ public class AdminController {
         } catch (Exception e) {
             return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
         }
-        if (account.getAccountName().contains("_")) {
+        if (account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE")) {
             asyncDeleteAccount.sendEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
         } else {
             asyncDeleteAccount.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
@@ -201,4 +201,16 @@ public class AdminController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
+    //---------------------- list employee ---------------------------------
+    @RequestMapping(value = "/employee/page-list", method = RequestMethod.GET, params = {"page", "size", "search"})
+    public ResponseEntity<Page<Employee>> listAllEmployee(@RequestParam("page") int page,
+                                                          @RequestParam("size") int size,
+                                                          @RequestParam("search") String search) {
+        Page<Employee> employeePage = employeeService.findAllEmployeeWithPage(search, PageRequest.of(page, size, Sort.by("id").ascending()));
+
+        if (employeePage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(employeePage, HttpStatus.OK);
+    }
 }
