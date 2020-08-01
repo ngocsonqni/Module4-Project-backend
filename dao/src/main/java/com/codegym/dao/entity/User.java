@@ -1,8 +1,12 @@
 package com.codegym.dao.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.util.List;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
@@ -43,6 +47,9 @@ public class User {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @OneToMany(mappedBy = "id.user")
+    @JsonManagedReference
+    private List<Cart> cartList;
 
     public User() {
     }
@@ -133,5 +140,17 @@ public class User {
 
     public void setDeleteFlag(boolean deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public List<Cart> getCartList() {
+        return cartList;
+    }
+
+    public void setCartList(List<Cart> cartList) {
+        this.cartList = cartList;
     }
 }
