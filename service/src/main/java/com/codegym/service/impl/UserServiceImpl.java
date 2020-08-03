@@ -44,4 +44,9 @@ public class UserServiceImpl implements UserService {
     public User findUserByAccountId(int accountId) {
         return userRepository.findAllByDeleteFlagIsFalseAndAccount_AccountId(accountId);
     }
+
+    @Override
+    public Page<User> getAllUser(String name, String birthday, String phone, String email, String value1, String value2, Pageable page) {
+        return userRepository.getAllUser(name, birthday, phone, email,value1,value2, page);
+    }
 }

@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -22,8 +24,8 @@ public class User {
     @Pattern(regexp = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế][a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế ]*",
             message = "Tên khách khàng không được chứa kí tự đặc biệt!")
     private String userName;
-    @Column(name = "birthday")
-    private Date birthday;
+    @Column(name = "birthday",columnDefinition = "DATE")
+    private LocalDate birthday;
     @Column(name = "address")
     @NotBlank(message = "Địa chỉ không được để trống!")
     private String address;
@@ -50,7 +52,8 @@ public class User {
     @OneToMany(mappedBy = "id.user")
     @JsonManagedReference
     private List<Cart> cartList;
-
+    @OneToMany(mappedBy = "user")
+    private Set<Order> listOrder = new HashSet<>();
     public User() {
     }
 
@@ -70,12 +73,20 @@ public class User {
         this.userName = userName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public Set<Order> getListOrder() {
+        return listOrder;
+    }
+
+    public void setListOrder(Set<Order> listOrder) {
+        this.listOrder = listOrder;
     }
 
     public String getAddress() {

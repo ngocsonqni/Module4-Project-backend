@@ -1,11 +1,14 @@
 package com.codegym.web_service.Controller.userController;
 
 
+import com.codegym.dao.DTO.UserDTO;
+import com.codegym.dao.entity.Order;
 import com.codegym.dao.entity.User;
 import com.codegym.service.UserService;
 import com.codegym.web_service.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
@@ -34,14 +39,46 @@ class UserController {
     @Autowired
     private UserService userService;
     //-------------------Retrieve All Customers--------------------------------------------------------
-
-    @RequestMapping(value = "/customers", method = RequestMethod.GET)
-    public ResponseEntity<Page<User>> listAllUserByDeleteFlagIsFalse(Pageable pageable) {
-        Page<User> users = userService.findAllUserByDeleteFlagIsFalse(pageable);
-        if (users.isEmpty()) {
-            return new ResponseEntity<Page<User>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+    @GetMapping(value = "/customers", params = {"page",
+            "size",
+            "search",
+            "value1",
+            "value2"
+    })
+    public ResponseEntity<List<UserDTO>> listAllUserByDeleteFlagIsFalse(@RequestParam("page") int page,
+                                                                        @RequestParam("size") int size,
+                                                                        @RequestParam("search") String search,
+                                                                        @RequestParam(value = "value1",defaultValue = "1900-01-01") String value1,
+                                                                        @RequestParam(value = "value2",defaultValue = "3000-01-01") String value2
+    ) {
+        Page<User> users = userService.getAllUser("%" + search + "%", "%" + search + "%", "%" + search + "%", "%" + search + "%", value1, value2, PageRequest.of(page, size));
+        List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+        double totalFull = 0;
+        for (User user : users) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
+            userDTO.setUserName(user.getUserName());
+            userDTO.setBirthday(user.getBirthday());
+            userDTO.setAddress(user.getAddress());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setPhone(user.getPhone());
+            userDTO.setGender(user.getGender());
+            userDTO.setImageUrl(user.getImageUrl());
+            userDTO.setDeleteFlag(user.getDeleteFlag());
+            userDTO.setAccount(user.getAccount());
+            userDTO.setListOrder(user.getListOrder());
+            for (Order total : user.getListOrder()) {
+                totalFull += total.getTotalMoney();
+            }
+            userDTO.setTotal(totalFull);
+            totalFull = 0;
+            usersDTO.add(userDTO);
         }
-        return new ResponseEntity<Page<User>>(users, HttpStatus.OK);
+        System.out.println(page);
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(usersDTO, HttpStatus.OK);
     }
 
     //-------------------Retrieve Single Customer--------------------------------------------------------
