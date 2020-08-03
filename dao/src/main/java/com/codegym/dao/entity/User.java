@@ -48,7 +48,7 @@ public class User {
     private Account account;
 
     @OneToMany(mappedBy = "id.user")
-    @JsonManagedReference
+//    @JsonManagedReference(value = "cartList")
     private List<Cart> cartList;
 
     public User() {

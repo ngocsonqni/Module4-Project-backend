@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Cart")
+@Table(name = "cart")
 public class Cart {
     @EmbeddedId
     private CartPk id;
