@@ -21,7 +21,7 @@ public class SaleManagementController {
 
     //---------------------- list bill sprint 2 ---------------------------------
     @RequestMapping(value = "/coupon", method = RequestMethod.GET)
-    public ResponseEntity<Page<Coupon>> listAllAccount(@RequestParam("page") int page,
+    public ResponseEntity<Page<Coupon>> listAllCoupon(@RequestParam("page") int page,
                                                        @RequestParam("size") int size,
                                                        @RequestParam("createdatefrom") String createDateFrom,
                                                        @RequestParam("createdateto") String createDateTo,
@@ -35,9 +35,6 @@ public class SaleManagementController {
             createDateTo = "9999-12-31";
         }
         Page<Coupon> couponPage = couponService.findAllListCoupon(PageRequest.of(page, size, Sort.by("couponId").ascending()), new SimpleDateFormat("yyyy-MM-dd").parse(createDateFrom), new SimpleDateFormat("yyyy-MM-dd").parse(createDateTo), employee, user);
-        System.out.println("-------------------------------------------------------");
-        System.out.println(couponPage.getContent());
-        System.out.println("-------------------------------------------------------");
         if (couponPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
