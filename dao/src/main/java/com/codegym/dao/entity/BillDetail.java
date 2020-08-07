@@ -1,4 +1,4 @@
 package com.codegym.dao.entity;
 
-public class BillDetail {
+public class BillDetail  {
 }
