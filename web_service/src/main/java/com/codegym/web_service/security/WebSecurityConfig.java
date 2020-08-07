@@ -51,12 +51,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("**", "/listProducts", "/brand", "/product", "/account/create", "/customers/").permitAll().and().
-                authorizeRequests().antMatchers("/admin", "/api/admin/*").access("hasRole('ROLE_ADMIN')").and().
-                authorizeRequests().antMatchers("/customers").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')").and().
-                authorizeRequests().antMatchers("/warehouse").access("hasAnyRole('ROLE_WAREHOUSE','ROLE_ADMIN')").and().
-                authorizeRequests().antMatchers("/partner").access("hasAnyRole('ROLE_PARTNER','ROLE_ADMIN')").
-                anyRequest().authenticated()
+                .antMatchers("**").permitAll()
+//                .antMatchers("**", "/listProducts", "/brand", "/product", "/account/create", "/customers/").permitAll().and().
+//                authorizeRequests().antMatchers("/admin", "/api/admin/*").access("hasRole('ROLE_ADMIN')").and().
+//                authorizeRequests().antMatchers("/customers").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')").and().
+//                authorizeRequests().antMatchers("/warehouse").access("hasAnyRole('ROLE_WAREHOUSE','ROLE_ADMIN')").and().
+//                authorizeRequests().antMatchers("/partner").access("hasAnyRole('ROLE_PARTNER','ROLE_ADMIN')").
+//                anyRequest().authenticated()
                 .and().cors();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
