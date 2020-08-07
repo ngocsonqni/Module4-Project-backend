@@ -22,6 +22,29 @@ public class Order {
     @Column(name = "total_money")
     private double totalMoney;
     @ManyToOne
+    @JoinColumn(name = "type_of_shipping")
+    private TypeOfShipping typeOfShipping;
+    @Column(name = "receiver")
+    private String receiver;
+    @Column(name = "delivery_phone_number")
+    private String deliveryPhoneNumber;
+    @Column(name = "expected_delivery_date")
+    private LocalDateTime expectedDeliveryDate;
+    @Column(name = "type_of_payment")
+    private String typeOfPayment;
+    @Column(name = "ordered_success")
+    private LocalDateTime orderedSuccess;
+    @Column(name = "received")
+    private LocalDateTime received;
+    @Column(name = "taking_orders")
+    private LocalDateTime takingOrders;
+    @Column(name = "hand_over_shipping")
+    private LocalDateTime handOverShipping;
+    @Column(name = "transporting")
+    private LocalDateTime transporting;
+    @Column(name = "successful_delivery")
+    private LocalDateTime successfulDelivery;
+    @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
     @OneToMany(mappedBy = "id.orderUser")
@@ -31,13 +54,52 @@ public class Order {
     public Order() {
     }
 
-    public Order(int order_id, LocalDateTime order_date, String order_status, String order_address, double total_money, User id_user) {
-        this.orderId = order_id;
-        this.orderDate = order_date;
-        this.orderStatus = order_status;
-        this.orderAddress = order_address;
-        this.totalMoney = total_money;
-        this.user = id_user;
+    public LocalDateTime getOrderedSuccess() {
+        return orderedSuccess;
+    }
+
+    public void setOrderedSuccess(LocalDateTime orderedSuccess) {
+        this.orderedSuccess = orderedSuccess;
+    }
+
+    public LocalDateTime getReceived() {
+        return received;
+    }
+
+    public void setReceived(LocalDateTime received) {
+        this.received = received;
+    }
+
+    public LocalDateTime getTakingOrders() {
+        return takingOrders;
+    }
+
+    public void setTakingOrders(LocalDateTime takingOrders) {
+        this.takingOrders = takingOrders;
+    }
+
+    public LocalDateTime getHandOverShipping() {
+        return handOverShipping;
+    }
+
+    public void setHandOverShipping(LocalDateTime handOverShipping) {
+        this.handOverShipping = handOverShipping;
+    }
+
+    public LocalDateTime getTransporting() {
+        return transporting;
+    }
+
+    public void setTransporting(LocalDateTime transporting) {
+        this.transporting = transporting;
+    }
+
+    public LocalDateTime getSuccessfulDelivery() {
+        return successfulDelivery;
+    }
+
+    public void setSuccessfulDelivery(LocalDateTime successfulDelivery) {
+        this.successfulDelivery = successfulDelivery;
     }
 
     public List<OrderDetail> getOrderDetailList() {
@@ -94,5 +156,45 @@ public class Order {
 
     public void setUser(User id_user) {
         this.user = id_user;
+    }
+
+    public TypeOfShipping getTypeOfShipping() {
+        return typeOfShipping;
+    }
+
+    public void setTypeOfShipping(TypeOfShipping typeOfShipping) {
+        this.typeOfShipping = typeOfShipping;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public String getDeliveryPhoneNumber() {
+        return deliveryPhoneNumber;
+    }
+
+    public void setDeliveryPhoneNumber(String deliveryPhoneNumber) {
+        this.deliveryPhoneNumber = deliveryPhoneNumber;
+    }
+
+    public LocalDateTime getExpectedDeliveryDate() {
+        return expectedDeliveryDate;
+    }
+
+    public void setExpectedDeliveryDate(LocalDateTime expectedDeliveryDate) {
+        this.expectedDeliveryDate = expectedDeliveryDate;
+    }
+
+    public String getTypeOfPayment() {
+        return typeOfPayment;
+    }
+
+    public void setTypeOfPayment(String typeOfPayment) {
+        this.typeOfPayment = typeOfPayment;
     }
 }

@@ -23,6 +23,13 @@ public interface AccountService {
 
     Account findAccountByName(String name);
 
-    Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String search);
+    Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String nameRole, String search);
 
+    Page<Account> pageFindALLSearchRoleOfCourseOfAdmin(Pageable pageable, String search);
+
+    void delete(Account account);
+
+    Account findAcountByIdDeleted(int id);
+
+    List<Account> findAllAccountDeleted();
 }

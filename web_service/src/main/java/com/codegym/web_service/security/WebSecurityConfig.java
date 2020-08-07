@@ -29,9 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        // configure AuthenticationManager so that it knows from where to load
-        // user for matching credentials
-        // Use BCryptPasswordEncoder
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 
@@ -55,17 +52,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("**").permitAll()
-
-//                .and().
-//                authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')").and().
-////                authorizeRequests().antMatchers("/admin").access("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')").and().
-//        authorizeRequests().antMatchers("/member").access("hasRole('ROLE_MEMBER')").and().
-//                authorizeRequests().antMatchers("/warehouse").access("hasRole('ROLE_WAREHOUSE')").and().
-//                authorizeRequests().antMatchers("/partner").access("hasRole('ROLE_PARTNER')").
-////                and().authorizeRequests().antMatchers("/user").access("hasRole('ROLE_USER')").
-//        anyRequest().authenticated()
-//                .and().cors()
-        ;
+//                .antMatchers("**", "/listProducts", "/brand", "/product", "/account/create", "/customers/").permitAll().and().
+//                authorizeRequests().antMatchers("/admin", "/api/admin/*").access("hasRole('ROLE_ADMIN')").and().
+//                authorizeRequests().antMatchers("/customers").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')").and().
+//                authorizeRequests().antMatchers("/warehouse").access("hasAnyRole('ROLE_WAREHOUSE','ROLE_ADMIN')").and().
+//                authorizeRequests().antMatchers("/partner").access("hasAnyRole('ROLE_PARTNER','ROLE_ADMIN')").
+//                anyRequest().authenticated()
+                .and().cors();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
