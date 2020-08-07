@@ -1,10 +1,15 @@
 package com.codegym.dao.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.util.List;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -15,7 +20,7 @@ public class User {
     @Column(name = "user_name")
     @NotBlank(message = "Tên khách hàng không được để trống!")
     @Pattern(regexp = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế][a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế ]*",
-                        message = "Tên khách khàng không được chứa kí tự đặc biệt!")
+            message = "Tên khách khàng không được chứa kí tự đặc biệt!")
     private String userName;
     @Column(name = "birthday")
     private Date birthday;
@@ -25,11 +30,11 @@ public class User {
     @Column(name = "email")
     @NotBlank(message = " Email không được để trống!")
 
-    @Pattern(regexp = "[A-Za-z0-9]+(\\.?[A-Za-z0-9])*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)",message = "Số điện thoại không đúng định dạng (090xxxxxxx or 091xxxxxxx or (84)+90xxxxxxx or (84)+91xxxxxxx, x là số")
+    @Pattern(regexp = "[A-Za-z0-9]+(\\.?[A-Za-z0-9])*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)", message = "Số điện thoại không đúng định dạng (090xxxxxxx or 091xxxxxxx or (84)+90xxxxxxx or (84)+91xxxxxxx, x là số")
     private String email;
     @Column(name = "phone")
     @NotBlank(message = " Số điện thoại không được để trống!")
-    @Pattern(regexp = "(090|091|\\(84\\)\\+90|\\(84\\)\\+91)[0-9]{7}",message = "Email không đúng định dạng (ví dụ: son.94@gmail.com)")
+    @Pattern(regexp = "(090|091|\\(84\\)\\+90|\\(84\\)\\+91)[0-9]{7}", message = "Email không đúng định dạng (ví dụ: son.94@gmail.com)")
     private String phone;
     @Column(name = "gender")
     private String gender;
@@ -42,6 +47,9 @@ public class User {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @OneToMany(mappedBy = "id.user")
+    @JsonManagedReference
+    private List<Cart> cartList;
 
     public User() {
     }
@@ -132,5 +140,17 @@ public class User {
 
     public void setDeleteFlag(boolean deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public List<Cart> getCartList() {
+        return cartList;
+    }
+
+    public void setCartList(List<Cart> cartList) {
+        this.cartList = cartList;
     }
 }

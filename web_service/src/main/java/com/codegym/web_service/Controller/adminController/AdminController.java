@@ -1,9 +1,12 @@
 package com.codegym.web_service.Controller.adminController;
 
-import java.net.UnknownHostException;
+import com.codegym.service.*;
+import com.codegym.web_service.AsyncService.AsyncService;
+import com.codegym.web_service.security.JwtTokenUtil;
+
+import java.util.Calendar;
 import java.util.List;
 
-import com.codegym.web_service.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.mail.MessagingException;
+
 import com.codegym.dao.entity.Account;
 import com.codegym.dao.entity.Employee;
 import com.codegym.dao.entity.Role;
@@ -28,7 +33,6 @@ import com.codegym.service.RoleService;
 import com.codegym.service.UserService;
 
 @RestController
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
 @RequestMapping("")
 public class AdminController {
@@ -46,6 +50,10 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AccessTimesService accessTimesService;
+    @Autowired
+    private AsyncService asyncDeleteAccount;
 
     //------------------------------- list role -------------------------
     @RequestMapping(value = "/role", method = RequestMethod.GET)
@@ -92,19 +100,6 @@ public class AdminController {
         return new ResponseEntity<>(accountPage, HttpStatus.OK);
     }
 
-    //---------------------- list account with role ---------------------------------
-    @RequestMapping(value = "/accountrole", method = RequestMethod.GET, params = {"page", "size", "search"})
-    public ResponseEntity<Page<Account>> listAllAccountWithRole(@RequestParam("page") int page,
-                                                                @RequestParam("size") int size,
-                                                                @RequestParam("search") String search) throws UnknownHostException {
-        Page<Account> accountPage = accountService.pageFindALLSearchRoleOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
-                , search);
-        if (accountPage.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(accountPage, HttpStatus.OK);
-    }
-
     //--------------------- create account --------------------------------------------------
     @RequestMapping(value = "/account/create", method = RequestMethod.POST)
     public ResponseEntity<Void> createAccount(@RequestBody Account account, UriComponentsBuilder uriComponentsBuilder) {
@@ -133,32 +128,54 @@ public class AdminController {
 
     //--------------------- delete account --------------------------------------------------
     @RequestMapping(value = "/account/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Account> deleteAccount(@PathVariable("id") int id, @RequestBody Account account) {
+    public ResponseEntity<Account> deleteAccount(@PathVariable("id") int id, @RequestBody Account account) throws MessagingException {
         Account currentAccount = accountService.findAccountById(id);
         if (currentAccount == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         currentAccount.setDeleteFlag(true);
-//        currentAccount.setReason(account.getReason());
+        currentAccount.setReason(account.getReason());
         accountService.save(currentAccount);
+        if (account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE")) {
+            asyncDeleteAccount.sendDeleteEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
+        } else {
+            asyncDeleteAccount.sendDeleteEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
+        }
+        asyncDeleteAccount.deleteAccount(currentAccount);
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
 
     //--------------------- update account --------------------------------------------------
     @RequestMapping(value = "/account/update/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Account> updateAccount(@PathVariable("id") int id, @RequestBody Account account) {
+    public ResponseEntity<Account> updateAccount(@PathVariable("id") int id, @RequestBody Account account) throws MessagingException {
         Account currentAccount = accountService.findAccountById(id);
         if (currentAccount == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         try {
+            String patternAccountName = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,}$";
+            String patternAccountPassword = "^[a-zA-Z0-9\\$\\.\\/]{1,}$";
             currentAccount.setAccountId(account.getAccountId());
-            currentAccount.setAccountName(account.getAccountName());
-            currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+            if (account.getAccountName().matches(patternAccountName)) {
+                currentAccount.setAccountName(account.getAccountName());
+            } else {
+                return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+            }
+            if (account.getAccountPassword().matches(patternAccountPassword)) {
+                currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+            } else {
+                return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+            }
             currentAccount.setRole(account.getRole());
             currentAccount.setDeleteFlag(account.getDeleteFlag());
             accountService.save(currentAccount);
         } catch (Exception e) {
+            return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE")) {
+            asyncDeleteAccount.sendEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
+        } else {
+            asyncDeleteAccount.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
         }
         return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
@@ -184,4 +201,16 @@ public class AdminController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
+    //---------------------- list employee ---------------------------------
+    @RequestMapping(value = "/employee/page-list", method = RequestMethod.GET, params = {"page", "size", "search"})
+    public ResponseEntity<Page<Employee>> listAllEmployee(@RequestParam("page") int page,
+                                                          @RequestParam("size") int size,
+                                                          @RequestParam("search") String search) {
+        Page<Employee> employeePage = employeeService.findAllEmployeeWithPage(search, PageRequest.of(page, size, Sort.by("id").ascending()));
+
+        if (employeePage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(employeePage, HttpStatus.OK);
+    }
 }

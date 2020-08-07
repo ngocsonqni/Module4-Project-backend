@@ -20,4 +20,5 @@ public interface DistributorRepository extends JpaRepository<Distributor, Intege
     void delete(boolean isDeleted, Integer id);
 
     List<Distributor> findAllByDeleted(boolean isNotDeleted);
+    Distributor findAllByNameAndIdIsNot(String name,int id);
 }
