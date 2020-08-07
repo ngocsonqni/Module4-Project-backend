@@ -11,11 +11,17 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class OrderDetailServiceImpl  implements OrderDetailService {
+public class OrderDetailServiceImpl implements OrderDetailService {
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+
     @Override
     public Page<OrderDetail> findByOrderUser(Order order, Pageable pageable) {
         return orderDetailRepository.findAllById_OrderUser(order, pageable);
+    }
+
+    @Override
+    public void save(OrderDetail orderDetail) {
+        orderDetailRepository.save(orderDetail);
     }
 }

@@ -13,18 +13,6 @@ public class District {
     String name;
     String type;
     String matp;
-    @ManyToOne(optional=false)
-    @JoinColumn(name="matp",referencedColumnName="matp",insertable=false, updatable=false)
-            @JsonIgnore
-    Province province;
-
-    public Province getProvince() {
-        return province;
-    }
-
-    public void setProvince(Province province) {
-        this.province = province;
-    }
 
     public String getMatp() {
         return matp;
