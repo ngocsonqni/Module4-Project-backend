@@ -67,11 +67,11 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/order-create", method = RequestMethod.POST)
-    public ResponseEntity<Void> createOrder(@RequestBody Order order, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<Order> createOrder(@RequestBody Order order, UriComponentsBuilder uriComponentsBuilder) {
         orderService.save(order);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(uriComponentsBuilder.path("/order/{id}").buildAndExpand(order.getOrderId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<Order>(order, headers, HttpStatus.CREATED);
 
     }
 
