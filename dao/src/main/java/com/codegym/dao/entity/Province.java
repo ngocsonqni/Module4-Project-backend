@@ -14,23 +14,11 @@ public class Province {
     String matp;
     String name;
     String type;
-    @OneToMany(mappedBy = "matp")
-    List<District> districts;
-
-    public Province(String matp, String name, String type) {
+     public Province(String matp, String name, String type) {
         this.matp = matp;
         this.name = name;
         this.type = type;
     }
-
-    public List<District> getDistricts() {
-        return districts;
-    }
-
-    public void setDistricts(List<District> districts) {
-        this.districts = districts;
-    }
-
     public Province() {
     }
 
