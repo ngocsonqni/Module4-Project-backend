@@ -51,7 +51,31 @@ public class DistributorServiceImpl implements DistributorService {
 
     @Override
     public Distributor isExistDistributor(String name, int id) {
-        return this.distributorRepository.findAllByNameAndIdIsNot(name,id);
+        return this.distributorRepository.findAllByNameAndIdIsNot(name, id);
+    }
+
+    @Override
+    public void resetSession(int id) {
+        String query = "CREATE EVENT abcdef ON SCHEDULE AT (CURRENT_TIMESTAMP + INTERVAL 300 SECOND ) DO UPDATE distributor SET distributor.status = 0 where" +
+                " distributor.id_distributor = " + id + " and distributor.status <> 0";
+
+
+        this.distributorRepository.resetStatus2(id);
+    }
+
+    @Override
+    public void setStatusDistributor(int id, int status) {
+        this.distributorRepository.setStatus(id, status);
+    }
+
+    @Override
+    public void dropEventById(int id) {
+        this.distributorRepository.dropEventById(id);
+    }
+
+    @Override
+    public Distributor findByIdToDo(int id) {
+        return this.distributorRepository.findByIdAndStatusIsAndDeletedIs(id, 0, false);
     }
 
 

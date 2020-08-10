@@ -7,12 +7,15 @@ import com.codegym.service.CommuneService;
 import com.codegym.service.DistrictService;
 import com.codegym.service.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.PropertyPermission;
 
 
 @RestController
@@ -49,4 +52,26 @@ public class LocationController {
     public List<Commune> findCommuneByDistrictID(@PathVariable String id) {
         return communeService.findAllByDistrictId(id);
     }
+
+    @GetMapping("/location/communeById/{id}")
+    public Commune findCommuneByID(@PathVariable String id) {
+        return communeService.findById(id);
+    }
+
+    @GetMapping(value = "/location/provinceName/{name}")
+    public Province findProvinceByName(@PathVariable String name) {
+       return this.provinceService.findByName(name);
+    }
+
+    @GetMapping("/location/district/{name}")
+    public District findDistrictByName(@PathVariable String name) {
+        return this.districtService.findByName(name);
+    }
+
+    @GetMapping("/location/communeName/{name}")
+    public Commune findCommuneByName(@PathVariable String name) {
+        return this.communeService.findByName(name);
+    }
+
+
 }

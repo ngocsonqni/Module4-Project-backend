@@ -16,4 +16,9 @@ public class DistricServiceImpl implements DistrictService {
     public List<District> findAllByProvinceId(String id) {
         return distributorRepository.findAllByMatpContaining(id);
     }
+
+    @Override
+    public District findByName(String name) {
+        return this.distributorRepository.findByName(name);
+    }
 }

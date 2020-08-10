@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface DistrictRepository extends JpaRepository<District, String> {
 
-public List<District> findAllByMatpContaining(String id);
+    public List<District> findAllByMatpContaining(String id);
+
+    District findByName(String name);
 }
 
 

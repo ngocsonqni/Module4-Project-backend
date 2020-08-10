@@ -39,7 +39,7 @@ public class Distributor {
     @Column(name = "fax")
     String fax;
 
-    @Pattern(regexp = "^((http:\\/\\/www\\.)|(https:\\/\\/www\\.))([a-zA-Z0-9]+\\.){1,2}[a-zA-Z0-9]+$")
+    @Pattern(regexp = "(^((http://www\\.)|(https://www\\.))([a-zA-Z0-9]+\\.){1,2}[a-zA-Z0-9]+$)|(^$)")
     @Column(name = "website")
     @Size(max = 100)
     String website;
@@ -49,6 +49,8 @@ public class Distributor {
     @ManyToOne(targetEntity = TypeOfDistributor.class)
     @JoinColumn(name = "type_of_distributor_id")
     TypeOfDistributor typeOfDistributor;
+    @Column(name = "status")
+    int status;
 
     public Distributor(boolean deleted) {
         this.deleted = deleted;
@@ -63,6 +65,14 @@ public class Distributor {
     }
 
     public Distributor() {
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public Distributor(String name, String address, String email, String numberPhone, String fax, String website, String img, boolean deleted, TypeOfDistributor typeOfDistributor) {

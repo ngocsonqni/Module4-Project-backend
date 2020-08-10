@@ -21,4 +21,9 @@ public class ProvinceServiceImpl implements ProvinceService {
     public Province findById(String id) {
         return this.provinceRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Province findByName(String name) {
+        return this.provinceRepository.findByName(name);
+    }
 }

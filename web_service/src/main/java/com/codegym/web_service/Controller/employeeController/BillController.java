@@ -192,4 +192,11 @@ public class BillController {
         return bills.isEmpty() ? new ResponseEntity<Page<Bill>>(HttpStatus.NO_CONTENT) : new ResponseEntity<Page<Bill>>(bills, HttpStatus.OK);
 
     }
+    @GetMapping("/distributor/isExistBill/{id}")
+    public ResponseEntity<List<Bill>> isExistInBill(@PathVariable int id) {
+        Distributor distributor = this.distributorService.findById(id);
+        List<Bill> bills = this.billService.findAllByIdDistributorAndShippingStatusIsNot(distributor, "đã vận chuyển");
+        return  new ResponseEntity<List<Bill>>(bills, HttpStatus.OK);
+    }
+
 }

@@ -24,6 +24,13 @@ public class Commune {
     public Commune() {
     }
 
+    public Commune(String xaid, String name, String type, String maqh) {
+        this.xaid = xaid;
+        this.name = name;
+        this.type = type;
+        this.maqh = maqh;
+    }
+
     public String getXaid() {
         return xaid;
     }

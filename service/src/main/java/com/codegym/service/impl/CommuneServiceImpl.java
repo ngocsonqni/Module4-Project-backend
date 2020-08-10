@@ -20,4 +20,16 @@ public class CommuneServiceImpl implements CommuneService {
     public List<Commune> findAllByDistrictId(String id) {
         return communeRepository.findAllByMaqhContaining(id);
     }
+
+    @Override
+    public Commune findById(String id) {
+        return this.communeRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Commune findByName(String name) {
+        return this.communeRepository.findByName(name);
+    }
+
+
 }
