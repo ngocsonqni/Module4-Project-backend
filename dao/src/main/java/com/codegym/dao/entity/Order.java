@@ -48,7 +48,7 @@ public class Order {
     @JoinColumn(name = "id_user")
     private User user;
     @OneToMany(mappedBy = "id.orderUser")
-    @JsonManagedReference
+//    @JsonManagedReference(value="orderDetailList")
     private List<OrderDetail> orderDetailList;
 
     public Order() {

@@ -10,7 +10,7 @@ public class OrderDetailPk implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    @JsonBackReference
+    @JsonBackReference(value="orderUser")
     private Order orderUser;
 
     @ManyToOne
