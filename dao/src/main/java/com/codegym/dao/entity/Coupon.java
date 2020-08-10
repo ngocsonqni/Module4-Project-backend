@@ -22,13 +22,10 @@ public class Coupon {
     @JoinColumn(name = "id_user")
     private User user;
 
-    public Coupon() {
-    }
+    @Column(name = "delete_flag")
+    private boolean deleteFlag;
 
-    public Coupon(Date createDate, Employee employee, User user) {
-        this.createDate = createDate;
-        this.employee = employee;
-        this.user = user;
+    public Coupon() {
     }
 
     public int getCouponId() {
@@ -61,5 +58,13 @@ public class Coupon {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 }
