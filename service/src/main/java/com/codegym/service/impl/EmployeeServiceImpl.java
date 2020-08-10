@@ -1,7 +1,12 @@
 package com.codegym.service.impl;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+
 import com.codegym.dao.entity.Employee;
 import com.codegym.dao.repository.EmployeeRepository;
 import com.codegym.service.EmployeeService;
@@ -46,5 +51,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findByAccountId(int accountId) {
         return employeeRepository.findByAccount_AccountIdAndDeleteFlagIsFalse(accountId);
+    }
+
+    @Override
+    public Page<Employee> findAllEmployeeWithPage(String key, Pageable pageable) {
+        return employeeRepository.findAllByNameContainingOrPhoneNumberContainingOrEmailContainingOrPosition_NameOrDepartment_NameAndDeleteFlagIsFalse(key, key, key, key, key, pageable);
     }
 }

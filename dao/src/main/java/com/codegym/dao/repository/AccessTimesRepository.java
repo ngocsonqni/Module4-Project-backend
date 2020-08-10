@@ -8,8 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AccessTimesRepository extends JpaRepository<AccessTimes, Integer> {
-
-    //    @Query(value = "SELECT new  access_times.date, count(access_times.date) from access_times group by access_times.date",nativeQuery = true)
-    @Query(value = "SELECT v.date as dates ,count(v.date) as counts FROM AccessTimes as v GROUP BY v.date")
+    @Query(value = "SELECT date_format(v.date,'%d/%m/%Y') as dates ,count(v.date) as counts FROM AccessTimes as v GROUP BY v.date")
     List<AccessTimesDTO> countAccessTimes();
+
+    @Query(value = "SELECT date_format(v.date,'%m/%Y') as dates,count(v.date) as counts FROM AccessTimes as v GROUP BY month(v.date), year(v.date)")
+    List<AccessTimesDTO> countAccessTimesMonth();
+
+    @Query(value = "SELECT date_format(v.date,'%Y') as dates,count(v.date) as counts FROM AccessTimes as v GROUP BY year(v.date)")
+    List<AccessTimesDTO> countAccessTimesYear();
 }
