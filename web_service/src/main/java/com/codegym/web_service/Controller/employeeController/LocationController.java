@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LocationController {
     @Autowired(required = true)
     ProvinceService provinceService;
@@ -40,13 +40,21 @@ public class LocationController {
         return communeService.findAllByDistrictId(id);
     }
 
-    @GetMapping("/location/province/{id}")
-    public Province findProvinceById(@PathVariable String id) {
-        return provinceService.findById(id);
-    }
-
     @GetMapping("/location/district/getCommune/{id}")
     public List<Commune> findCommuneByDistrictID(@PathVariable String id) {
         return communeService.findAllByDistrictId(id);
     }
+    @GetMapping("/location/province/{id}")
+    public Province findProvinceById(@PathVariable String id) {
+        return provinceService.findById(id);
+    }
+    @GetMapping("/location/district/{id}")
+    public District findDistrictById(@PathVariable String id) {
+        return districtService.findById(id);
+    }
+    @GetMapping("/location/ward/{id}")
+    public Commune findWardById(@PathVariable String id) {
+        return communeService.findById(id);
+    }
+
 }
