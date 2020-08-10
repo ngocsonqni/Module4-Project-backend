@@ -23,4 +23,9 @@ public class CartServiceImpl implements CartService {
     public void save(Cart cart) {
         this.cartRepository.save(cart);
     }
+
+    @Override
+    public void delete(Cart cart) {
+        this.cartRepository.deleteById(cart.getId());
+    }
 }

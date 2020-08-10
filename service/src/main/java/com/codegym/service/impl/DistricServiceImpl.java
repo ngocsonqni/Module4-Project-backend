@@ -12,8 +12,13 @@ import java.util.List;
 public class DistricServiceImpl implements DistrictService {
     @Autowired
     DistrictRepository distributorRepository;
+
     @Override
     public List<District> findAllByProvinceId(String id) {
         return distributorRepository.findAllByMatpContaining(id);
+    }
+    @Override
+    public District findById(String id) {
+        return this.distributorRepository.findById(id).orElse(null);
     }
 }
