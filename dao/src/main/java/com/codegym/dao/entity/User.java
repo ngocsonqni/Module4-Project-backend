@@ -27,14 +27,15 @@ public class User {
     @Column(name = "address")
     @NotBlank(message = "Địa chỉ không được để trống!")
     private String address;
+
     @Column(name = "email")
     @NotBlank(message = " Email không được để trống!")
-
-    @Pattern(regexp = "[A-Za-z0-9]+(\\.?[A-Za-z0-9])*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)", message = "Số điện thoại không đúng định dạng (090xxxxxxx or 091xxxxxxx or (84)+90xxxxxxx or (84)+91xxxxxxx, x là số")
+    @Pattern(regexp = "[A-Za-z0-9]+(\\.?[A-Za-z0-9])*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)", message = "Email không đúng định dạng (ví dụ: son.94@gmail.com)")
     private String email;
+
     @Column(name = "phone")
     @NotBlank(message = " Số điện thoại không được để trống!")
-    @Pattern(regexp = "(090|091|\\(84\\)\\+90|\\(84\\)\\+91)[0-9]{7}", message = "Email không đúng định dạng (ví dụ: son.94@gmail.com)")
+    @Pattern(regexp = "(090|091|\\(84\\)\\+90|\\(84\\)\\+91)[0-9]{7}", message = "Số điện thoại không đúng định dạng (090xxxxxxx or 091xxxxxxx or (84)+90xxxxxxx or (84)+91xxxxxxx, x là số")
     private String phone;
     @Column(name = "gender")
     private String gender;
