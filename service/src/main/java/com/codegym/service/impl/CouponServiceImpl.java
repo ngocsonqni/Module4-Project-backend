@@ -1,4 +1,4 @@
-package com.codegym.service.impl;
+package com.codegym.service.Impl;
 
 import com.codegym.dao.entity.Coupon;
 import com.codegym.dao.repository.CouponRepository;
@@ -18,5 +18,10 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public Page<Coupon> findAllListCoupon(Pageable pageable, Date createDateFrom, Date createDateTo, String employee, String user) {
         return couponRepository.findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameContainingAndUser_UserNameContainingAndDeleteFlagFalse(pageable, createDateFrom, createDateTo, employee, user);
+    }
+
+    @Override
+    public void save(Coupon coupon) {
+        couponRepository.save(coupon);
     }
 }

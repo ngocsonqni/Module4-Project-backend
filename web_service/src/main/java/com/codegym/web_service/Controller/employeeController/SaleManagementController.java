@@ -40,4 +40,6 @@ public class SaleManagementController {
         }
         return new ResponseEntity<>(couponPage, HttpStatus.OK);
     }
+
+    //---------------------- create coupon + coupon details  ---------------------------------
 }

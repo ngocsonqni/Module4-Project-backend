@@ -8,7 +8,7 @@ import java.util.Date;
 public class Coupon {
     @Id
     @Column(name = "coupon_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int couponId;
 
     @Column(name = "create_date")

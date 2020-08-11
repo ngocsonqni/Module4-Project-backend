@@ -1,10 +1,13 @@
-package com.codegym.service.impl;
+package com.codegym.service.Impl;
 
 import com.codegym.dao.DTO.AccountDTO;
 import com.codegym.dao.entity.Account;
 import com.codegym.dao.entity.Role;
 import com.codegym.dao.repository.AccountRepository;
+import com.codegym.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,13 +17,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
-import java.util.Set;
-
-import com.codegym.service.AccountService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AccountServiceImpl implements UserDetailsService, AccountService {
