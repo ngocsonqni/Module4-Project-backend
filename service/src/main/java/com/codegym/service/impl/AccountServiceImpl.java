@@ -1,6 +1,7 @@
 package com.codegym.service.impl;
 
 import com.codegym.dao.DTO.AccountDTO;
+import com.codegym.dao.DTO.MemberDTO;
 import com.codegym.dao.entity.Account;
 import com.codegym.dao.entity.Role;
 import com.codegym.dao.repository.AccountRepository;
@@ -10,6 +11,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -64,6 +67,15 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     }
 
     @Override
+    public void save(MemberDTO memberDTO) {
+        Account account = new Account();
+        account.setAccountName(memberDTO.getAccountName());
+        account.setAccountPassword(memberDTO.getAccountPassword());
+        account.setRole(memberDTO.getRole());
+        accountRepository.save(account);
+    }
+
+    @Override
     public void save(Account account) {
         accountRepository.save(account);
     }
@@ -75,7 +87,12 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     }
 
     @Override
-    public Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable, String search) {
-        return accountRepository.findAllByAccountNameContainingAndDeleteFlagIsFalse(search, pageable);
+    public Page<Account> pageFindALLSearchNameOfCourseOfAdmin(Pageable pageable,String nameRole, String search) {
+        return accountRepository.findAllByAccountNameContainingAndRole_RoleNameContainingAndDeleteFlagIsFalse(search, nameRole, pageable);
+    }
+
+    @Override
+    public Page<Account> pageFindALLSearchRoleOfCourseOfAdmin(Pageable pageable, String search) {
+        return accountRepository.findAllByRole_RoleNameAndDeleteFlagIsFalse(search, pageable);
     }
 }

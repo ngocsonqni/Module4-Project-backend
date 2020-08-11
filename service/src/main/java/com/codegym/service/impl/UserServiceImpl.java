@@ -1,5 +1,6 @@
 package com.codegym.service.impl;
 
+import com.codegym.dao.DTO.MemberDTO;
 import com.codegym.dao.entity.User;
 import com.codegym.dao.repository.UserRepository;
 import com.codegym.service.UserService;
@@ -34,9 +35,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void save(MemberDTO memberDTO) {
+        User user = new User();
+        user.setUserName(memberDTO.getUserName());
+        user.setAddress(memberDTO.getAddress());
+        user.setBirthday(memberDTO.getBirthday());
+        user.setEmail(memberDTO.getEmail());
+        user.setGender(memberDTO.getGender());
+        user.setPhone(memberDTO.getPhone());
+        user.setAccount(memberDTO.getAccount());
+        userRepository.save(user);
+    }
+
+    @Override
     public void remove(int id) {
         User currentUser = findGetId(id);
         currentUser.setDeleteFlag(true);
         save(currentUser);
+    }
+
+    @Override
+    public User findUserByAccountId(int accountId) {
+        return userRepository.findAllByDeleteFlagIsFalseAndAccount_AccountId(accountId);
     }
 }
