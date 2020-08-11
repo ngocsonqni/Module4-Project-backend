@@ -88,7 +88,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all category
      */
     @GetMapping("/listCategory")
@@ -98,7 +97,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all category
      */
     @GetMapping("/listUnit")
@@ -108,7 +106,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all brand by category order by brandName
      */
     @GetMapping("/listBrandByCategory/{id}")
@@ -118,7 +115,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all product by category and brand include pageable
      */
     @GetMapping("/listProductByCategoryAndBrand/{categoryId}/{brandId}")
@@ -128,7 +124,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all product by category include pageable
      */
     @GetMapping("/listProductByCategory/{categoryId}")
@@ -136,4 +131,86 @@ public class ProductController {
         Page<Product> productsFilterByCategory = productService.findAllByCategory_CategoryIdAndDeleteFlagIsFalse(categoryId, pageable);
         return productsFilterByCategory == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(productsFilterByCategory, HttpStatus.OK);
     }
+
+    /**
+     * search products by category, brand, productName, price
+     */
+    @GetMapping("/searchProductByCategoryBrandNamePrice/")
+    public ResponseEntity<Page<Product>> getAllProduct(@RequestParam(value = "categoryId") Integer categoryId, @RequestParam(value = "brandId") Integer brandId, @RequestParam(value = "productName") String productName, @RequestParam(value = "price") String price, Pageable pageable) {
+        Page<Product> listProducts = productService.findAllByCategory_CategoryIdAndBrand_IdAndProductNameAndPriceContainingAndDeleteFlagIsFalse(categoryId, brandId, productName, price, pageable);
+        return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
+    }
+
+    /**
+     * search products by category, brand, productName
+     */
+    @GetMapping("/searchProductByCategoryBrandName/")
+    public ResponseEntity<Page<Product>> getAllProductByCategoryBrandProductName(@RequestParam(value = "categoryId") Integer categoryId, @RequestParam(value = "brandId") Integer brandId, @RequestParam(value = "productName") String productName, Pageable pageable) {
+        Page<Product> listProducts = productService.findAllByCategory_CategoryIdAndBrand_IdAndProductNameContainingAndDeleteFlagIsFalse(categoryId, brandId, productName, pageable);
+        return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
+    }
+
+    /**
+     * search products by category, brand, price
+     */
+    @GetMapping("/searchProductByCategoryBrandPrice/")
+    public ResponseEntity<Page<Product>> getAllProductByCategoryBrandPrice(@RequestParam(value = "categoryId") Integer categoryId, @RequestParam(value = "brandId") Integer brandId, @RequestParam(value = "price") String price, Pageable pageable) {
+        Page<Product> listProducts = productService.findAllByCategory_CategoryIdAndBrand_IdAndPriceContainingAndDeleteFlagIsFalseAndDeleteFlagIsFalse(categoryId, brandId, price, pageable);
+        return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
+    }
+
+    /**
+     * search products by category, productName, price
+     */
+    @GetMapping("/searchProductByCategoryNamePrice/")
+    public ResponseEntity<Page<Product>> getAllProductByCategoryNamePrice(@RequestParam(value = "categoryId") Integer categoryId, @RequestParam(value = "productName") String productName, @RequestParam(value = "price") String price, Pageable pageable) {
+        Page<Product> listProducts = productService.findAllByCategory_CategoryIdAndProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(categoryId, productName, price, pageable);
+        return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
+    }
+
+    /**
+     * search products by category, productName
+     */
+    @GetMapping("/searchProductByCategoryName/")
+    public ResponseEntity<Page<Product>> getAllProductByCategoryName(@RequestParam(value = "categoryId") Integer categoryId, @RequestParam(value = "productName") String productName, Pageable pageable) {
+        Page<Product> listProducts = productService.findAllByCategory_CategoryIdAndProductNameContainingAndDeleteFlagIsFalse(categoryId, productName, pageable);
+        return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
+    }
+
+    /**
+     * search products by category, price
+     */
+    @GetMapping("/searchProductByCategoryPrice/")
+    public ResponseEntity<Page<Product>> getAllProductByCategoryPrice(@RequestParam(value = "categoryId") Integer categoryId, @RequestParam(value = "price") String price, Pageable pageable) {
+        Page<Product> listProducts = productService.findAllByCategory_CategoryIdAndPriceContainingAndDeleteFlagIsFalse(categoryId, price, pageable);
+        return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
+    }
+
+    /**
+     * search products by productName, price
+     */
+    @GetMapping("/searchProduct/{productName}/{price}")
+    public ResponseEntity<Page<Product>> getAllProductByNameAndPrice(@PathVariable String productName, @PathVariable String price, Pageable pageable) {
+        Page<Product> listProducts = productService.findAllByProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(productName, price, pageable);
+        return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
+    }
+
+    /**
+     * search products by productName
+     */
+    @GetMapping("/searchProductByName/")
+    public ResponseEntity<Page<Product>> getAllProductByName(@RequestParam(value = "productName") String productName, Pageable pageable) {
+        Page<Product> listProducts = productService.findAllByProductNameContainingAndDeleteFlagIsFalse(productName, pageable);
+        return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
+    }
+
+    /**
+     * search products by price
+     */
+    @GetMapping("/searchProductByPrice/")
+    public ResponseEntity<Page<Product>> getAllProductByPrice(@RequestParam(value = "price") String price, Pageable pageable) {
+        Page<Product> listProducts = productService.findAllByPriceContainingAndDeleteFlagIsFalse(price, pageable);
+        return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
+    }
 }
+

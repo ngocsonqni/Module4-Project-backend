@@ -7,16 +7,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 
 public class CartController {
     @Autowired
     private CartService cartService;
+
     @RequestMapping(value = "/cart-create", method = RequestMethod.POST)
     public ResponseEntity<Cart> createCart(@RequestBody Cart cart) {
-       this.cartService.save(cart);
-       return new ResponseEntity<>(HttpStatus.CREATED);
+        this.cartService.save(cart);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/cart-delete", method = RequestMethod.POST)
+    public ResponseEntity<Void> deleteCart(@RequestBody Cart cart) {
+        Optional<Cart> currentCart = this.cartService.findById(cart.getId());
+        if (currentCart.isPresent()) {
+            this.cartService.delete(currentCart.get());
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
