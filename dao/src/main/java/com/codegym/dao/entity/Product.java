@@ -20,7 +20,7 @@ public class Product {
     private String productName;
 
     @Column(name = "price")
-    private Double price;
+    private String price;
 
     @Column(name = "expiry_date")
     private Date expiryDate;
@@ -73,11 +73,11 @@ public class Product {
         this.productName = productName;
     }
 
-    public Double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
