@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> getAllUser(String name, String birthday, String phone, String email, String value1, String value2, Pageable page) {
-        return userRepository.getAllUser(name, birthday, phone, email,value1,value2, page);
+        return userRepository.getAllUser(name, birthday, phone, email, value1, value2, page);
     }
 
     @Override
@@ -81,7 +81,12 @@ public class UserServiceImpl implements UserService {
             totalFull = 0;
             usersDTO.add(userDTO);
         }
-        Page<UserDTO> userDTOPage = new PageImpl<>(usersDTO, page ,userPage.getTotalElements());
+        Page<UserDTO> userDTOPage = new PageImpl<>(usersDTO, page, userPage.getTotalElements());
         return userDTOPage;
+    }
+
+    @Override
+    public List<User> getListAllUser() {
+        return userRepository.findAll();
     }
 }

@@ -1,5 +1,6 @@
 package com.codegym.web_service.Controller.adminController;
 
+import com.codegym.dao.DTO.UserDTO;
 import com.codegym.service.*;
 import com.codegym.web_service.AsyncService.AsyncService;
 import com.codegym.web_service.security.JwtTokenUtil;
@@ -213,5 +214,14 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(employeePage, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/customer-list")
+    public ResponseEntity<List<User>> listAllUser() {
+        List<User> users = userService.getListAllUser();
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }
