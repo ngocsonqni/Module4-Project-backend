@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface OrderService {
     Page<Order> findAllById_user(Integer id, Pageable pageable);
+    Page<Order> findAllByUser_IdOrderByOrderDateDesc(Integer id, Pageable pageable);
+
     Optional<Order> findById(Integer id);
 
     void save(Order order);

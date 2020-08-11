@@ -5,11 +5,12 @@ import com.codegym.dao.entity.Role;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class MemberDTO implements Serializable {
     private Integer id;
     private String userName;
-    private Date birthday;
+    private LocalDate birthday;
     private String gender;
     private String phone;
 //    @Unique(message = "Email is already exit")
@@ -45,11 +46,11 @@ public class MemberDTO implements Serializable {
         this.userName = userName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

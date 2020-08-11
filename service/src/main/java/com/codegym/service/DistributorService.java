@@ -22,4 +22,5 @@ public interface DistributorService {
 //Add-----------------------------------------------------------------------
     List<Distributor> findAllByDeleted(boolean isNotDeleted);
     void deleteById(int id);
+    Distributor isExistDistributor(String name, int id);
 }

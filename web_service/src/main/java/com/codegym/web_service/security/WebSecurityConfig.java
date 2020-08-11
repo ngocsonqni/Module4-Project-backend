@@ -29,9 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        // configure AuthenticationManager so that it knows from where to load
-        // user for matching credentials
-        // Use BCryptPasswordEncoder
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 
@@ -61,20 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 authorizeRequests().antMatchers("/customers","/user-manage","/user-order","/customer-account/*").access("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')").and().
                 authorizeRequests().antMatchers("/warehouse").access("hasAnyRole('ROLE_WAREHOUSE','ROLE_ADMIN')").and().
                 authorizeRequests().antMatchers("/partner").access("hasAnyRole('ROLE_PARTNER','ROLE_ADMIN')").
-//                and().authorizeRequests().antMatchers("/user").access("hasRole('ROLE_USER')").
                 anyRequest().authenticated()
                 .and().cors();
-
-//                .and().
-//                authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')").and().
-////                authorizeRequests().antMatchers("/admin").access("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')").and().
-//        authorizeRequests().antMatchers("/member").access("hasRole('ROLE_MEMBER')").and().
-//                authorizeRequests().antMatchers("/warehouse").access("hasRole('ROLE_WAREHOUSE')").and().
-//                authorizeRequests().antMatchers("/partner").access("hasRole('ROLE_PARTNER')").
-////                and().authorizeRequests().antMatchers("/user").access("hasRole('ROLE_USER')").
-//        anyRequest().authenticated()
-//                .and().cors()
-        ;
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
