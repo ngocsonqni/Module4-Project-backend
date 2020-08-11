@@ -1,5 +1,6 @@
 package com.codegym.service;
 
+import com.codegym.dao.DTO.MemberDTO;
 import com.codegym.dao.DTO.UserDTO;
 import com.codegym.dao.entity.User;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,8 @@ public interface UserService {
     User findUserByAccountName(String accountName);
 
     void save(User user);
+
+    void save(MemberDTO memberDTO);
 
     void remove(int id);
 
