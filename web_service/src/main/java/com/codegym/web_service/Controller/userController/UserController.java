@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -58,7 +59,7 @@ class UserController {
     //-------------------Create a Customer--------------------------------------------------------
 
     @RequestMapping(value = "/customers/", method = RequestMethod.POST)
-    public ResponseEntity<Void> createCustomer(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> createCustomer(@Valid @RequestBody User user, UriComponentsBuilder ucBuilder) {
         userService.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/customers/{id}").buildAndExpand(user.getId()).toUri());

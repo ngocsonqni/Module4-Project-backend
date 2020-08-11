@@ -109,7 +109,6 @@ public class AdminController {
     @RequestMapping(value = "/account/create", method = RequestMethod.POST)
     public ResponseEntity<Void> createAccount(@RequestBody Account account, UriComponentsBuilder uriComponentsBuilder) {
         Account account1 = accountService.findAccountByName(account.getAccountName());
-        List<Role> roles = roleService.findAllRole();
         if (account1 != null) {
             throw new UsernameNotFoundException("Tên đăng nhập đã tồn tại");
         } else {
