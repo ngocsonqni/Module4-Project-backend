@@ -47,9 +47,9 @@ public class User {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToMany(mappedBy = "id.user")
-    @JsonManagedReference
-    private List<Cart> cartList;
+//    @OneToMany(mappedBy = "id.user")
+//    @JsonManagedReference
+//    private List<Cart> cartList;
 
     public User() {
     }
@@ -146,11 +146,11 @@ public class User {
         return deleteFlag;
     }
 
-    public List<Cart> getCartList() {
-        return cartList;
-    }
-
-    public void setCartList(List<Cart> cartList) {
-        this.cartList = cartList;
-    }
+//    public List<Cart> getCartList() {
+//        return cartList;
+//    }
+//
+//    public void setCartList(List<Cart> cartList) {
+//        this.cartList = cartList;
+//    }
 }
