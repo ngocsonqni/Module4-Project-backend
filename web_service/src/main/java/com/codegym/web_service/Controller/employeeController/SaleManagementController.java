@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SaleManagementController {
     @Autowired
     private CouponService couponService;
@@ -40,4 +40,39 @@ public class SaleManagementController {
         }
         return new ResponseEntity<>(couponPage, HttpStatus.OK);
     }
+
+    //---------------------- Hieu Nguyen API ---------------------------------
+
+    //---------------------- Get Coupon By Id ---------------------------------
+    @GetMapping("/coupon/{id}")
+    public ResponseEntity<Coupon> getCoupon(@PathVariable("id") Integer id) {
+        Coupon coupon = couponService.findById(id);
+
+        return coupon == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(coupon, HttpStatus.OK);
+
+    }
+    //---------------------- Delete a Coupon ---------------------------------
+    @PatchMapping("/coupon/delete/{id}")
+    public ResponseEntity<Coupon> deleteCoupon(@PathVariable Integer id) {
+        Coupon currentCoupon = couponService.findById(id);
+        if (currentCoupon == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        couponService.remove(currentCoupon);
+        couponService.save(currentCoupon);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //---------------------- Delete Many Coupon ---------------------------------
+    @GetMapping("/coupon/deletes/{id}")
+    public ResponseEntity<Coupon> deleteManyCoupon(@PathVariable Integer id) {
+        Coupon currentCoupon = couponService.findById(id);
+        if (currentCoupon == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        couponService.remove(currentCoupon);
+        couponService.save(currentCoupon);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    //---------------------- Hieu Nguyen API - END ---------------------------------
 }
