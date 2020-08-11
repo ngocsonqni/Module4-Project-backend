@@ -1,6 +1,9 @@
 package com.codegym.web_service.Controller.adminController;
 
+import java.lang.reflect.Array;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.codegym.web_service.security.JwtTokenUtil;
@@ -109,7 +112,6 @@ public class AdminController {
     @RequestMapping(value = "/account/create", method = RequestMethod.POST)
     public ResponseEntity<Void> createAccount(@RequestBody Account account, UriComponentsBuilder uriComponentsBuilder) {
         Account account1 = accountService.findAccountByName(account.getAccountName());
-        List<Role> roles = roleService.findAllRole();
         if (account1 != null) {
             throw new UsernameNotFoundException("Tên đăng nhập đã tồn tại");
         } else {
@@ -120,6 +122,8 @@ public class AdminController {
             return new ResponseEntity<>(headers, HttpStatus.CREATED);
         }
     }
+
+
 
     //-------------------------- details account --------------------------------
     @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
@@ -184,4 +188,12 @@ public class AdminController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/accountsss", method = RequestMethod.GET)
+    public ResponseEntity<List<Account>> ListAccountNotInEmployee() {
+        List<Account> accountPage = accountService.findAllAccountNotInEmployee();
+        if (accountPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(accountPage, HttpStatus.OK);
+    }
 }

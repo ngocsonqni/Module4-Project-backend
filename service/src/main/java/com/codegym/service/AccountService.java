@@ -27,4 +27,5 @@ public interface AccountService {
 
     Page<Account> pageFindALLSearchRoleOfCourseOfAdmin(Pageable pageable, String search);
 
+    List<Account> findAllAccountNotInEmployee();
 }

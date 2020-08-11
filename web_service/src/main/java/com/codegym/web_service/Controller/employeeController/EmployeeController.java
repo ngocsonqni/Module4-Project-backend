@@ -1,6 +1,16 @@
 package com.codegym.web_service.Controller.employeeController;
+
 import com.codegym.dao.DTO.AccountDTOEmployee;
+import com.codegym.dao.entity.Account;
+import com.codegym.dao.entity.Department;
+import com.codegym.dao.entity.Employee;
+import com.codegym.dao.entity.Position;
+import com.codegym.service.AccountService;
+import com.codegym.service.DepartmentService;
+import com.codegym.service.EmployeeService;
+import com.codegym.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,18 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.codegym.dao.entity.*;
-import com.codegym.service.AccountService;
-import com.codegym.service.DepartmentService;
-import com.codegym.service.EmployeeService;
-import com.codegym.service.PositionService;
-
-import javax.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
@@ -104,7 +108,7 @@ public class EmployeeController {
         if (account1 == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
-        if(!passwordEncoder.matches(account.getOldPassword(), account1.getAccountPassword())) {
+        if (!passwordEncoder.matches(account.getOldPassword(), account1.getAccountPassword())) {
             return new ResponseEntity<Account>(account1, HttpStatus.NOT_FOUND);
         }
         account1.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
@@ -132,6 +136,7 @@ public class EmployeeController {
         List<Department> departmentList = departmentService.findAll();
         return departmentList.isEmpty() ? new ResponseEntity<List<Department>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Department>>(departmentList, HttpStatus.OK);
     }
+
     //handle error
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -144,5 +149,14 @@ public class EmployeeController {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    //    create employee
+    @RequestMapping(value = "/employee/create", method = RequestMethod.POST)
+    public ResponseEntity<Void> createEmployee(@Valid @RequestBody Employee employee, UriComponentsBuilder uriComponentsBuilder) {
+        employeeService.save(employee);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(uriComponentsBuilder.path("employee/list").buildAndExpand(employee.getId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 }
