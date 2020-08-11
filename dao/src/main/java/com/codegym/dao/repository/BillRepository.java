@@ -12,7 +12,7 @@ import java.util.List;
 public interface BillRepository extends JpaRepository<Bill, Integer> {
     List<Bill> findAllByDeleteFlagFalse();
     List<Bill> findAllByIdDistributorAndShippingStatusIsNot(Distributor distributor, String status);
-    @Query(value = "select b from Bill b where b.idDistributor.id =?1 and b.shippingStatus is not 'đã xử lý'")
+    @Query(value = "select b from Bill b where b.idDistributor.id =?1 and b.shippingStatus is not 'đã vận chuyển'")
     List<Bill>findAllBillByDistributorId(int id);
     Page<Bill> findAllByDeleteFlagFalse(Pageable pageable);
 
