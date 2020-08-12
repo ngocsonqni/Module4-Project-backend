@@ -2,6 +2,8 @@ package com.codegym.dao.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "brand")
@@ -23,6 +25,7 @@ public class Brand {
     private String brandWebsite;
     @Column(name = "delete_flag")
     private boolean deleteFlag;
+
     public Brand() {
     }
 
@@ -81,4 +84,5 @@ public class Brand {
     public void setDeleteFlag(boolean deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
+
 }

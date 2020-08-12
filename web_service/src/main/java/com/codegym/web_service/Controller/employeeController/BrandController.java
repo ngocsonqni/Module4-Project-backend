@@ -1,6 +1,8 @@
 package com.codegym.web_service.Controller.employeeController;
 
+import com.codegym.dao.DTO.BrandStatistical;
 import com.codegym.dao.entity.Brand;
+import com.codegym.dao.repository.BrandRepository;
 import com.codegym.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,8 @@ import java.util.Map;
 public class BrandController {
     @Autowired
     private BrandService brandService;
+    @Autowired
+    private BrandRepository brandRepository;
 
     //-------------------Retrieve All Brands--------------------------------------------------------
     @GetMapping("/brand")
@@ -110,6 +114,16 @@ public class BrandController {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    //    Thống kê doanh thu theo sản phẩm
+    @RequestMapping(value = "/brandPr", method = RequestMethod.GET)
+    public ResponseEntity<List<BrandStatistical>> getCountAge() {
+        List<BrandStatistical> brandStatisticalList = brandRepository.totalRevenue();
+        if (brandStatisticalList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(brandStatisticalList, HttpStatus.OK);
     }
 }
 
