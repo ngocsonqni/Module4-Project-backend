@@ -29,6 +29,7 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
+
     /**
      * @return get all product
      */
@@ -88,7 +89,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all category
      */
     @GetMapping("/listCategory")
@@ -98,7 +98,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all category
      */
     @GetMapping("/listUnit")
@@ -108,7 +107,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all brand by category order by brandName
      */
     @GetMapping("/listBrandByCategory/{id}")
@@ -118,7 +116,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all product by category and brand include pageable
      */
     @GetMapping("/listProductByCategoryAndBrand/{categoryId}/{brandId}")
@@ -128,7 +125,6 @@ public class ProductController {
     }
 
     /**
-     *
      * @return get all product by category include pageable
      */
     @GetMapping("/listProductByCategory/{categoryId}")
@@ -136,4 +132,5 @@ public class ProductController {
         Page<Product> productsFilterByCategory = productService.findAllByCategory_CategoryIdAndDeleteFlagIsFalse(categoryId, pageable);
         return productsFilterByCategory == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(productsFilterByCategory, HttpStatus.OK);
     }
+
 }
