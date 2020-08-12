@@ -154,8 +154,8 @@ public class AdminController {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         try {
-            String patternAccountName = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,}$";
-            String patternAccountPassword = "^[a-zA-Z0-9\\$\\.\\/]{1,}$";
+            String patternAccountName = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,100}$";
+            String patternAccountPassword = "^[a-zA-Z0-9]{1,100}$";
             currentAccount.setAccountId(account.getAccountId());
             if (account.getAccountName().matches(patternAccountName)) {
                 currentAccount.setAccountName(account.getAccountName());

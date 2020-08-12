@@ -20,6 +20,7 @@ public class Account {
     @NotNull
     @Size(max = 100, min = 1)
     @Column(name = "account_password", nullable = false)
+    @Pattern(regexp = "^[a-zA-Z0-9\\,\\.\\-\\_\\@\\$]{1,100}$")
     private String accountPassword;
     @Column(name = "delete_flag")
     boolean deleteFlag;
