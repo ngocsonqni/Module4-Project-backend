@@ -1,5 +1,6 @@
 package com.codegym.web_service.Controller.employeeController;
 import com.codegym.dao.DTO.AccountDTOEmployee;
+import com.codegym.web_service.AsyncService.AsyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,9 +10,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.codegym.dao.entity.*;
 import com.codegym.service.AccountService;
@@ -19,10 +20,16 @@ import com.codegym.service.DepartmentService;
 import com.codegym.service.EmployeeService;
 import com.codegym.service.PositionService;
 
+import javax.mail.MessagingException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
+//@SessionAttributes("sendOTP")
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
@@ -34,6 +41,45 @@ public class EmployeeController {
     AccountService accountService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AsyncService asyncService;
+    private AtomicInteger count=new AtomicInteger();
+
+    @Autowired
+    @ModelAttribute("sendOTP")
+    public Map<String, String> sendOTP() {
+        return new HashMap<>();
+    }
+    private static String temp;
+//    @ModelAttribute("sendOTP")Map<String,String> sendOTP ,
+    @RequestMapping(value = "/employee/account/name/{accountName}/otp", method = RequestMethod.GET)
+    protected void doGet( @PathVariable String accountName) throws MessagingException {
+        Employee employee = employeeService.findByAccountName(accountName);
+        int randomPin   =(int) (Math.random()*9000)+1000;
+        String otp  = String.valueOf(randomPin);
+//        sendOTP.put(accountName,otp);
+        asyncService.sendChangePasswordCode(employee,otp);
+
+        temp=otp;
+
+//        new java.util.Timer().schedule(
+//                new java.util.TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        // your code here
+//                    }
+//                },
+//                5000
+//        );
+
+
+//        HttpSession session = request.getSession();
+//        session.setAttribute(accountName,otp);
+//        session.setMaxInactiveInterval(300);
+
+    }
+
+
 
     //return list of employee
     @RequestMapping(value = "/employee/list", method = RequestMethod.GET)
@@ -72,7 +118,8 @@ public class EmployeeController {
     @GetMapping("employee/list/name/{acountName}")
     public ResponseEntity<?> findEmployeeByAccount(@PathVariable String acountName) {
         Employee employee = employeeService.findByAccountName(acountName);
-        return employee != null ? new ResponseEntity<Employee>(employee, HttpStatus.OK) : new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+        if (employee != null) return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+        return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
     }
 
     //edit an employee using id
@@ -99,17 +146,39 @@ public class EmployeeController {
 
     //edit account of employee using their account name
     @RequestMapping(value = "employee/account/name/{accountName}", method = RequestMethod.PATCH)
-    public ResponseEntity<Account> editPassWordAccount(@Valid @PathVariable("accountName") String accountName, @RequestBody AccountDTOEmployee account) {
+//    @ModelAttribute("sentOTP")Map<String, String> sendOTP,
+    public ResponseEntity<Account> editPassWordAccount( @Valid @PathVariable("accountName") String accountName, @RequestBody AccountDTOEmployee account
+                                                       ) throws MessagingException, ServletException, IOException {
+
         Account account1 = accountService.findAccountByName(accountName);
+        Employee employee = employeeService.findByAccountName(accountName);
         if (account1 == null) {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         if(!passwordEncoder.matches(account.getOldPassword(), account1.getAccountPassword())) {
             return new ResponseEntity<Account>(account1, HttpStatus.NOT_FOUND);
+        } else {
+//            if(count.incrementAndGet()==1) {
+//                int randomPin   =(int) (Math.random()*9000)+1000;
+//                String otp  = String.valueOf(randomPin);
+//                asyncService.sendChangePasswordCode(employee,otp);
+//
+//            }
         }
-        account1.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
-        accountService.save(account1);
-        return new ResponseEntity<Account>(account1, HttpStatus.OK);
+//        if(!Objects.equals(sendOTP.get(accountName),account.getOtp())) {
+            if(!Objects.equals(temp,account.getOtp())) {
+            return new ResponseEntity<Account>(account1, HttpStatus.NOT_FOUND);
+        } else {
+            account1.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+            accountService.save(account1);
+            temp="";
+//            sendOTP.remove(accountName);
+            return new ResponseEntity<Account>(account1, HttpStatus.OK);
+        }
+
+//        account1.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+//        accountService.save(account1);
+//        return new ResponseEntity<Account>(account1, HttpStatus.OK);
     }
 
     //find account of employee by their account name

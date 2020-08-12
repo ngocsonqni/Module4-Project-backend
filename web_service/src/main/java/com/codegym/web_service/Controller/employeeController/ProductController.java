@@ -72,6 +72,8 @@ public class ProductController {
         currentProduct.setCategory(product.getCategory());
         currentProduct.setBrand(product.getBrand());
         currentProduct.setUnit(product.getUnit());
+        currentProduct.setInfor(product.getInfor());
+        currentProduct.setImageUrl(product.getImageUrl());
         productService.save(currentProduct);
         return new ResponseEntity<Product>(currentProduct, HttpStatus.OK);
     }
@@ -136,4 +138,15 @@ public class ProductController {
         Page<Product> productsFilterByCategory = productService.findAllByCategory_CategoryIdAndDeleteFlagIsFalse(categoryId, pageable);
         return productsFilterByCategory == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<Page<Product>>(productsFilterByCategory, HttpStatus.OK);
     }
+
+    /**
+     *
+     * hai them: get all product by category and delete flag is false
+     */
+    @GetMapping("/listProductByCategory/hai/{categoryId}")
+    public ResponseEntity<List<Product>> listCakeCandy(@PathVariable int categoryId) {
+        List<Product> products=productService.findAllProductByCategoryAndDeleteFlagIsFalse(categoryId);
+        return products == null ? new ResponseEntity<List<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<List<Product>>(products,HttpStatus.OK);
+    }
+
 }

@@ -33,7 +33,7 @@ public class Employee {
     private String address;
 
     @NotEmpty(message = "Số điện thoại không được để trống")
-    @Pattern(regexp = "^\\+84\\d{9,10}$", message = "Số điện thoại bắt đầu bằng +84 theo sau 9 hoặc 10 chữ số")
+    @Pattern(regexp = "^0\\d{9,10}$", message = "Số điện thoại bắt đầu bằng 0 chữ số")
     @Column(name = "phone_number")
     private String phoneNumber;
 

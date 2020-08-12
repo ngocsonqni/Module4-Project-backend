@@ -20,4 +20,7 @@ public interface ProductService {
     List<Product> findAllProductByCategoryId(Integer categoryId);
 
     List<Product> findAllProductByBrandIdList(List<Integer> brandIdList);
+
+    //hai them vo
+    List<Product> findAllProductByCategoryAndDeleteFlagIsFalse(int categoryId);
 }
