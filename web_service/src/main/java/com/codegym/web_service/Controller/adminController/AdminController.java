@@ -223,4 +223,13 @@ public class AdminController {
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/accountsss", method = RequestMethod.GET)
+    public ResponseEntity<List<Account>> ListAccountNotInEmployee() {
+        List<Account> accountPage = accountService.findAllAccountNotInEmployee();
+        if (accountPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(accountPage, HttpStatus.OK);
+    }
 }
