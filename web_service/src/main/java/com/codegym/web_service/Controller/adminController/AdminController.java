@@ -1,5 +1,6 @@
 package com.codegym.web_service.Controller.adminController;
 
+import com.codegym.dao.DTO.UserDTO;
 import com.codegym.service.*;
 import com.codegym.web_service.AsyncService.AsyncService;
 import com.codegym.web_service.security.JwtTokenUtil;
@@ -104,7 +105,6 @@ public class AdminController {
     @RequestMapping(value = "/account/create", method = RequestMethod.POST)
     public ResponseEntity<Void> createAccount(@RequestBody Account account, UriComponentsBuilder uriComponentsBuilder) {
         Account account1 = accountService.findAccountByName(account.getAccountName());
-        List<Role> roles = roleService.findAllRole();
         if (account1 != null) {
             throw new UsernameNotFoundException("Tên đăng nhập đã tồn tại");
         } else {
@@ -213,5 +213,23 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(employeePage, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/customer-list")
+    public ResponseEntity<List<User>> listAllUser() {
+        List<User> users = userService.getListAllUser();
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/accountsss", method = RequestMethod.GET)
+    public ResponseEntity<List<Account>> ListAccountNotInEmployee() {
+        List<Account> accountPage = accountService.findAllAccountNotInEmployee();
+        if (accountPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(accountPage, HttpStatus.OK);
     }
 }

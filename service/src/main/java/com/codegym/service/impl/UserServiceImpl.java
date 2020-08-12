@@ -1,5 +1,6 @@
 package com.codegym.service.impl;
 
+import com.codegym.dao.DTO.MemberDTO;
 import com.codegym.dao.DTO.UserDTO;
 import com.codegym.dao.entity.Order;
 import com.codegym.dao.entity.User;
@@ -40,6 +41,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void save(MemberDTO memberDTO) {
+        User user = new User();
+        user.setUserName(memberDTO.getUserName());
+        user.setAddress(memberDTO.getAddress());
+        user.setBirthday(memberDTO.getBirthday());
+        user.setEmail(memberDTO.getEmail());
+        user.setGender(memberDTO.getGender());
+        user.setPhone(memberDTO.getPhone());
+        user.setAccount(memberDTO.getAccount());
+        userRepository.save(user);
+    }
+
+    @Override
     public void remove(int id) {
         User currentUser = findGetId(id);
         currentUser.setDeleteFlag(true);
@@ -53,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> getAllUser(String name, String birthday, String phone, String email, String value1, String value2, Pageable page) {
-        return userRepository.getAllUser(name, birthday, phone, email,value1,value2, page);
+        return userRepository.getAllUser(name, birthday, phone, email, value1, value2, page);
     }
 
     @Override
@@ -81,7 +95,12 @@ public class UserServiceImpl implements UserService {
             totalFull = 0;
             usersDTO.add(userDTO);
         }
-        Page<UserDTO> userDTOPage = new PageImpl<>(usersDTO, page ,userPage.getTotalElements());
+        Page<UserDTO> userDTOPage = new PageImpl<>(usersDTO, page, userPage.getTotalElements());
         return userDTOPage;
+    }
+
+    @Override
+    public List<User> getListAllUser() {
+        return userRepository.findAll();
     }
 }

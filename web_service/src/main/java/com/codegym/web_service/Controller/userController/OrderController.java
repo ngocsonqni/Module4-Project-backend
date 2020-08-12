@@ -16,8 +16,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 
 public class OrderController {
     @Autowired

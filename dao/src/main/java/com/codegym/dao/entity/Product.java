@@ -2,6 +2,8 @@ package com.codegym.dao.entity;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.swing.*;
+import java.awt.*;
 import java.util.Date;
 
 /**
@@ -36,6 +38,8 @@ public class Product {
 
     @Column(name = "discount")
     private Double discount;
+    @Column(name = "information")
+    private String infor;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -159,6 +163,14 @@ public class Product {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getInfor() {
+        return infor;
+    }
+
+    public void setInfor(String infor) {
+        this.infor = infor;
     }
 }
 

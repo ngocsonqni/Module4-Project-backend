@@ -78,4 +78,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "where product.brand_id in ?1 " +
             "order by product_id")
     List<Product> productFindByListBrand(List<Integer> brandIds);
+    List<Product> findAllByCategory_CategoryIdAndDeleteFlagFalse(Integer categoryId);
 }
