@@ -19,4 +19,21 @@ public class CouponServiceImpl implements CouponService {
     public Page<Coupon> findAllListCoupon(Pageable pageable, Date createDateFrom, Date createDateTo, String employee, String user) {
         return couponRepository.findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameContainingAndUser_UserNameContainingAndDeleteFlagFalse(pageable, createDateFrom, createDateTo, employee, user);
     }
+
+    //---------------------- Hieu Nguyen Service Impl ---------------------------------
+    @Override
+    public Coupon findById(Integer id) {
+        return couponRepository.findByCouponIdAndDeleteFlagFalse(id);
+    }
+
+    @Override
+    public void save(Coupon coupon) {
+        couponRepository.save(coupon);
+    }
+
+    @Override
+    public void remove(Coupon coupon) {
+        coupon.setDeleteFlag(true);
+    }
+    //---------------------- Hieu Nguyen Service Impl - END ---------------------------------
 }

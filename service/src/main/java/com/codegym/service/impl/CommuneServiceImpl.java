@@ -25,4 +25,11 @@ public class CommuneServiceImpl implements CommuneService {
     public Commune findById(String id) {
         return this.communeRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Commune findByName(String name) {
+        return this.communeRepository.findByName(name);
+    }
+
+
 }

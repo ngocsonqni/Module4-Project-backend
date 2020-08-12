@@ -8,4 +8,10 @@ import java.util.Date;
 
 public interface CouponService {
     Page<Coupon> findAllListCoupon(Pageable pageable, Date createDateFrom, Date createDateTo, String employee, String user);
+
+    //---------------------- Hieu Nguyen Service ---------------------------------
+    Coupon findById(Integer id);
+    void save(Coupon coupon);
+    void remove(Coupon coupon);
+    //---------------------- Hieu Nguyen Service - END ---------------------------------
 }

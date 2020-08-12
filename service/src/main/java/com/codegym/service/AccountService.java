@@ -2,6 +2,7 @@ package com.codegym.service;
 
 
 import com.codegym.dao.DTO.AccountDTO;
+import com.codegym.dao.DTO.MemberDTO;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.codegym.dao.entity.Account;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,8 @@ public interface AccountService {
     List<Account> findAllAccount();
 
     Account findAccountById(int id);
+
+    void save(MemberDTO memberDTO);
 
     void save(Account account);
 
