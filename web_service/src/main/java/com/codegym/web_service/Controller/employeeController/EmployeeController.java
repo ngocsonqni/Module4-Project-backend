@@ -1,6 +1,7 @@
 package com.codegym.web_service.Controller.employeeController;
 import com.codegym.dao.DTO.AccountDTOEmployee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import com.codegym.service.AccountService;
 import com.codegym.service.DepartmentService;
 import com.codegym.service.EmployeeService;
 import com.codegym.service.PositionService;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -144,5 +146,13 @@ public class EmployeeController {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    @RequestMapping(value = "/employee/create", method = RequestMethod.POST)
+    public ResponseEntity<Void> createEmployee(@Valid @RequestBody Employee employee, UriComponentsBuilder uriComponentsBuilder) {
+        employeeService.save(employee);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(uriComponentsBuilder.path("employee/list").buildAndExpand(employee.getId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 }

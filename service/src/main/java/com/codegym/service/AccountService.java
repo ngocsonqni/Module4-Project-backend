@@ -35,4 +35,6 @@ public interface AccountService {
     Account findAcountByIdDeleted(int id);
 
     List<Account> findAllAccountDeleted();
+
+    List<Account> findAllAccountNotInEmployee();
 }
