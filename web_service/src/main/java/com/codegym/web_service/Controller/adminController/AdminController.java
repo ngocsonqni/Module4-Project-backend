@@ -1,11 +1,9 @@
 package com.codegym.web_service.Controller.adminController;
 
-import com.codegym.dao.DTO.UserDTO;
 import com.codegym.service.*;
 import com.codegym.web_service.AsyncService.AsyncService;
 import com.codegym.web_service.security.JwtTokenUtil;
 
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,15 +154,20 @@ public class AdminController {
             String patternAccountName = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,100}$";
             String patternAccountPassword = "^[a-zA-Z0-9]{1,100}$";
             currentAccount.setAccountId(account.getAccountId());
-            if (account.getAccountName().matches(patternAccountName)) {
-                currentAccount.setAccountName(account.getAccountName());
-            } else {
-                return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+            System.out.println(account.getAccountPassword());
+            if (!account.getAccountName().equals(currentAccount.getAccountName())) {
+                if (account.getAccountName().matches(patternAccountName)) {
+                    currentAccount.setAccountName(account.getAccountName());
+                } else {
+                    return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+                }
             }
-            if (account.getAccountPassword().matches(patternAccountPassword)) {
-                currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
-            } else {
-                return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+            if (!account.getAccountPassword().equals("")) {
+                if (account.getAccountPassword().matches(patternAccountPassword)) {
+                    currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+                } else {
+                    return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+                }
             }
             currentAccount.setRole(account.getRole());
             currentAccount.setDeleteFlag(account.getDeleteFlag());
