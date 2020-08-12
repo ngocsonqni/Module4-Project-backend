@@ -4,6 +4,7 @@ import com.codegym.dao.entity.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +26,13 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Account findByAccountIdAndDeleteFlagIsTrue(int id);
 
     List<Account> findAllByDeleteFlagIsTrue();
+
+
+    @Query(value = "select * from account\n" +
+            "where account.account_id not in (\n" +
+            "select account.account_id\n" +
+            "from account\n" +
+            "inner join employee on employee.account_id = account.account_id\n" +
+            ")", nativeQuery = true)
+    List<Account> findAllAccountNotInEmployee();
 }
