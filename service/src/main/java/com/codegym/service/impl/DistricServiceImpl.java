@@ -21,4 +21,9 @@ public class DistricServiceImpl implements DistrictService {
     public District findByName(String name) {
         return this.distributorRepository.findByName(name);
     }
+
+    @Override
+    public District findById(String id) {
+        return this.distributorRepository.findById(id).orElse(null);
+    }
 }

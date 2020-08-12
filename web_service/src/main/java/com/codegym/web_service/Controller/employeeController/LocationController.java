@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LocationController {
      @Autowired(required = true)
     ProvinceService provinceService;
