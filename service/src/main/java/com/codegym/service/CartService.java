@@ -7,5 +7,8 @@ import java.util.Optional;
 
 public interface CartService {
     Optional<Cart> findById(CartPk cartPk);
+
     void save(Cart cart);
+
+    void delete(Cart cart);
 }

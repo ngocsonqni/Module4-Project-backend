@@ -1,11 +1,13 @@
 package com.codegym.web_service.Controller.userController;
 
 
+import com.codegym.dao.DTO.UserDTO;
 import com.codegym.dao.entity.User;
 import com.codegym.service.UserService;
 import com.codegym.web_service.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,13 +38,24 @@ class UserController {
     private UserService userService;
     //-------------------Retrieve All Customers--------------------------------------------------------
 
-    @RequestMapping(value = "/customers", method = RequestMethod.GET)
-    public ResponseEntity<Page<User>> listAllUserByDeleteFlagIsFalse(Pageable pageable) {
-        Page<User> users = userService.findAllUserByDeleteFlagIsFalse(pageable);
-        if (users.isEmpty()) {
-            return new ResponseEntity<Page<User>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+    @GetMapping(value = "/customers", params = {"page",
+            "size",
+            "search",
+            "value1",
+            "value2"
+    })
+    public ResponseEntity<Page<UserDTO>> listAllUserByDeleteFlagIsFalse(@RequestParam("page") int page,
+                                                                        @RequestParam("size") int size,
+                                                                        @RequestParam("search") String search,
+                                                                        @RequestParam(value = "value1",defaultValue = "1900-01-01") String value1,
+                                                                        @RequestParam(value = "value2",defaultValue = "3000-01-01") String value2
+    ) {
+        Page<UserDTO> userDTOPage = userService.getAllUserDto("%" + search + "%", "%" + search + "%", "%" + search + "%", "%" + search + "%", value1, value2, PageRequest.of(page, size));
+        System.out.println(page);
+        if (userDTOPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<Page<User>>(users, HttpStatus.OK);
+        return new ResponseEntity<>(userDTOPage , HttpStatus.OK);
     }
 
     //-------------------Retrieve Single Customer--------------------------------------------------------
@@ -58,7 +72,7 @@ class UserController {
     //-------------------Create a Customer--------------------------------------------------------
 
     @RequestMapping(value = "/customers/", method = RequestMethod.POST)
-    public ResponseEntity<Void> createCustomer(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> createCustomer(@Valid @RequestBody User user, UriComponentsBuilder ucBuilder) {
         userService.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/customers/{id}").buildAndExpand(user.getId()).toUri());

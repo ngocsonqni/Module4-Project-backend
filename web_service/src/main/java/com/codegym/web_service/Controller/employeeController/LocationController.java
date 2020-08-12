@@ -49,4 +49,26 @@ public class LocationController {
     public List<Commune> findCommuneByDistrictID(@PathVariable String id) {
         return communeService.findAllByDistrictId(id);
     }
+
+    @GetMapping("/location/communeById/{id}")
+    public Commune findCommuneByID(@PathVariable String id) {
+        return communeService.findById(id);
+    }
+
+    @GetMapping(value = "/location/provinceName/{name}")
+    public Province findProvinceByName(@PathVariable String name) {
+        return this.provinceService.findByName(name);
+    }
+
+    @GetMapping("/location/district/{name}")
+    public District findDistrictByName(@PathVariable String name) {
+        return this.districtService.findByName(name);
+    }
+
+    @GetMapping("/location/communeName/{name}")
+    public Commune findCommuneByName(@PathVariable String name) {
+        return this.communeService.findByName(name);
+    }
+
+
 }

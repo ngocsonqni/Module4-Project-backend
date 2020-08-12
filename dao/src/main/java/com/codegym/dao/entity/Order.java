@@ -1,5 +1,7 @@
 package com.codegym.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -46,6 +48,8 @@ public class Order {
     private LocalDateTime successfulDelivery;
     @ManyToOne
     @JoinColumn(name = "id_user")
+//    @JsonIgnore
+    @JsonBackReference(value = "user")
     private User user;
     @OneToMany(mappedBy = "id.orderUser")
 //    @JsonManagedReference(value="orderDetailList")

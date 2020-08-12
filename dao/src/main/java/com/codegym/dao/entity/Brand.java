@@ -2,6 +2,7 @@ package com.codegym.dao.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "brand")
@@ -14,12 +15,15 @@ public class Brand {
     private String brandLogo;
     @Column(name = "brand_name")
     @NotBlank (message = "Tên thương hiệu không được để trống")
+    @Size(max = 50, message = "Tên thương hiệu không quá 50 ký tự")
     private String brandName;
     @Column(name = "brand_address")
     @NotBlank (message = "Trụ sở thương hiệu không được để trống")
+    @Size(max = 100, message = "Địa chỉ thương hiệu không quá 100 ký tự")
     private String brandAddress;
     @Column(name = "brand_website")
     @NotBlank (message = "Website thương hiệu không được để trống")
+    @Size(max = 50, message = "Website không quá 50 ký tự")
     private String brandWebsite;
     @Column(name = "delete_flag")
     private boolean deleteFlag;

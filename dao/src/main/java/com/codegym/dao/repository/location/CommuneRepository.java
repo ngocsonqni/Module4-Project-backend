@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface CommuneRepository extends JpaRepository<Commune, String> {
     public List<Commune> findAllByMaqhContaining(String id);
+
+
+    Commune findByName(String name);
 }

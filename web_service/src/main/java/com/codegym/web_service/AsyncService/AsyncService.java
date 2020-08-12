@@ -29,7 +29,7 @@ public class AsyncService {
     @Async
     public void deleteAccount(Account account) {
         try {
-            Thread.sleep(200000);
+            Thread.sleep(120000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
