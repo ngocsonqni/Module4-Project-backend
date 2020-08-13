@@ -78,4 +78,14 @@ public class DistributorController {
         }
         return new ResponseEntity<String>(HttpStatus.OK);
     }
+    @GetMapping("/distributor/exist/{name}/{id}")
+    public ResponseEntity<Distributor> findByIsExistName(@PathVariable String name, @PathVariable int id) {
+        Distributor distributor = this.distributorService.isExistDistributor(name, id);
+        if (distributor != null) {
+            return new ResponseEntity<Distributor>(distributor, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Distributor>(distributor, HttpStatus.NOT_FOUND);
+        }
+
+    }
 }

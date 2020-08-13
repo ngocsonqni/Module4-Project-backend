@@ -48,4 +48,11 @@ public class DistributorServiceImpl implements DistributorService {
     public void deleteById(int id) {
         this.distributorRepository.delete(true, id);
     }
+
+    @Override
+    public Distributor isExistDistributor(String name, int id) {
+        return this.distributorRepository.findAllByNameAndIdIsNot(name,id);
+    }
+
+
 }

@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface OrderDetailService {
    Page <OrderDetail> findByOrderUser(Order order, Pageable pageable);
+   void save(OrderDetail orderDetail);
 }

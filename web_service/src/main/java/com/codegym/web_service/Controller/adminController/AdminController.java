@@ -1,5 +1,6 @@
 package com.codegym.web_service.Controller.adminController;
 
+import com.codegym.dao.DTO.UserDTO;
 import com.codegym.service.*;
 import com.codegym.web_service.AsyncService.AsyncService;
 import com.codegym.web_service.security.JwtTokenUtil;
@@ -185,7 +186,8 @@ public class AdminController {
     public ResponseEntity<Employee> getInfoAccount(@PathVariable("id") int id) {
         Employee employee = employeeService.findByAccountId(id);
         if (employee == null) {
-            return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
+            employee = new Employee();
+            return new ResponseEntity<Employee>(employee, HttpStatus.OK);
         }
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
@@ -194,9 +196,9 @@ public class AdminController {
     @RequestMapping(value = "/account/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getInfoAccountUser(@PathVariable("id") int id) {
         User user = userService.findUserByAccountId(id);
-        System.out.println(user);
         if (user == null) {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            user = new User();
+            return new ResponseEntity<User>(user, HttpStatus.OK);
         }
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
@@ -212,5 +214,14 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(employeePage, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/customer-list")
+    public ResponseEntity<List<User>> listAllUser() {
+        List<User> users = userService.getListAllUser();
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

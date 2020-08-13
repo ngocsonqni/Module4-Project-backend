@@ -2,6 +2,7 @@ package com.codegym.service.impl;
 
 import com.codegym.dao.entity.Bill;
 import com.codegym.dao.entity.Brand;
+import com.codegym.dao.entity.Distributor;
 import com.codegym.dao.repository.BillRepository;
 import com.codegym.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,15 @@ public class BillServiceImpl implements BillService {
         }
         billRepository.save(bill);
         return true;
+    }
+
+    @Override
+    public List<Bill> findAllByIdDistributorAndShippingStatusIsNot(Distributor distributor, String status) {
+        return this.billRepository.findAllByIdDistributorAndShippingStatusIsNot(distributor, status);
+    }
+
+    @Override
+    public List<Bill> findAllBillByDistributorId(int id) {
+        return this.billRepository.findAllBillByDistributorId(id);
     }
 }
