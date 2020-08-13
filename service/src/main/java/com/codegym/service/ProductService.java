@@ -20,4 +20,6 @@ public interface ProductService {
     List<Product> findAllProductByCategoryId(Integer categoryId);
 
     List<Product> findAllProductByBrandIdList(List<Integer> brandIdList);
+
+    List<Product> findAllByTop(String y, String m);
 }

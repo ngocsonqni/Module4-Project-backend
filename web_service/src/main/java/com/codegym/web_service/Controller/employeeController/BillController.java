@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,6 +32,8 @@ public class BillController {
     private BillService billService;
     @Autowired
     private DistributorService distributorService;
+    @Autowired
+    private ProductService productService;
 
     //-------------------Find All StorageLocations--------------------------------------------------------
 
@@ -184,5 +187,11 @@ public class BillController {
         Page<Bill> bills = billService.findAllByDeleteFlagFalsePaging(pageable);
         return bills.isEmpty() ? new ResponseEntity<Page<Bill>>(HttpStatus.NO_CONTENT) : new ResponseEntity<Page<Bill>>(bills, HttpStatus.OK);
 
+    }
+
+    @RequestMapping(value = "/top5/", method = RequestMethod.GET)
+    public ResponseEntity<List<Product>> listAllTop(@RequestParam(value = "y") String y, @RequestParam(value = "m") String m) {
+        List<Product> bills = productService.findAllByTop(y, m);
+        return bills.isEmpty() ? new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Product>>(bills, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
 }
