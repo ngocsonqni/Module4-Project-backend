@@ -21,6 +21,8 @@ public interface UserService {
 
     void remove(int id);
 
+    MemberDTO findByEmail (String email);
+
     User findUserByAccountId(int accountId);
 
     Page<User> getAllUser(String name, String birthday, String phone, String email, String value1, String value2, Pageable page);

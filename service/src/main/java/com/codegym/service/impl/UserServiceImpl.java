@@ -61,6 +61,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public MemberDTO findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public User findUserByAccountId(int accountId) {
         return userRepository.findAllByDeleteFlagIsFalseAndAccount_AccountId(accountId);
     }

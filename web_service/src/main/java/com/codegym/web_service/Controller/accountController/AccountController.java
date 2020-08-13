@@ -11,6 +11,7 @@ import com.codegym.service.AccountService;
 import com.codegym.service.RoleService;
 import com.codegym.service.UserService;
 import com.codegym.service.impl.AccountServiceImpl;
+import com.codegym.web_service.AsyncService.AsyncService;
 import com.codegym.web_service.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,8 +23,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
@@ -43,6 +47,9 @@ class AccountController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AsyncService asyncService;
+
     private AccountDTO accountDTO;
 
 
@@ -72,20 +79,23 @@ class AccountController {
 
     //--------------------- create MEMBER account --------------------------------------------------
     @RequestMapping(value = "/createMemberAccount", method = RequestMethod.POST)
-    public ResponseEntity<Void> createMemberAccount(@RequestBody MemberDTO memberDTO, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<Void> createMemberAccount(@Valid @RequestBody MemberDTO memberDTO, UriComponentsBuilder uriComponentsBuilder, BindingResult bindingResult) {
         Account account1 = accountService.findAccountByName(memberDTO.getAccountName());
         Role userRole = roleService.findRoleById(4);
-        if (account1 != null) {
+        if (account1 != null || bindingResult.hasFieldErrors()) {
             throw new UsernameNotFoundException("Tên đăng nhập đã tồn tại");
         } else {
+
             memberDTO.setAccountPassword((passwordEncoder.encode(memberDTO.getAccountPassword())));
             memberDTO.setRole(userRole);
             accountService.save(memberDTO);
             Account account = accountService.findAccountByName(memberDTO.getAccountName());
             memberDTO.setAccount(account);
             userService.save(memberDTO);
+//            UserDetails userDetails = accountServiceImpl.loadUserByUsername(memberDTO.getAccountName());
+//            String confirmToken = jwtTokenUtil.generateToken(userDetails);
+//            asyncService.sendRegisterEmail(userService.findByEmail(memberDTO.getEmail()));
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(uriComponentsBuilder.path("/customers/{id}").buildAndExpand(memberDTO.getId()).toUri());
             return new ResponseEntity<>(headers, HttpStatus.CREATED);
         }
     }
