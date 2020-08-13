@@ -3,6 +3,7 @@ package com.codegym.dao.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -49,7 +50,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "id_user")
 //    @JsonIgnore
-    @JsonBackReference(value = "user")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //    @JsonBackReference(value = "user")
     private User user;
     @OneToMany(mappedBy = "id.orderUser")
 //    @JsonManagedReference(value="orderDetailList")
