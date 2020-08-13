@@ -203,7 +203,7 @@ public class AsyncService {
                 + "<h3 style='font-size: 30px;'>Xin chào " + employee.getName() + " !</h3>"
                 + "<br>"
                 + "<p style='font-size: 20px'>Tài khoản " + employee.getAccount().getAccountName() + " của bạn trên trang web CODEBAKERY đang được thay đổi mật khẩu</p>"
-                + "<p style='font-size: 20px'>Nếu là bạn đang thay đổi hãy nhập code: "+ otp + " để tiếp tục đổi mật khẩu.</p>"
+                + "<p style='font-size: 20px'>Nếu là bạn đang thay đổi hãy nhập code: " + otp + " để tiếp tục đổi mật khẩu.</p>"
                 + "<p style='font-size: 20px'>Nếu không phải bạn hãy cẩn thận vì có ai đó đang muốn đổi mật khẩu tài khoản của bạn!</p>"
                 + "<a href='http://localhost:4200/'>"
                 + "<button style='padding: 10px;border: none; background : rgb(238, 159, 31);border-radius: 15px;color: #581008; cursor: pointer'>"
