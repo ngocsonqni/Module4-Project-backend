@@ -11,6 +11,16 @@ public interface ProductService {
     Page<Product> findAllByDeleteFlagFalsePaging(Pageable pageable);
     Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, Pageable pageable);
     Page<Product> findAllByCategory_CategoryIdAndDeleteFlagIsFalse(Integer categoryId, Pageable pageable);
+    Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndProductNameAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String productName, String price, Pageable pageable);
+    Page<Product> findAllByProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(String productName, String price, Pageable pageable);
+    Page<Product> findAllByProductNameContainingAndDeleteFlagIsFalse(String productName, Pageable pageable);
+    Page<Product> findAllByPriceContainingAndDeleteFlagIsFalse(String price, Pageable pageable);
+    Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndProductNameContainingAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String productName, Pageable pageable);
+    Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndPriceContainingAndDeleteFlagIsFalseAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String price, Pageable pageable);
+    Page<Product> findAllByCategory_CategoryIdAndProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, String productName, String price, Pageable pageable);
+    Page<Product> findAllByCategory_CategoryIdAndProductNameContainingAndDeleteFlagIsFalse(Integer categoryId, String productName, Pageable pageable);
+    Page<Product> findAllByCategory_CategoryIdAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, String price, Pageable pageable);
+
     Product findById(Integer id);
     void save(Product product);
     void remove(Product product);
@@ -21,5 +31,10 @@ public interface ProductService {
 
     List<Product> findAllProductByBrandIdList(List<Integer> brandIdList);
 
+
     List<Product> findAllByTop(String y, String m);
+
+    //hai them vo
+    List<Product> findAllProductByCategoryAndDeleteFlagIsFalse(int categoryId);
+
 }

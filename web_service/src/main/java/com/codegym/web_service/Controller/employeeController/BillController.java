@@ -11,8 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,6 +32,7 @@ public class BillController {
     private DistributorService distributorService;
     @Autowired
     private ProductService productService;
+
 
     //-------------------Find All StorageLocations--------------------------------------------------------
 
@@ -181,6 +180,7 @@ public class BillController {
         List<Distributor> distributors = distributorService.findAll();
         return distributors.isEmpty() ? new ResponseEntity<List<Distributor>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Distributor>>(distributors, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
+
     //------------------- Delete a bill --------------------------------------------------------
     @GetMapping("/listBills")
     public ResponseEntity<Page<Bill>> listBills(Pageable pageable) {

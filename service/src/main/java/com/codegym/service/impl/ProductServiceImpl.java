@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
@@ -26,12 +27,57 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, Pageable pageable) {
-        return  productRepository.findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(categoryId, brandId, pageable);
+        return productRepository.findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(categoryId, brandId, pageable);
     }
 
     @Override
     public Page<Product> findAllByCategory_CategoryIdAndDeleteFlagIsFalse(Integer categoryId, Pageable pageable) {
         return productRepository.findAllByCategory_CategoryIdAndDeleteFlagIsFalse(categoryId, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndProductNameAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String productName, String price, Pageable pageable) {
+        return productRepository.findAllByCategory_CategoryIdAndBrand_IdAndProductNameContainingAndPriceContainingAndDeleteFlagIsFalseAndDeleteFlagIsFalse(categoryId, brandId, productName, price, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(String productName, String price, Pageable pageable) {
+        return productRepository.findAllByProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(productName, price, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByProductNameContainingAndDeleteFlagIsFalse(String productName, Pageable pageable) {
+        return productRepository.findAllByProductNameContainingAndDeleteFlagIsFalse(productName, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByPriceContainingAndDeleteFlagIsFalse(String price, Pageable pageable) {
+        return productRepository.findAllByPriceContainingAndDeleteFlagIsFalse(price, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndProductNameContainingAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String productName, Pageable pageable) {
+        return productRepository.findAllByCategory_CategoryIdAndBrand_IdAndProductNameContainingAndDeleteFlagIsFalseAndDeleteFlagIsFalse(categoryId, brandId, productName, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndPriceContainingAndDeleteFlagIsFalseAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String price, Pageable pageable) {
+        return productRepository.findAllByCategory_CategoryIdAndBrand_IdAndPriceContainingAndDeleteFlagIsFalse(categoryId, brandId, price, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByCategory_CategoryIdAndProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, String productName, String price, Pageable pageable) {
+        return productRepository.findAllByCategory_CategoryIdAndProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(categoryId, productName, price, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByCategory_CategoryIdAndProductNameContainingAndDeleteFlagIsFalse(Integer categoryId, String productName, Pageable pageable) {
+        return productRepository.findAllByCategory_CategoryIdAndProductNameContainingAndDeleteFlagIsFalse(categoryId, productName, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByCategory_CategoryIdAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, String price, Pageable pageable) {
+        return productRepository.findAllByCategory_CategoryIdAndPriceContainingAndDeleteFlagIsFalse(categoryId, price, pageable);
     }
 
     @Override
@@ -68,5 +114,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAllByTop(String y, String m) {
         return productRepository.findAllByTop(y,m);
+    }
+    @Override
+    public List<Product> findAllProductByCategoryAndDeleteFlagIsFalse(int categoryId) {
+        return productRepository.findAllByCategory_CategoryIdAndDeleteFlagFalse(categoryId);
     }
 }

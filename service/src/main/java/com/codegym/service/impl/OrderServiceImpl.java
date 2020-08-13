@@ -21,6 +21,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<Order> findAllByUser_IdOrderByOrderDateDesc(Integer id, Pageable pageable) {
+        return this.orderRepository.findAllByUser_IdOrderByOrderDateDesc(id,pageable);
+    }
+
+    @Override
     public Optional<Order> findById(Integer id) {
         return orderRepository.findById(id);
     }

@@ -14,14 +14,63 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Page<Product> findAllByDeleteFlagFalse(Pageable pageable);
+
     /**
      * @return all data from Product with categoryId is false
      */
     List<Product> findDistinctByCategory_CategoryIdAndDeleteFlagIsFalseOrderByBrand(Integer categoryId);
 
     Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(Integer categoryId, Integer BrandId, Pageable pageable);
+
+    /**
+     * search with categoryId, brandID, productName, price
+     */
+    Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndProductNameContainingAndPriceContainingAndDeleteFlagIsFalseAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String productName, String price, Pageable pageable);
+
+    /**
+     * search with categoryId, brandID, productName
+     */
+    Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndProductNameContainingAndDeleteFlagIsFalseAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String productName, Pageable pageable);
+
+    /**
+     * search with categoryId, brandID, price
+     */
+    Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String price, Pageable pageable);
+
+    /**
+     * search with categoryId, productName, price
+     */
+    Page<Product> findAllByCategory_CategoryIdAndProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, String productName, String price, Pageable pageable);
+
+    /**
+     * search with categoryId, productName
+     */
+    Page<Product> findAllByCategory_CategoryIdAndProductNameContainingAndDeleteFlagIsFalse(Integer categoryId, String productName, Pageable pageable);
+
+    /**
+     * search with categoryId, price
+     */
+    Page<Product> findAllByCategory_CategoryIdAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, String price, Pageable pageable);
+
+    /**
+     * search with productName, price
+     */
+    Page<Product> findAllByProductNameContainingAndPriceContainingAndDeleteFlagIsFalse(String productName, String price, Pageable pageable);
+
+    /**
+     * search with productName
+     */
+    Page<Product> findAllByProductNameContainingAndDeleteFlagIsFalse(String productName, Pageable pageable);
+
+    /**
+     * search with price
+     */
+    Page<Product> findAllByPriceContainingAndDeleteFlagIsFalse(String price, Pageable pageable);
+
     Page<Product> findAllByCategory_CategoryIdAndDeleteFlagIsFalse(Integer categoryId, Pageable pageable);
-   Product findByProductIdAndDeleteFlagFalse(Integer id);
+
+    Product findByProductIdAndDeleteFlagFalse(Integer id);
+
     List<Product> findAllByCategory_CategoryId(Integer categoryId);
 
     @Query(nativeQuery = true, value = "SELECT * " +
@@ -31,16 +80,16 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "order by product_id")
     List<Product> productFindByListBrand(List<Integer> brandIds);
 
-//    @Query(value = "SELECT * FROM Users u WHERE u.status = :status and u.name = :name",
-//            nativeQuery = true)
-//    List<Product> findAllByTopMonth();
-
     @Query(value = "SELECT*\n" +
             "FROM code_bakery.product\n" +
+            "where ((SELECT year(code_bakery.product.create_at))= :y and (SELECT month(code_bakery.product.create_at))= :m)\n" +
             "GROUP BY code_bakery.product.product_name\n" +
-            "having ((SELECT year(code_bakery.product.create_at))= :y and (SELECT MONTH(code_bakery.product.create_at))= :m and MAX(code_bakery.product.amount_sold))\n" +
+            "having MAX(code_bakery.product.amount_sold)\n" +
             "order by code_bakery.product.amount_sold desc\n" +
             "limit 5",
             nativeQuery = true)
     List<Product> findAllByTop(@Param("y") String y, @Param("m") String m);
+
+
+    List<Product> findAllByCategory_CategoryIdAndDeleteFlagFalse(Integer categoryId);
 }

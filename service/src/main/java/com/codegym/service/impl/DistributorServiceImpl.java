@@ -48,4 +48,31 @@ public class DistributorServiceImpl implements DistributorService {
     public void deleteById(int id) {
         this.distributorRepository.delete(true, id);
     }
+
+    @Override
+    public Distributor isExistDistributor(String name, int id) {
+        return this.distributorRepository.findAllByNameAndIdIsNot(name, id);
+    }
+
+    @Override
+    public Distributor checkIsNotModifying(int id) {
+        return this.distributorRepository.findAllByIdAndStatusIs(id);
+    }
+
+    @Override
+    public void setStatusDistributorById(int id, int status) {
+        this.distributorRepository.setStatusDistributorById(id, status);
+    }
+
+    @Override
+    public void setSessionDistributorById(int id) {
+        this.distributorRepository.setSessionDistributorById(id);
+    }
+
+    @Override
+    public void removeSessionDistributorByid(int id) {
+        this.distributorRepository.removeSessionDistributorById(id);
+    }
+
+
 }
