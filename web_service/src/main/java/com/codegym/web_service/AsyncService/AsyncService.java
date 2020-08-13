@@ -185,4 +185,43 @@ public class AsyncService {
         userDelete.setAccount(null);
         userService.save(userDelete);
     }
+
+    @Async
+    public String sendChangePasswordCode(Employee employee, String otp) throws MessagingException {
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+
+        String htmlMsg = "<html>"
+                + "<meta charset='UTF-8'>"
+                + "<body style='background:lightgray'>"
+                + "<div style='width: 70%; height: auto;margin-left: 15%;background: white'>"
+                + "<div>"
+                + "<div>"
+                + "<img width='80%' style='margin: 5% 10%;' src='https://www.upsieutoc.com/images/2020/07/22/logo9bd9eb6ca795c6dd.png'>"
+                + "</div>"
+                + "<div style='margin: 1% 20%'>"
+                + "<h3 style='font-size: 30px;'>Xin chào " + employee.getName() + " !</h3>"
+                + "<br>"
+                + "<p style='font-size: 20px'>Tài khoản " + employee.getAccount().getAccountName() + " của bạn trên trang web CODEBAKERY đang được thay đổi mật khẩu</p>"
+                + "<p style='font-size: 20px'>Nếu là bạn đang thay đổi hãy nhập code: " + otp + " để tiếp tục đổi mật khẩu.</p>"
+                + "<p style='font-size: 20px'>Nếu không phải bạn hãy cẩn thận vì có ai đó đang muốn đổi mật khẩu tài khoản của bạn!</p>"
+                + "<a href='http://localhost:4200/'>"
+                + "<button style='padding: 10px;border: none; background : rgb(238, 159, 31);border-radius: 15px;color: #581008; cursor: pointer'>"
+                + "<h2>CODEBAKERY</h2>"
+                + "</button>"
+                + "</a>"
+                + "</div>"
+                + "</div>"
+                + "<div style='background: rgb(238, 159, 31);text-align:center;padding:25px;font-size:20px;margin:10% 0'>"
+                + "<p>©2020 Codebakery - Codegym Đà Nẵng - C0220G1</p>"
+                + "</div>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
+        message.setContent(htmlMsg, "text/html; charset=utf-8");
+        helper.setTo(employee.getEmail());
+        helper.setSubject("CodeBakery - Thay đổi mật khẩu");
+        this.emailSender.send(message);
+        return otp;
+    }
 }
