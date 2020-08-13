@@ -30,5 +30,13 @@ public class CartController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    @RequestMapping(value = "/cart-quantity", method = RequestMethod.POST)
+    public ResponseEntity<Void> changeCartQuantity(@RequestBody Cart cart) {
+        Optional<Cart> currentCart = this.cartService.findById(cart.getId());
+        if (currentCart.isPresent()) {
+            currentCart.get().setQuantity(cart.getQuantity());
+            this.cartService.save(currentCart.get());
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
