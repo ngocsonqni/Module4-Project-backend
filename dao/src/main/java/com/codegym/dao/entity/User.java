@@ -20,14 +20,14 @@ public class User {
     @Column(name = "id_user")
     private int id;
     @Column(name = "user_name")
-    @NotBlank(message = "Tên khách hàng không được để trống!")
+//    @NotBlank(message = "Tên khách hàng không được để trống!")
     @Pattern(regexp = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế][a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế ]*",
             message = "Tên khách khàng không được chứa kí tự đặc biệt!")
     private String userName;
     @Column(name = "birthday")
     private LocalDate birthday;
     @Column(name = "address")
-    @NotBlank(message = "Địa chỉ không được để trống!")
+//    @NotBlank(message = "Địa chỉ không được để trống!")
     private String address;
 
     @Column(name = "email")
