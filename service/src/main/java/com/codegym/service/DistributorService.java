@@ -29,4 +29,9 @@ List<Distributor> findAllByDeleted(boolean isNotDeleted);
 
     void setSessionDistributorById(int id);
     void removeSessionDistributorByid(int id);
+
+    Distributor inSession(int id);
+
+    void increaseSessionById(int id);
+    int getNumOfSessionById(int id);
 }

@@ -51,6 +51,31 @@ public class Distributor {
     TypeOfDistributor typeOfDistributor;
     @Column(name = "status")
     int status;
+    @Column(name = "num_session")
+    int numSession;
+
+    public int getNumSession() {
+        return numSession;
+    }
+
+    public void setNumSession(int numSession) {
+        this.numSession = numSession;
+    }
+
+    public Distributor(@NotNull @Size(max = 50) @Pattern(regexp = "^[a-zA-Z0-9\\\\_\\\\-\\\\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮ' +\n" +
+            "'ẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế]+$") String name, @NotNull @Size(max = 100) String address, @Size(max = 50) @Pattern(regexp = "^[a-z][a-z0-9_\\.]{5,}@[a-z0-9]{1,}(\\.[a-z0-9]{2,4}){1,2}$") @NotNull String email, @Size(max = 10) @NotNull String numberPhone, @Size(min = 10, max = 10) String fax, @Pattern(regexp = "(^((http:\\/\\/www\\.)|(https:\\/\\/www\\.))([a-zA-Z0-9]+\\.){1,2}[a-zA-Z0-9]+$)|(^$)") @Size(max = 100) String website, String img, boolean deleted, TypeOfDistributor typeOfDistributor, int status, int numSession) {
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.numberPhone = numberPhone;
+        this.fax = fax;
+        this.website = website;
+        this.img = img;
+        this.deleted = deleted;
+        this.typeOfDistributor = typeOfDistributor;
+        this.status = status;
+        this.numSession = numSession;
+    }
 
     public Distributor(boolean deleted) {
         this.deleted = deleted;

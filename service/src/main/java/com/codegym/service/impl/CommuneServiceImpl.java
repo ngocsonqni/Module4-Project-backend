@@ -28,7 +28,7 @@ public class CommuneServiceImpl implements CommuneService {
 
     @Override
     public Commune findByName(String name) {
-        return this.communeRepository.findByName(name);
+        return this.communeRepository.findByName(name).get(0);
     }
 
 

@@ -35,7 +35,7 @@ public interface DistributorRepository extends JpaRepository<Distributor, Intege
 
     @Transactional
     @Modifying
-    @Query(value = "CREATE EVENT IF NOT EXISTS event:id ON SCHEDULE AT (CURRENT_TIMESTAMP + INTERVAL 300 SECOND ) DO UPDATE distributor SET distributor.status = 0 where" +
+    @Query(value = "CREATE EVENT IF NOT EXISTS event:id ON SCHEDULE AT (CURRENT_TIMESTAMP + INTERVAL 30 SECOND ) DO UPDATE distributor SET distributor.status = 0 where" +
             " distributor.id_distributor = :id and distributor.status <> 0", nativeQuery = true)
     void setSessionDistributorById(@Param("id") int id);
 
@@ -46,4 +46,13 @@ public interface DistributorRepository extends JpaRepository<Distributor, Intege
     void removeSessionDistributorById(@Param("id") int id);
 
 
+    Distributor findAllByIdAndStatusIsNot(int id, int status);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update Distributor d set d.numSession = d.numSession+1 where d.id = ?1")
+    void increaseNumSessionById(int id);
+
+    @Query(value = "select d.numSession from Distributor d where d.id = ?1")
+    int getNumOfSessionById(int id);
 }

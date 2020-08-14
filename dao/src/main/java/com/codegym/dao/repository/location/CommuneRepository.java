@@ -9,5 +9,5 @@ public interface CommuneRepository extends JpaRepository<Commune, String> {
     public List<Commune> findAllByMaqhContaining(String id);
 
 
-    Commune findByName(String name);
+    List<Commune> findByName(String name);
 }

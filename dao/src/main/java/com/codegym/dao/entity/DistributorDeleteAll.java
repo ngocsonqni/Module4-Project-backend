@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DistributorDeleteAll {
     List<Distributor> successList;
-    List<Distributor> modifyingList;
+    List<Distributor> outSessionList;
     List<Distributor> unsuccessList;
 
     public List<Distributor> getSuccessList() {
@@ -15,21 +15,12 @@ public class DistributorDeleteAll {
         this.successList = successList;
     }
 
-    public List<Distributor> getModifyingList() {
-        return modifyingList;
+    public List<Distributor> getOutSessionList() {
+        return outSessionList;
     }
 
-    public void setModifyingList(List<Distributor> modifyingList) {
-        this.modifyingList = modifyingList;
-    }
-
-    public DistributorDeleteAll() {
-    }
-
-    public DistributorDeleteAll(List<Distributor> successList, List<Distributor> modifyingList, List<Distributor> unsuccessList) {
-        this.successList = successList;
-        this.modifyingList = modifyingList;
-        this.unsuccessList = unsuccessList;
+    public void setOutSessionList(List<Distributor> outSessionList) {
+        this.outSessionList = outSessionList;
     }
 
     public List<Distributor> getUnsuccessList() {
@@ -37,6 +28,12 @@ public class DistributorDeleteAll {
     }
 
     public void setUnsuccessList(List<Distributor> unsuccessList) {
+        this.unsuccessList = unsuccessList;
+    }
+
+    public DistributorDeleteAll(List<Distributor> successList, List<Distributor> outSessionList, List<Distributor> unsuccessList) {
+        this.successList = successList;
+        this.outSessionList = outSessionList;
         this.unsuccessList = unsuccessList;
     }
 }

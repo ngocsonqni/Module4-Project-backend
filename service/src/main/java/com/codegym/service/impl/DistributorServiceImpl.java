@@ -74,5 +74,20 @@ public class DistributorServiceImpl implements DistributorService {
         this.distributorRepository.removeSessionDistributorById(id);
     }
 
+    @Override
+    public Distributor inSession(int id) {
+        return this.distributorRepository.findAllByIdAndStatusIsNot(id,0);
+    }
+
+    @Override
+    public void increaseSessionById(int id) {
+        this.distributorRepository.increaseNumSessionById(id);
+    }
+
+    @Override
+    public int getNumOfSessionById(int id) {
+        return this.distributorRepository.getNumOfSessionById(id);
+    }
+
 
 }

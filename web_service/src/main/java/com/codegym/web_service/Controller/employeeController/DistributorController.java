@@ -67,28 +67,33 @@ public class DistributorController {
 
 
     @PostMapping("/distributor/deleteAll")
-    public ResponseEntity<DistributorDeleteAll> deleteALl(@RequestBody int[] deleteIdList) {
+    public ResponseEntity<DistributorDeleteAll> deleteALl(@RequestBody Distributor[] deleteIdList) {
         Distributor distributor;
-        List<Distributor> modifyingList = new ArrayList<>();
+        int tempSession;
+        List<Distributor> outSessionList = new ArrayList<>();
         List<Distributor> successList = new ArrayList<>();
         List<Distributor> unsuccessList = new ArrayList<>();
 
-        for (int item : deleteIdList) {
-            distributor = this.distributorService.checkIsNotModifying(item);
-            if (distributor != null) {
-                List<Bill> bills = this.billService.findAllBillByDistributorId(item);
+        for (Distributor item : deleteIdList) {
+            distributor = this.distributorService.checkIsNotModifying(item.getId());
+            tempSession = this.distributorService.getNumOfSessionById(item.getId());
+            if (distributor == null && tempSession == item.getNumSession()) {
+                List<Bill> bills = this.billService.findAllBillByDistributorId(item.getId());
                 if (bills.size() == 0) {
-                    this.distributorService.deleteById(item);
-                    successList.add(distributor);
+                    this.distributorService.deleteById(item.getId());
+                    successList.add(this.distributorService.findById(item.getId()));
                 } else {
-                    unsuccessList.add(distributor);
+                    unsuccessList.add(this.distributorService.findById(item.getId()));
+
                 }
+                this.distributorService.removeSessionDistributorByid(item.getId());
+                this.distributorService.setStatusDistributorById(item.getId(), 0);
             } else {
-                distributor = this.distributorService.findById(item);
-                modifyingList.add(distributor);
+                distributor = this.distributorService.findById(item.getId());
+                outSessionList.add(distributor);
             }
         }
-        DistributorDeleteAll distributorDeleteAll = new DistributorDeleteAll(successList, modifyingList,unsuccessList);
+        DistributorDeleteAll distributorDeleteAll = new DistributorDeleteAll(successList, outSessionList, unsuccessList);
         return new ResponseEntity<>(distributorDeleteAll, HttpStatus.OK);
     }
 
@@ -104,9 +109,11 @@ public class DistributorController {
     }
 
     @GetMapping("/distributor/setSession/{id}/{status}")
-    public void setSS(@PathVariable int id, @PathVariable int status) {
+    public int setSS(@PathVariable int id, @PathVariable int status) {
+        this.distributorService.increaseSessionById(id);
         this.distributorService.setSessionDistributorById(id);
-        this.distributorService.setStatusDistributorById(id,status);
+        this.distributorService.setStatusDistributorById(id, status);
+        return this.distributorService.getNumOfSessionById(id);
     }
 
     @GetMapping("/distributor/delete/{id}")
@@ -129,4 +136,32 @@ public class DistributorController {
         this.distributorService.removeSessionDistributorByid(id);
         this.distributorService.setStatusDistributorById(id, 0);
     }
+
+    @PostMapping("/distributor/modified")
+    public void modifiedDistributor(@RequestBody Distributor distributor) {
+        this.distributorService.save(distributor);
+        this.distributorService.removeSessionDistributorByid(distributor.getId());
+    }
+
+    @GetMapping("/distributor/exist/{name}/{id}")
+    public ResponseEntity<Distributor> IsExistDistributorName(@PathVariable String name,@PathVariable int id) {
+       Distributor distributor = this.distributorService.isExistDistributor(name, id);
+       return new ResponseEntity<>(distributor, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/distributor/inSession/{id}/{numSession}")
+    public ResponseEntity<Boolean> checkInSession(@PathVariable int id, @PathVariable int numSession) {
+        int tempSession = this.distributorService.getNumOfSessionById(id);
+        Distributor temp = this.distributorService.findById(id);
+
+        if (tempSession == numSession && temp.getStatus() != 0) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        }
+
+
+    }
+
 }
