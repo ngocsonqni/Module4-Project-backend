@@ -6,7 +6,6 @@ import com.codegym.dao.DTO.AccountDTO;
 import com.codegym.dao.DTO.MemberDTO;
 import com.codegym.dao.entity.Account;
 import com.codegym.dao.entity.Role;
-import com.codegym.dao.entity.User;
 import com.codegym.service.AccountService;
 import com.codegym.service.RoleService;
 import com.codegym.service.UserService;
@@ -43,10 +42,6 @@ class AccountController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
-    private AccountDTO accountDTO;
-
-
-
 //    @GetMapping("/admin")
 //    public ResponseEntity<?> helloAdmin() {
 //        accountDTO = new AccountDTO("admin", "Hello");

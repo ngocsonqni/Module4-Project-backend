@@ -58,30 +58,21 @@ public class AdminController {
     @RequestMapping(value = "/role", method = RequestMethod.GET)
     public ResponseEntity<List<Role>> listAllRole() {
         List<Role> roles = roleService.findAllRole();
-        if (roles.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(roles, HttpStatus.OK);
+        return roles.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
     //--------------------------------- details role ---------------------------
     @RequestMapping(value = "/role/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Role> getRole(@PathVariable("id") int id) {
         Role role = roleService.findRoleById(id);
-        if (role == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(role, HttpStatus.OK);
+        return role == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(role, HttpStatus.OK);
     }
 
     //------------------------------- list account -------------------------
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public ResponseEntity<List<Account>> listAllAccountList() {
         List<Account> accounts = accountService.findAllAccount();
-        if (accounts.isEmpty()) {
-            return new ResponseEntity<List<Account>>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<Account>>(accounts, HttpStatus.OK);
+        return accounts.isEmpty() ? new ResponseEntity<List<Account>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Account>>(accounts, HttpStatus.OK);
     }
 
     //---------------------- list account ---------------------------------
@@ -92,11 +83,7 @@ public class AdminController {
                                                         @RequestParam("role") String nameRole) {
         Page<Account> accountPage = accountService.pageFindALLSearchNameOfCourseOfAdmin(PageRequest.of(page, size, Sort.by("accountId").ascending())
                 , nameRole, search);
-
-        if (accountPage.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(accountPage, HttpStatus.OK);
+        return accountPage.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(accountPage, HttpStatus.OK);
     }
 
     //--------------------- create account --------------------------------------------------
@@ -118,10 +105,7 @@ public class AdminController {
     @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
     public ResponseEntity<Account> getAccount(@PathVariable("id") int id) {
         Account account = accountService.findAccountById(id);
-        if (account == null) {
-            return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<Account>(account, HttpStatus.OK);
+        return account == null ? new ResponseEntity<Account>(HttpStatus.NOT_FOUND) : new ResponseEntity<Account>(account, HttpStatus.OK);
     }
 
     //--------------------- delete account --------------------------------------------------
@@ -134,7 +118,7 @@ public class AdminController {
         currentAccount.setDeleteFlag(true);
         currentAccount.setReason(account.getReason());
         accountService.save(currentAccount);
-        if (account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE")) {
+        if ((account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE"))) {
             asyncDeleteAccount.sendDeleteEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
         } else {
             asyncDeleteAccount.sendDeleteEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
@@ -211,28 +195,18 @@ public class AdminController {
                                                           @RequestParam("size") int size,
                                                           @RequestParam("search") String search) {
         Page<Employee> employeePage = employeeService.findAllEmployeeWithPage(search, PageRequest.of(page, size, Sort.by("id").ascending()));
-
-        if (employeePage.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(employeePage, HttpStatus.OK);
+        return employeePage.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(employeePage, HttpStatus.OK);
     }
 
     @GetMapping(value = "/customer-list")
     public ResponseEntity<List<User>> listAllUser() {
         List<User> users = userService.getListAllUser();
-        if (users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return users.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/accountsss", method = RequestMethod.GET)
     public ResponseEntity<List<Account>> ListAccountNotInEmployee() {
         List<Account> accountPage = accountService.findAllAccountNotInEmployee();
-        if (accountPage.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(accountPage, HttpStatus.OK);
+        return (accountPage.isEmpty()) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(accountPage, HttpStatus.OK);
     }
 }

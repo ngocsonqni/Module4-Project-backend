@@ -22,11 +22,11 @@ public class SaleManagementController {
     //---------------------- list bill sprint 2 ---------------------------------
     @RequestMapping(value = "/coupon", method = RequestMethod.GET)
     public ResponseEntity<Page<Coupon>> listAllCoupon(@RequestParam("page") int page,
-                                                       @RequestParam("size") int size,
-                                                       @RequestParam("createdatefrom") String createDateFrom,
-                                                       @RequestParam("createdateto") String createDateTo,
-                                                       @RequestParam("employee") String employee,
-                                                       @RequestParam("user") String user
+                                                      @RequestParam("size") int size,
+                                                      @RequestParam("createdatefrom") String createDateFrom,
+                                                      @RequestParam("createdateto") String createDateTo,
+                                                      @RequestParam("employee") String employee,
+                                                      @RequestParam("user") String user
     ) throws ParseException {
         if (createDateFrom.equals("")) {
             createDateFrom = "1900-01-01";
@@ -35,10 +35,7 @@ public class SaleManagementController {
             createDateTo = "9999-12-31";
         }
         Page<Coupon> couponPage = couponService.findAllListCoupon(PageRequest.of(page, size, Sort.by("createDate").descending()), new SimpleDateFormat("yyyy-MM-dd").parse(createDateFrom), new SimpleDateFormat("yyyy-MM-dd").parse(createDateTo), employee, user);
-        if (couponPage.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(couponPage, HttpStatus.OK);
+        return couponPage.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(couponPage, HttpStatus.OK);
     }
 
     //---------------------- Hieu Nguyen API ---------------------------------
@@ -51,6 +48,7 @@ public class SaleManagementController {
         return coupon == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(coupon, HttpStatus.OK);
 
     }
+
     //---------------------- Delete a Coupon ---------------------------------
     @PatchMapping("/coupon/delete/{id}")
     public ResponseEntity<Coupon> deleteCoupon(@PathVariable Integer id) {
