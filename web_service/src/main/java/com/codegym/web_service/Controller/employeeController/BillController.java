@@ -4,19 +4,13 @@ import com.codegym.dao.entity.*;
 import com.codegym.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -36,6 +30,8 @@ public class BillController {
     private BillService billService;
     @Autowired
     private DistributorService distributorService;
+    @Autowired
+    private ProductService productService;
 
 
     //-------------------Find All StorageLocations--------------------------------------------------------
@@ -191,5 +187,11 @@ public class BillController {
         Page<Bill> bills = billService.findAllByDeleteFlagFalsePaging(pageable);
         return bills.isEmpty() ? new ResponseEntity<Page<Bill>>(HttpStatus.NO_CONTENT) : new ResponseEntity<Page<Bill>>(bills, HttpStatus.OK);
 
+    }
+
+    @RequestMapping(value = "/top5/", method = RequestMethod.GET)
+    public ResponseEntity<List<Product>> listAllTop(@RequestParam(value = "y") String y, @RequestParam(value = "m") String m) {
+        List<Product> bills = productService.findAllByTop(y, m);
+        return bills.isEmpty() ? new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT) : new ResponseEntity<List<Product>>(bills, HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
     }
 }

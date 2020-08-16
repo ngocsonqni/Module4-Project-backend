@@ -112,6 +112,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findAllByTop(String y, String m) {
+        return productRepository.findAllByTop(y,m);
+    }
+    @Override
     public List<Product> findAllProductByCategoryAndDeleteFlagIsFalse(int categoryId) {
         return productRepository.findAllByCategory_CategoryIdAndDeleteFlagFalse(categoryId);
     }
