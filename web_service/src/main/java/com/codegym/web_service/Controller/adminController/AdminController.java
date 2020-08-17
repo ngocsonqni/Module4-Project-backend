@@ -138,7 +138,6 @@ public class AdminController {
             String patternAccountName = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,100}$";
             String patternAccountPassword = "^[a-zA-Z0-9]{1,100}$";
             currentAccount.setAccountId(account.getAccountId());
-            System.out.println(account.getAccountPassword());
             if (!account.getAccountName().equals(currentAccount.getAccountName())) {
                 if (account.getAccountName().matches(patternAccountName)) {
                     currentAccount.setAccountName(account.getAccountName());
@@ -156,15 +155,15 @@ public class AdminController {
             currentAccount.setRole(account.getRole());
             currentAccount.setDeleteFlag(account.getDeleteFlag());
             accountService.save(currentAccount);
-            if (account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE")) {
-                asyncDeleteAccount.sendEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
-            } else {
-                asyncDeleteAccount.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
-            }
-            return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
         }
+        if (account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE")) {
+            asyncDeleteAccount.sendEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
+        } else {
+            asyncDeleteAccount.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
+        }
+        return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
 
     //--------------------------------- details Employee ---------------------------
