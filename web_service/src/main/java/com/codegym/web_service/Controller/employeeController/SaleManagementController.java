@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SaleManagementController {
     @Autowired
     private CouponService couponService;
@@ -34,10 +34,45 @@ public class SaleManagementController {
         if (createDateTo.equals("")) {
             createDateTo = "9999-12-31";
         }
-        Page<Coupon> couponPage = couponService.findAllListCoupon(PageRequest.of(page, size, Sort.by("createDate").ascending()), new SimpleDateFormat("yyyy-MM-dd").parse(createDateFrom), new SimpleDateFormat("yyyy-MM-dd").parse(createDateTo), employee, user);
+        Page<Coupon> couponPage = couponService.findAllListCoupon(PageRequest.of(page, size, Sort.by("createDate").descending()), new SimpleDateFormat("yyyy-MM-dd").parse(createDateFrom), new SimpleDateFormat("yyyy-MM-dd").parse(createDateTo), employee, user);
         if (couponPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(couponPage, HttpStatus.OK);
     }
+
+    //---------------------- Hieu Nguyen API ---------------------------------
+
+    //---------------------- Get Coupon By Id ---------------------------------
+    @GetMapping("/coupon/{id}")
+    public ResponseEntity<Coupon> getCoupon(@PathVariable("id") Integer id) {
+        Coupon coupon = couponService.findById(id);
+
+        return coupon == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(coupon, HttpStatus.OK);
+
+    }
+    //---------------------- Delete a Coupon ---------------------------------
+    @PatchMapping("/coupon/delete/{id}")
+    public ResponseEntity<Coupon> deleteCoupon(@PathVariable Integer id) {
+        Coupon currentCoupon = couponService.findById(id);
+        if (currentCoupon == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        couponService.remove(currentCoupon);
+        couponService.save(currentCoupon);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //---------------------- Delete Many Coupon ---------------------------------
+    @GetMapping("/coupon/deletes/{id}")
+    public ResponseEntity<Coupon> deleteManyCoupon(@PathVariable Integer id) {
+        Coupon currentCoupon = couponService.findById(id);
+        if (currentCoupon == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        couponService.remove(currentCoupon);
+        couponService.save(currentCoupon);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    //---------------------- Hieu Nguyen API - END ---------------------------------
 }

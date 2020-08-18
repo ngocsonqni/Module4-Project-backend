@@ -20,7 +20,13 @@ public interface DistributorService {
 
 
 //Add-----------------------------------------------------------------------
-    List<Distributor> findAllByDeleted(boolean isNotDeleted);
+List<Distributor> findAllByDeleted(boolean isNotDeleted);
     void deleteById(int id);
     Distributor isExistDistributor(String name, int id);
+
+    Distributor checkIsNotModifying(int id);
+    void setStatusDistributorById(int id, int status);
+
+    void setSessionDistributorById(int id);
+    void removeSessionDistributorByid(int id);
 }

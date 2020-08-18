@@ -7,5 +7,6 @@ import java.util.List;
 public interface ProvinceService {
      List<Province> findAll();
      Province findById(String id);
+     Province findByName(String name);
 }
 

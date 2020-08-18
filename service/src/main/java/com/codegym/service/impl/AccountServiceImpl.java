@@ -110,4 +110,9 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     public List<Account> findAllAccountDeleted() {
         return accountRepository.findAllByDeleteFlagIsTrue();
     }
+
+    @Override
+    public List<Account> findAllAccountNotInEmployee() {
+        return accountRepository.findAllAccountNotInEmployee();
+    }
 }

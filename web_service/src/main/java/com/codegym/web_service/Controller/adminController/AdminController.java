@@ -1,11 +1,9 @@
 package com.codegym.web_service.Controller.adminController;
 
-import com.codegym.dao.DTO.UserDTO;
 import com.codegym.service.*;
 import com.codegym.web_service.AsyncService.AsyncService;
 import com.codegym.web_service.security.JwtTokenUtil;
 
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,31 +151,36 @@ public class AdminController {
             return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
         }
         try {
-            String patternAccountName = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,}$";
-            String patternAccountPassword = "^[a-zA-Z0-9\\$\\.\\/]{1,}$";
+            String patternAccountName = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,100}$";
+            String patternAccountPassword = "^[a-zA-Z0-9]{1,100}$";
             currentAccount.setAccountId(account.getAccountId());
-            if (account.getAccountName().matches(patternAccountName)) {
-                currentAccount.setAccountName(account.getAccountName());
-            } else {
-                return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+            System.out.println(account.getAccountPassword());
+            if (!account.getAccountName().equals(currentAccount.getAccountName())) {
+                if (account.getAccountName().matches(patternAccountName)) {
+                    currentAccount.setAccountName(account.getAccountName());
+                } else {
+                    return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+                }
             }
-            if (account.getAccountPassword().matches(patternAccountPassword)) {
-                currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
-            } else {
-                return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+            if (!account.getAccountPassword().equals("")) {
+                if (account.getAccountPassword().matches(patternAccountPassword)) {
+                    currentAccount.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+                } else {
+                    return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+                }
             }
             currentAccount.setRole(account.getRole());
             currentAccount.setDeleteFlag(account.getDeleteFlag());
             accountService.save(currentAccount);
+            if (account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE")) {
+                asyncDeleteAccount.sendEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
+            } else {
+                asyncDeleteAccount.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
+            }
+            return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
         }
-        if (account.getRole().getRoleName().equals("ROLE_ADMIN") || account.getRole().getRoleName().equals("ROLE_PARTNER") || account.getRole().getRoleName().equals("ROLE_WAREHOUSE")) {
-            asyncDeleteAccount.sendEmailWithEmployee(employeeService.findByAccountId(account.getAccountId()));
-        } else {
-            asyncDeleteAccount.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
-        }
-        return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
     }
 
     //--------------------------------- details Employee ---------------------------
@@ -222,5 +225,14 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/accountsss", method = RequestMethod.GET)
+    public ResponseEntity<List<Account>> ListAccountNotInEmployee() {
+        List<Account> accountPage = accountService.findAllAccountNotInEmployee();
+        if (accountPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(accountPage, HttpStatus.OK);
     }
 }

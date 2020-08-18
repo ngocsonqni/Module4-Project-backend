@@ -1,38 +1,31 @@
 package com.codegym.dao.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "account")
 public class Account {
-//    private static final long serialVersionUID = 1L;
-
     @Id
     @Column(name = "account_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accountId;
     @NotNull
-    @Size(max = 255, min = 1)
-//    @Pattern(regexp = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,}$")
+    @Size(max = 100, min = 1)
+    @Pattern(regexp = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,100}$")
     @Column(name = "account_name", nullable = false, unique = true)
-    @NotBlank(message = "Tên không được để trống")
+    @NotBlank
     private String accountName;
-
-    @NotBlank(message = "Tên không được để trống")
-//    @NotNull
-//    @Size(max = 255, min = 1)
+    @NotBlank
+    @NotNull
+    @Size(max = 100, min = 1)
     @Column(name = "account_password", nullable = false)
+    @Pattern(regexp = "^[a-zA-Z0-9\\,\\.\\-\\_\\@\\$]{1,100}$")
     private String accountPassword;
-
     @Column(name = "delete_flag")
     boolean deleteFlag;
     @Column(name = "reason")
     String reason;
-
-    //    @NotNull
     @ManyToOne
     @JoinColumn(name = "role_id")
     public Role role;
