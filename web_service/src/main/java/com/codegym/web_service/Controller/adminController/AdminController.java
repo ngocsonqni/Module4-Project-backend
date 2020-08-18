@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -161,7 +162,7 @@ public class AdminController {
                 asyncDeleteAccount.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
             }
             return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (JpaSystemException e) {
             return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
         }
     }
