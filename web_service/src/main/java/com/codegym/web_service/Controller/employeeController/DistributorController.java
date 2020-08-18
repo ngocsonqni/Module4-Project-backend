@@ -29,13 +29,21 @@ public class DistributorController {
 
     @GetMapping("/distributor/{id}")
     public ResponseEntity<Distributor> findByID(@PathVariable Integer id) {
-        System.out.println(id);
         Distributor distributor = this.distributorService.findById(id);
         if (distributor == null) {
             return new ResponseEntity<Distributor>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Distributor>(distributor, HttpStatus.OK);
     }
+    @GetMapping("/distributor/deleted/{id}")
+    public ResponseEntity<Boolean> isNotDeletedById(@PathVariable Integer id) {
+        Distributor distributor = this.distributorService.isNotDeletedById(id);
+        if (distributor == null) {
+            return new ResponseEntity<>(false,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
 
     @PostMapping("/distributor")
     public void save(@RequestBody Distributor distributor) {

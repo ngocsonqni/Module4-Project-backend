@@ -55,4 +55,7 @@ public interface DistributorRepository extends JpaRepository<Distributor, Intege
 
     @Query(value = "select d.numSession from Distributor d where d.id = ?1")
     int getNumOfSessionById(int id);
+
+@Query(value="select d from Distributor d where d.id=?1 and d.deleted=false")
+    Distributor isNotDeletedById(int id);
 }

@@ -34,4 +34,5 @@ List<Distributor> findAllByDeleted(boolean isNotDeleted);
 
     void increaseSessionById(int id);
     int getNumOfSessionById(int id);
+    Distributor isNotDeletedById(int id);
 }

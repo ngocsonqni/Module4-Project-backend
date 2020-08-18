@@ -76,7 +76,7 @@ public class DistributorServiceImpl implements DistributorService {
 
     @Override
     public Distributor inSession(int id) {
-        return this.distributorRepository.findAllByIdAndStatusIsNot(id,0);
+        return this.distributorRepository.findAllByIdAndStatusIsNot(id, 0);
     }
 
     @Override
@@ -87,6 +87,11 @@ public class DistributorServiceImpl implements DistributorService {
     @Override
     public int getNumOfSessionById(int id) {
         return this.distributorRepository.getNumOfSessionById(id);
+    }
+
+    @Override
+    public Distributor isNotDeletedById(int id) {
+        return distributorRepository.isNotDeletedById(id);
     }
 
 
