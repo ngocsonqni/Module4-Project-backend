@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
+import javax.persistence.NoResultException;
 
 import com.codegym.dao.entity.Account;
 import com.codegym.dao.entity.Employee;
@@ -138,7 +140,6 @@ public class AdminController {
             String patternAccountName = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,100}$";
             String patternAccountPassword = "^[a-zA-Z0-9]{1,100}$";
             currentAccount.setAccountId(account.getAccountId());
-            System.out.println(account.getAccountPassword());
             if (!account.getAccountName().equals(currentAccount.getAccountName())) {
                 if (account.getAccountName().matches(patternAccountName)) {
                     currentAccount.setAccountName(account.getAccountName());
@@ -162,8 +163,8 @@ public class AdminController {
                 asyncDeleteAccount.sendEmailWithUser(userService.findUserByAccountId(account.getAccountId()));
             }
             return new ResponseEntity<Account>(currentAccount, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<Account>(HttpStatus.NOT_ACCEPTABLE);
+        } catch (NoResultException e) {
+            return new ResponseEntity<Account>(HttpStatus.PARTIAL_CONTENT);
         }
     }
 

@@ -10,8 +10,14 @@ import java.util.Date;
 
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, Integer> {
-    Page<Coupon> findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameContainingAndUser_UserNameContainingAndDeleteFlagFalse(Pageable pageable, Date createDateFrom, Date createDateTo, String employee, String user);
+    Page<Coupon> findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameAndUser_UserNameAndDeleteFlagFalse(Pageable pageable, Date createDateFrom, Date createDateTo, String employee, String user);
+
+    Page<Coupon> findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameAndDeleteFlagFalse(Pageable pageable, Date createDateFrom, Date createDateTo, String employee);
+
+    Page<Coupon> findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndUser_UserNameAndDeleteFlagFalse(Pageable pageable, Date createDateFrom, Date createDateTo, String user);
+
+    Page<Coupon> findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndDeleteFlagFalse(Pageable pageable, Date createDateFrom, Date createDateTo);
 
     //---------------------- Hieu Nguyen ---------------------------------
-    Coupon findByCouponIdAndDeleteFlagFalse (Integer id);
+    Coupon findByCouponIdAndDeleteFlagFalse(Integer id);
 }
