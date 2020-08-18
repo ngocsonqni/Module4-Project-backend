@@ -37,7 +37,16 @@ public class SaleManagementController {
         if (createDateTo.equals("")) {
             createDateTo = "9999-12-31";
         }
-        Page<Coupon> couponPage = couponService.findAllListCoupon(PageRequest.of(page, size, Sort.by("createDate").descending()), new SimpleDateFormat("yyyy-MM-dd").parse(createDateFrom), new SimpleDateFormat("yyyy-MM-dd").parse(createDateTo), employee, user);
+        Page<Coupon> couponPage = null;
+        if (!employee.equals("") && !user.equals("")) {
+            couponPage = couponService.findAllListCoupon(PageRequest.of(page, size, Sort.by("createDate").descending()), new SimpleDateFormat("yyyy-MM-dd").parse(createDateFrom), new SimpleDateFormat("yyyy-MM-dd").parse(createDateTo), employee, user);
+        } else if (employee.equals("") && !user.equals("")) {
+            couponPage = couponService.findAllListCouponWithUser(PageRequest.of(page, size, Sort.by("createDate").descending()), new SimpleDateFormat("yyyy-MM-dd").parse(createDateFrom), new SimpleDateFormat("yyyy-MM-dd").parse(createDateTo), user);
+        } else if (user.equals("") && !employee.equals("")) {
+            couponPage = couponService.findAllListCouponWithEmployee(PageRequest.of(page, size, Sort.by("createDate").descending()), new SimpleDateFormat("yyyy-MM-dd").parse(createDateFrom), new SimpleDateFormat("yyyy-MM-dd").parse(createDateTo), employee);
+        } else {
+            couponPage = couponService.findAllListCouponWithBlank(PageRequest.of(page, size, Sort.by("createDate").descending()), new SimpleDateFormat("yyyy-MM-dd").parse(createDateFrom), new SimpleDateFormat("yyyy-MM-dd").parse(createDateTo));
+        }
         return couponPage.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(couponPage, HttpStatus.OK);
     }
 

@@ -12,7 +12,6 @@ public class Account {
     private int accountId;
     @NotNull
     @Size(max = 100, min = 1)
-    @Pattern(regexp = "^[a-zA-Z0-9\\,\\.\\-\\_\\@]{1,100}$")
     @Column(name = "account_name", nullable = false, unique = true)
     @NotBlank
     private String accountName;
@@ -20,7 +19,6 @@ public class Account {
     @NotNull
     @Size(max = 100, min = 1)
     @Column(name = "account_password", nullable = false)
-    @Pattern(regexp = "^[a-zA-Z0-9\\,\\.\\-\\_\\@\\$]{1,100}$")
     private String accountPassword;
     @Column(name = "delete_flag")
     boolean deleteFlag;
