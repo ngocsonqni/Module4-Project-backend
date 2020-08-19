@@ -5,34 +5,34 @@ import java.util.Date;
 
 @Entity
 @Table(name = "coupon")
-public class Coupon {
+public class CouponCreate {
     @Id
     @Column(name = "coupon_id")
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int couponId;
+    private Integer couponId;
 
     @Column(name = "create_date")
     private Date createDate;
 
-    @ManyToOne
-    @JoinColumn(name = "id_employee")
-    private Employee employee;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User user;
+    @Column(name = "id_employee")
+    private Integer employee;
+
+
+    @Column(name = "id_user")
+    private Integer user;
 
     @Column(name = "delete_flag")
     private boolean deleteFlag;
 
-    public Coupon() {
+    public CouponCreate() {
     }
 
-    public int getCouponId() {
+    public Integer getCouponId() {
         return couponId;
     }
 
-    public void setCouponId(int couponId) {
+    public void setCouponId(Integer couponId) {
         this.couponId = couponId;
     }
 
@@ -44,19 +44,19 @@ public class Coupon {
         this.createDate = createDate;
     }
 
-    public Employee getEmployee() {
+    public Integer getEmployee() {
         return employee;
     }
 
-    public void setEmployee(Employee employee) {
+    public void setEmployee(Integer employee) {
         this.employee = employee;
     }
 
-    public User getUser() {
+    public Integer getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Integer user) {
         this.user = user;
     }
 

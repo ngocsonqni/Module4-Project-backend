@@ -1,6 +1,8 @@
-package com.codegym.service.impl;
+package com.codegym.service.Impl;
 
 import com.codegym.dao.entity.Coupon;
+import com.codegym.dao.entity.CouponCreate;
+import com.codegym.dao.repository.CouponHuylmRepositoty;
 import com.codegym.dao.repository.CouponRepository;
 import com.codegym.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,18 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private CouponRepository couponRepository;
 
+    @Autowired
+    private CouponHuylmRepositoty couponHuylmRepositoty;
+
     @Override
     public Page<Coupon> findAllListCoupon(Pageable pageable, Date createDateFrom, Date createDateTo, String employee, String user) {
         return couponRepository.findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameAndUser_UserNameAndDeleteFlagFalse(pageable, createDateFrom, createDateTo, employee, user);
     }
 
     @Override
+    public void save(CouponCreate coupon) {
+        couponHuylmRepositoty.save(coupon);
+    }
     public Page<Coupon> findAllListCouponWithEmployee(Pageable pageable, Date createDateFrom, Date createDateTo, String employee) {
         return couponRepository.findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameAndDeleteFlagFalse(pageable, createDateFrom, createDateTo, employee);
     }

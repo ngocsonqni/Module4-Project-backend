@@ -9,6 +9,7 @@ import java.util.List;
 public interface ProductService {
     List<Product> findByCategory_CategoryIdAndDeleteFlagIsFalse(Integer categoryId);
     Page<Product> findAllByDeleteFlagFalsePaging(Pageable pageable);
+    List<Product> findAllByDeleteFlagFalse();
     Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, Pageable pageable);
     Page<Product> findAllByCategory_CategoryIdAndDeleteFlagIsFalse(Integer categoryId, Pageable pageable);
     Page<Product> findAllByCategory_CategoryIdAndBrand_IdAndProductNameAndPriceContainingAndDeleteFlagIsFalse(Integer categoryId, Integer brandId, String productName, String price, Pageable pageable);

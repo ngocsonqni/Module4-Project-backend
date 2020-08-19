@@ -1,4 +1,4 @@
-package com.codegym.service.impl;
+package com.codegym.service.Impl;
 
 import com.codegym.dao.entity.Product;
 import com.codegym.dao.repository.ProductRepository;
@@ -23,6 +23,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> findAllByDeleteFlagFalsePaging(Pageable pageable) {
         return productRepository.findAllByDeleteFlagFalse(pageable);
+    }
+
+    @Override
+    public List<Product> findAllByDeleteFlagFalse() {
+        return productRepository.findAll();
     }
 
     @Override

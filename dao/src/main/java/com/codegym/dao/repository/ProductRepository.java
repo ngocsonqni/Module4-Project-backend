@@ -15,6 +15,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Page<Product> findAllByDeleteFlagFalse(Pageable pageable);
 
+    List<Product> findAllByDeleteFlagFalse();
+
     /**
      * @return all data from Product with categoryId is false
      */
