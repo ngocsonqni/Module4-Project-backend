@@ -1,33 +1,34 @@
 package com.codegym.dao.DTO;
 
+import com.codegym.dao.entity.CouponDetails;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 public class CouponDTO {
 
-    private String couponId;
+    private Integer couponId;
     private Date createDate;
-    private String employee;
-    private String user;
-    private String deleteFlag;
+    private Integer employeeId;
+    private Integer userId;
+    private Boolean deleteFlag;
 
-    private String productName;
-    private String quantity;
+    private ArrayList<CouponDetails> couponDetails;
 
-    public CouponDTO(String couponId, Date createDate, String employee, String user, String deleteFlag, String productName, String quantity) {
+    public CouponDTO(Integer couponId, Date createDate, Integer employeeId, Integer userId, Boolean deleteFlag, ArrayList<CouponDetails> couponDetails) {
         this.couponId = couponId;
         this.createDate = createDate;
-        this.employee = employee;
-        this.user = user;
+        this.employeeId = employeeId;
+        this.userId = userId;
         this.deleteFlag = deleteFlag;
-        this.productName = productName;
-        this.quantity = quantity;
+        this.couponDetails = couponDetails;
     }
 
-    public String getCouponId() {
+    public Integer getCouponId() {
         return couponId;
     }
 
-    public void setCouponId(String couponId) {
+    public void setCouponId(Integer couponId) {
         this.couponId = couponId;
     }
 
@@ -39,43 +40,35 @@ public class CouponDTO {
         this.createDate = createDate;
     }
 
-    public String getEmployee() {
-        return employee;
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee(String employee) {
-        this.employee = employee;
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getDeleteFlag() {
+    public Boolean getDeleteFlag() {
         return deleteFlag;
     }
 
-    public void setDeleteFlag(String deleteFlag) {
+    public void setDeleteFlag(Boolean deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
 
-    public String getProductName() {
-        return productName;
+    public ArrayList<CouponDetails> getCouponDetails() {
+        return couponDetails;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    public void setCouponDetails(ArrayList<CouponDetails> couponDetails) {
+        this.couponDetails = couponDetails;
     }
 }

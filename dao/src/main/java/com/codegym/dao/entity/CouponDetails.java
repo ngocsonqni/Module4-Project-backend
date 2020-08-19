@@ -8,7 +8,7 @@ public class CouponDetails {
     @Id
     @Column(name = "coupon_detail_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer couponId;
+    private Integer couponDetailId;
 
     @Column(name = "product_name")
     private String productName;
@@ -16,16 +16,15 @@ public class CouponDetails {
     @Column(name = "quantity")
     private String quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
+    @Column(name = "coupon_id")
+    private Integer couponId;
 
-    public Integer getCouponId() {
-        return couponId;
+    public Integer getCouponDetailId() {
+        return couponDetailId;
     }
 
-    public void setCouponId(Integer couponId) {
-        this.couponId = couponId;
+    public void setCouponDetailId(Integer couponDetailsId) {
+        this.couponDetailId = couponDetailsId;
     }
 
     public String getProductName() {
@@ -44,11 +43,11 @@ public class CouponDetails {
         this.quantity = quantity;
     }
 
-    public Coupon getCoupon() {
-        return coupon;
+    public Integer getCouponId() {
+        return couponId;
     }
 
-    public void setCoupon(Coupon coupon) {
-        this.coupon = coupon;
+    public void setCouponId(Integer couponId) {
+        this.couponId = couponId;
     }
 }

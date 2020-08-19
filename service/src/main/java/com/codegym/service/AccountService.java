@@ -1,12 +1,10 @@
 package com.codegym.service;
 
-
 import com.codegym.dao.DTO.AccountDTO;
-import org.springframework.security.core.userdetails.UserDetails;
 import com.codegym.dao.entity.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
