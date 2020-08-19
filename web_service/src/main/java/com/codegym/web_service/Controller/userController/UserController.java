@@ -8,7 +8,6 @@ import com.codegym.web_service.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -71,7 +70,7 @@ class UserController {
     //-------------------Create a Customer--------------------------------------------------------
 
     @RequestMapping(value = "/customers/", method = RequestMethod.POST)
-    public ResponseEntity<Void> createCustomer(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> createCustomer(@Valid @RequestBody User user, UriComponentsBuilder ucBuilder) {
         userService.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/customers/{id}").buildAndExpand(user.getId()).toUri());

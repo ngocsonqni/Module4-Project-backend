@@ -7,6 +7,7 @@ import java.util.List;
 public interface DistrictService {
 
     public List<District> findAllByProvinceId(String id);
-    District findById(String id);
+    District findByName(String name);
 
+    District findById(String id);
 }

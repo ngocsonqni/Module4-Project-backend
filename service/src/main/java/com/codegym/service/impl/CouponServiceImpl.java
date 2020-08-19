@@ -22,11 +22,41 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public Page<Coupon> findAllListCoupon(Pageable pageable, Date createDateFrom, Date createDateTo, String employee, String user) {
-        return couponRepository.findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameContainingAndUser_UserNameContainingAndDeleteFlagFalse(pageable, createDateFrom, createDateTo, employee, user);
+        return couponRepository.findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameAndUser_UserNameAndDeleteFlagFalse(pageable, createDateFrom, createDateTo, employee, user);
     }
 
     @Override
     public void save(CouponCreate coupon) {
         couponHuylmRepositoty.save(coupon);
     }
+    public Page<Coupon> findAllListCouponWithEmployee(Pageable pageable, Date createDateFrom, Date createDateTo, String employee) {
+        return couponRepository.findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndEmployee_NameAndDeleteFlagFalse(pageable, createDateFrom, createDateTo, employee);
+    }
+
+    @Override
+    public Page<Coupon> findAllListCouponWithUser(Pageable pageable, Date createDateFrom, Date createDateTo, String user) {
+        return couponRepository.findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndUser_UserNameAndDeleteFlagFalse(pageable, createDateFrom, createDateTo, user);
+    }
+
+    @Override
+    public Page<Coupon> findAllListCouponWithBlank(Pageable pageable, Date createDateFrom, Date createDateTo) {
+        return couponRepository.findAllByCreateDateIsGreaterThanEqualAndCreateDateIsLessThanEqualAndDeleteFlagFalse(pageable, createDateFrom, createDateTo);
+    }
+
+    //---------------------- Hieu Nguyen Service Impl ---------------------------------
+    @Override
+    public Coupon findById(Integer id) {
+        return couponRepository.findByCouponIdAndDeleteFlagFalse(id);
+    }
+
+    @Override
+    public void save(Coupon coupon) {
+        couponRepository.save(coupon);
+    }
+
+    @Override
+    public void remove(Coupon coupon) {
+        coupon.setDeleteFlag(true);
+    }
+    //---------------------- Hieu Nguyen Service Impl - END ---------------------------------
 }

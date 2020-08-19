@@ -115,4 +115,13 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findAllProductByBrandIdList(List<Integer> brandIdList) {
         return productRepository.productFindByListBrand(brandIdList);
     }
+
+    @Override
+    public List<Product> findAllByTop(String y, String m) {
+        return productRepository.findAllByTop(y,m);
+    }
+    @Override
+    public List<Product> findAllProductByCategoryAndDeleteFlagIsFalse(int categoryId) {
+        return productRepository.findAllByCategory_CategoryIdAndDeleteFlagFalse(categoryId);
+    }
 }

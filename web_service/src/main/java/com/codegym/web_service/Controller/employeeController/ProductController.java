@@ -239,5 +239,14 @@ public class ProductController {
         return listProducts == null ? new ResponseEntity<Page<Product>>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<Page<Product>>(listProducts, HttpStatus.OK);
     }
+    /**
+     *
+     * hai them: get all product by category and delete flag is false
+     */
+    @GetMapping("/listProductByCategory/hai/{categoryId}")
+    public ResponseEntity<List<Product>> listCakeCandy(@PathVariable int categoryId) {
+        List<Product> products=productService.findAllProductByCategoryAndDeleteFlagIsFalse(categoryId);
+        return products == null ? new ResponseEntity<List<Product>>(HttpStatus.NOT_FOUND) : new ResponseEntity<List<Product>>(products,HttpStatus.OK);
+    }
 }
 
